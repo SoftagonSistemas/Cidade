@@ -1,0 +1,140 @@
+/// The `User` model represents system users.
+/// In a GED context, users can create, own, and share documents.
+/// In a BPM context, users may also be assigned to tasks within workflows, allowing them to
+/// participate in document-based processes (e.g., review, approval).
+model User {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  apiUserId           String              @unique
+  email               String              @unique
+  name                String?
+  documents           Document[]          @relation("UserDocuments")
+  sharedDocuments     SharedDocument[]    @relation("SharedDocuments")
+  certificates        DigitalCertificate[]
+  tasks               Task[]              // Tasks assigned to the user in workflows.
+  createdVersions     DocumentVersion[]   @relation("CreatedVersions") // Versions of documents created by the user.
+  auditLogs           AuditLog[]          @relation("PerformedBy") // Logs of user actions in tasks for traceability.
+  createdAt           DateTime            @default(now())
+}
+
+/// The `Document` model is central in a GED system, representing any file stored and managed.
+/// It supports various document types through `mimeType`, enabling flexible management of file types.
+/// This model can store search-related metadata (`keywords`, `ocrText`) and is linked to workflows in BPM.
+/// `signed` and `signedAt` help manage document authenticity through digital signing.
+model Document {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title               String
+  filePath            String
+  mimeType            String              // MIME type to handle different file formats.
+  keywords            String[]            // Keywords for search indexing.
+  ocrText             String?             // OCR-extracted text for full-text search.
+  owner               User                @relation("UserDocuments", fields: [ownerId], references: [id])
+  ownerId             String              @db.Uuid
+  signed              Boolean             @default(false)
+  signedAt            DateTime?           // Date and time the document was signed.
+  signature           String?             // Details or file path for the digital signature.
+  sharedWith          SharedDocument[]    // Tracks document sharing with other users.
+  versions            DocumentVersion[]   // Document version history.
+  tasks               Task[]              // Tasks associated with the document in workflows.
+  fileMetadata        FileMetadata?       // Metadata (size, checksum) for document management.
+  createdAt           DateTime            @default(now())
+}
+
+/// The `DocumentVersion` model enables version control within GED.
+/// It stores previous document states, supporting document tracking and restoration.
+/// `versionNumber` and `changesDescription` enable an audit trail, valuable for compliance.
+/// This model is linked to a user (`createdBy`) for accountability.
+model DocumentVersion {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  document            Document            @relation(fields: [documentId], references: [id])
+  documentId          String              @db.Uuid
+  versionNumber       Int                 // Indicates the version order of the document.
+  filePath            String              // Path to the version file.
+  changesDescription  String?             // Describes changes made in this version.
+  createdBy           User                @relation("CreatedVersions", fields: [createdById], references: [id])
+  createdById         String              @db.Uuid
+  createdAt           DateTime            @default(now())
+}
+
+/// The `Workflow` model organizes business processes for document-based tasks in BPM.
+/// Workflows represent entire processes with multiple tasks (`steps`) for document approvals,
+/// reviews, and other interactions. `status` allows monitoring of the workflow's current state.
+model Workflow {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String              // Workflow name, e.g., "Document Approval".
+  description         String?             // Details the workflow purpose.
+  status              String              // Tracks the workflow state (e.g., active, completed).
+  tasks               Task[]              // List of steps within the workflow.
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+}
+
+/// The `Task` model defines a single step in a `Workflow`, representing an actionable item.
+/// Tasks can be associated with specific documents (e.g., approval or review) and assigned to users.
+/// `status` tracks task progress, and `dueDate` enforces deadlines, aiding in process management.
+model Task {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workflow            Workflow            @relation(fields: [workflowId], references: [id])
+  workflowId          String              @db.Uuid
+  assignedTo          User?               @relation(fields: [assignedToId], references: [id])
+  assignedToId        String?             @db.Uuid
+  document            Document?           @relation(fields: [documentId], references: [id])
+  documentId          String?             @db.Uuid
+  title               String              // Task title (e.g., "Review Document").
+  description         String?             // Additional details about the task.
+  status              String              // Task progress (e.g., pending, in_progress, completed).
+  dueDate             DateTime?           // Task deadline.
+  auditLogs           AuditLog[]          // Logs of actions for accountability.
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+}
+
+/// The `AuditLog` model tracks actions taken on a `Task`, supporting a detailed audit trail.
+/// It records each action, who performed it, and when, enabling transparency and accountability
+/// in BPM processes. This model supports compliance with regulatory requirements.
+model AuditLog {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task                Task                @relation(fields: [taskId], references: [id])
+  taskId              String              @db.Uuid
+  action              String              // Action performed (e.g., creation, edit, signature).
+  performedBy         User                @relation("PerformedBy", fields: [performedById], references: [id])
+  performedById       String              @db.Uuid
+  timestamp           DateTime            @default(now()) // Action date and time.
+  description         String?             // Additional details about the action.
+}
+
+/// The `SharedDocument` model manages document sharing with other users in GED.
+/// This model keeps track of which user has access to which documents and when sharing occurred.
+/// It facilitates controlled document distribution, supporting collaboration and data security.
+model SharedDocument {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  document            Document            @relation(fields: [documentId], references: [id])
+  documentId          String              @db.Uuid
+  sharedWith          User                @relation("SharedDocuments", fields: [userId], references: [id])
+  userId              String              @db.Uuid
+  sharedAt            DateTime            @default(now()) // Date and time the document was shared.
+}
+
+/// The `DigitalCertificate` model holds certificates for digital signing, crucial for document authentication.
+/// Each certificate is associated with a user, ensuring they can sign documents securely.
+/// This model is essential in GED to verify document integrity and author authenticity.
+model DigitalCertificate {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user                User                @relation(fields: [userId], references: [id])
+  userId              String              @db.Uuid
+  filePath            String              // Path to the .p12 digital certificate file.
+  password            String              // Encrypted password for certificate access.
+  createdAt           DateTime            @default(now())
+}
+
+/// The `FileMetadata` model stores additional information for document files,
+/// including file size, MIME type, and checksum, which ensure file integrity and proper management.
+/// This model is integral to the GED system, enabling efficient file storage and access controls.
+model FileMetadata {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  document            Document            @relation(fields: [documentId], references: [id])
+  documentId          String              @unique @db.Uuid
+  fileSize            Int                 // File size in bytes.
+  mimeType            String              // MIME type for handling various file formats.
+  checksum            String              // Checksum for file integrity verification.
+  createdAt           DateTime            @default(now())
+}
