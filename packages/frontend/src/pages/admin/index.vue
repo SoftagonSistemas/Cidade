@@ -1,7 +1,14 @@
-<script lang="ts" setup>
-// ...existing code...
-</script>
+<route lang="yaml">
+  meta:
+    layout: DefaultLayout
+  </route>
 
 <template>
-  <FileList />
+  <div>
+    <h1>INDEX</h1>
+    <!-- Conteúdo da página Dashboard -->
+  </div>
 </template>
+
+  <style scoped>
+  </style>
