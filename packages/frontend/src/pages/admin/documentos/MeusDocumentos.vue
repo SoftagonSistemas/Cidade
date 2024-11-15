@@ -4,8 +4,8 @@
 
 <template>
   <div>
-    <h1>Administração</h1>
-    <!-- Conteúdo da página Administração -->
+    <h1>Meus Documentos</h1>
+    <!-- Conteúdo para listar meus documentos -->
   </div>
 </template>
 

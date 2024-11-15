@@ -4,8 +4,8 @@
 
 <template>
   <div>
-    <h1>Assinaturas Digitais</h1>
-    <!-- Conteúdo da página Assinaturas Digitais -->
+    <h1>Documentos Recebidos</h1>
+    <!-- Conteúdo para listar documentos recebidos -->
   </div>
 </template>
 

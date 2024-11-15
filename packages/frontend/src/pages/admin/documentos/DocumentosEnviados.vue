@@ -4,8 +4,8 @@
 
 <template>
   <div>
-    <h1>Ajuda e Suporte</h1>
-    <!-- Conteúdo da página Ajuda e Suporte -->
+    <h1>Documentos Enviados</h1>
+    <!-- Conteúdo para listar documentos enviados -->
   </div>
 </template>
 

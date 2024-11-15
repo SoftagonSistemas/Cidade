@@ -4,8 +4,7 @@
 
 <template>
   <div>
-    <h1>Notificações</h1>
-    <!-- Conteúdo da página Notificações -->
+    <h1>Dashboard</h1>
   </div>
 </template>
 

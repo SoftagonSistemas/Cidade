@@ -1,99 +1,40 @@
 <!-- src/layouts/AdminLayout.vue -->
 <script setup lang="ts">
-const router = useRouter()
-const drawer = ref(true)
-const secondaryDrawer = ref(false)
-const expandedMenu = ref<string | null>(null)
+import type { MenuItem } from '../composables/useAdminMenu'
+import { useAdminDrawer } from '@/composables/useAdminDrawer'
+import { ref } from 'vue'
+import { useAdminMenu } from '../composables/useAdminMenu'
 
-const primaryMenuItems = [
-  { icon: 'mdi-home', label: 'Dashboard', route: '/dashboard', children: [] },
-  {
-    icon: 'mdi-server',
-    label: 'Servers',
-    children: [
-      { title: 'My Servers', route: '/my-servers' },
-      { title: 'Purchase a New Server', route: '/purchase-server' },
-      { title: 'Filter', subitems: [
-        { title: 'Active', count: 3 },
-        { title: 'Pending', count: 0 },
-        { title: 'Suspended', count: 0 },
-        { title: 'Terminated', count: 0 },
-      ] },
-    ],
-  },
-  { icon: 'mdi-web', label: 'Domains', route: '/domains', children: [] },
-  { icon: 'mdi-certificate', label: 'SSLs', route: '/ssls', children: [] },
-  { icon: 'mdi-cash-multiple', label: 'Billing', route: '/billing', children: [] },
-  { icon: 'mdi-lifebuoy', label: 'Support', route: '/support', children: [] },
-]
-
-function navigate(route: string) {
-  router.push(route)
-  secondaryDrawer.value = false // Fecha o segundo drawer ao navegar
-}
-
-function toggleExpandMenu(itemLabel: string) {
-  if (expandedMenu.value === itemLabel) {
-    expandedMenu.value = null
-    secondaryDrawer.value = false
-  }
-  else {
-    expandedMenu.value = itemLabel
-    secondaryDrawer.value = true
-  }
-}
-
-function toggleMenu() {
-  drawer.value = !drawer.value
-  if (!drawer.value) {
-    secondaryDrawer.value = false
-  }
-}
-
-function getMenuDescription(menuLabel) {
-  const descriptions = {
-    Servers: 'Gerencie seus servidores',
-    Domains: 'Controle seus domínios',
-    SSLs: 'Administre seus certificados SSL',
-    Billing: 'Gerencie suas faturas',
-    Support: 'Acesse o suporte',
-  }
-  return descriptions[menuLabel] || 'Descrição não disponível'
-}
-watch(drawer, (newVal) => {
-  if (!newVal && !secondaryDrawer.value) {
-    const secondaryDrawerElement = document.querySelector('.secondary-drawer')
-    if (secondaryDrawerElement) {
-      secondaryDrawerElement.style.marginLeft = '-80px'
-    }
-  }
-})
+const { drawer, secondaryDrawer, toggleMenu } = useAdminDrawer()
+const { primaryMenuItems, expandedMenu, navigate, toggleExpandMenu, getMenuDescription } = useAdminMenu(secondaryDrawer)
+const avatarDrawerOpen = ref(false)
+const notificationDrawerOpen = ref(false)
 </script>
 
 <template>
   <v-app>
     <!-- Barra de Navegação Superior -->
-    <v-app-bar app color="primary" density="compact" dark>
+    <v-app-bar app color="primary" density="compact" elevation="0">
       <v-app-bar-nav-icon icon="mdi-view-dashboard" @click="toggleMenu()" />
       <v-toolbar-title>GED BPM System</v-toolbar-title>
       <v-spacer />
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
+
+      <v-btn icon @click="notificationDrawerOpen = !notificationDrawerOpen">
+        <v-icon>mdi-bell</v-icon>
+      </v-btn>
+      <v-btn color="secondary" icon @click="avatarDrawerOpen = !avatarDrawerOpen">
+        <v-icon>mdi-account-tie</v-icon>
       </v-btn>
     </v-app-bar>
 
     <!-- Drawer de Navegação Lateral Primário (temporário) -->
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      width="56"
-    >
+    <v-navigation-drawer v-model="drawer" app width="56">
       <v-list dense nav>
         <v-list-item
           v-for="item in primaryMenuItems"
           :key="item.label"
           :value="item.label"
-          @click="item.children.length ? toggleExpandMenu(item.label) : navigate(item.route)"
+          @click="item.children.length ? toggleExpandMenu(item.label) : item.route && navigate(item.route)"
         >
           <template #prepend>
             <v-icon>{{ item.icon }}</v-icon>
@@ -125,27 +66,33 @@ watch(drawer, (newVal) => {
         <!-- Botões das opções do menu secundário -->
         <v-list dense nav>
           <v-list-item
-            v-for="child in primaryMenuItems.find(item => item.label === expandedMenu)?.children"
+            v-for="child in primaryMenuItems.find((item: MenuItem) => item.label === expandedMenu)?.children"
             :key="child.title"
-            @click="navigate(child.route)"
+            @click="child.route && navigate(child.route)"
           >
-            <v-btn block text>
+            <v-btn block>
               {{ child.title }}
             </v-btn>
           </v-list-item>
         </v-list>
       </template>
+      <div>
+        <p>Expanded Menu: {{ expandedMenu }}</p>
+        <p>Secondary Drawer: {{ secondaryDrawer }}</p>
+      </div>
     </v-navigation-drawer>
 
     <!-- Conteúdo Principal -->
     <v-main>
+      <AvatarMenu :model-value="avatarDrawerOpen" />
+      <NotificationMenu :model-value="notificationDrawerOpen" />
       <router-view />
     </v-main>
 
     <!-- Rodapé Opcional -->
     <v-footer app>
       <v-spacer />
-      <span>GED BPM System © 2024</span>
+      <span>Softagon Sistemas © 2025</span>
     </v-footer>
   </v-app>
 </template>

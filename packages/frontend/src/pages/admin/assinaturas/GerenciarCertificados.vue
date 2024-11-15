@@ -4,8 +4,8 @@
 
 <template>
   <div>
-    <h1>Relatórios</h1>
-    <!-- Conteúdo da página Relatórios -->
+    <h1>Gerenciar Certificados</h1>
+    <!-- Conteúdo para gerenciar certificados -->
   </div>
 </template>
 

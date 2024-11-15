@@ -4,8 +4,8 @@
 
 <template>
   <div>
-    <h1>Documentos</h1>
-    <!-- Conteúdo da página Documentos -->
+    <h1>Meus Fluxos</h1>
+    <!-- Conteúdo para listar meus fluxos -->
   </div>
 </template>
 

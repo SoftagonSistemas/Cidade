@@ -1,11 +1,11 @@
 <script setup lang="ts">
-// @layout AdminLayout
+// ...existing code...
 </script>
 
 <template>
   <div>
-    <h1>Dashboard</h1>
-    <!-- Conteúdo da página Dashboard -->
+    <h1>Criar Documento</h1>
+    <!-- Conteúdo para criar documento -->
   </div>
 </template>
 

@@ -4,8 +4,8 @@
 
 <template>
   <div>
-    <h1>Fluxos de Trabalho</h1>
-    <!-- Conteúdo da página Fluxos de Trabalho -->
+    <h1>Histórico de Fluxos</h1>
+    <!-- Conteúdo para listar histórico de fluxos -->
   </div>
 </template>
 
