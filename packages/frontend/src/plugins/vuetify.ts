@@ -3,6 +3,7 @@
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import '@/styles/variables.scss'
 
 // Composables
 import type { ThemeDefinition } from 'vuetify'
@@ -55,7 +56,7 @@ export default createVuetify({
   theme: {
     defaultTheme: 'softagon',
     themes: {
-      softagon, // Adiciona o tema personalizado
+      softagon,
     },
   },
 })

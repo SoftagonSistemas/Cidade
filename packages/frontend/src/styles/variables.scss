@@ -1,0 +1,4 @@
+// src/styles/variables.scss
+@use 'vuetify' with (
+  $body-font-family: 'Inter'
+);

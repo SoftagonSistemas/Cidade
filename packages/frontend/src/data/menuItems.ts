@@ -31,27 +31,11 @@ export const primaryMenuItems: MenuItem[] = [
     ],
   },
   {
-    icon: 'mdi-bell',
-    label: 'Notificações',
-    children: [
-      { title: 'Central de Notificações', route: '/admin/notificacoes/CentralNotificacoes' },
-      { title: 'Notificações em Tempo Real', route: '/admin/notificacoes/NotificacoesTempoReal.vue' },
-    ],
-  },
-  {
     icon: 'mdi-chart-bar',
     label: 'Relatórios',
     children: [
       { title: 'Relatórios Gerenciais', route: '/admin/relatorios/RelatoriosGerenciais' },
       { title: 'Exportação', route: '/admin/relatorios/Exportacao' },
-    ],
-  },
-  {
-    icon: 'mdi-cog',
-    label: 'Administração',
-    children: [
-      { title: 'Gerenciamento de Usuários e Secretarias', route: '/admin/administracao/GerenciamentoUsuarios' },
-      { title: 'Configurações do Sistema', route: '/admin/administracao/ConfiguracoesSistema' },
     ],
   },
 ]
@@ -64,7 +48,6 @@ export function getMenuDescription(menuLabel: string): string {
     'Assinaturas Digitais': 'Gerenciamento de assinaturas digitais',
     'Notificações': 'Central de notificações',
     'Relatórios': 'Relatórios gerenciais e exportação',
-    'Administração': 'Gerenciamento de usuários e configurações do sistema',
   }
   return descriptions[menuLabel] || 'Descrição não disponível'
 }
