@@ -11,7 +11,7 @@ const signatures = ref([
 
 function verifySignatures() {
   // Logic to verify signatures
-  console.log(`Verifying signatures for document ID: ${documentId.value}`)
+  console.warn(`Verifying signatures for document ID: ${documentId.value}`)
 }
 </script>
 

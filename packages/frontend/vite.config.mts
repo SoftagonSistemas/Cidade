@@ -24,6 +24,9 @@ export default defineConfig({
         {
           'vue-router/auto': ['useRoute', 'useRouter'],
         },
+        {
+          'vue3-toastify': ['toast'], // Adiciona o toast do vue3-toastify
+        },
       ],
       dts: 'src/auto-imports.d.ts',
       eslintrc: {

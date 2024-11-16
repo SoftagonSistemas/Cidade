@@ -8,11 +8,22 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@editorjs/editorjs": "^2.30.7",
+    "@editorjs/header": "^2.8.8",
+    "@editorjs/image": "^2.10.0",
+    "@editorjs/link": "^2.6.2",
+    "@editorjs/list": "^2.0.0",
+    "@editorjs/paragraph": "^2.11.6",
+    "@editorjs/table": "^2.4.2",
+    "@editorjs/text-variant-tune": "^1.0.3",
     "@mdi/font": "7.4.47",
     "core-js": "^3.39.0",
+    "editorjs-drag-drop": "^1.1.16",
+    "editorjs-undo": "^2.0.28",
     "pdf-lib": "^1.17.1",
     "roboto-fontface": "^0.10.0",
-    "vue": "^3.5.12",
+    "vue": "^3.5.13",
+    "vue3-toastify": "^0.2.4",
     "vuetify": "^3.7.4"
   },
   "devDependencies": {
