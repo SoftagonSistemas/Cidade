@@ -2,9 +2,16 @@
 import { ref } from 'vue'
 import { VBtn, VCard, VCardText, VCheckbox, VCol, VContainer, VRow, VSelect, VTextField } from 'vuetify/components'
 
-const users = ref([])
-const secretaries = ref([])
-const permissions = ref([])
+interface User {
+  name: string
+  email: string
+  secretary: string
+  permissions: number[]
+}
+
+const users = ref<User[]>([])
+const secretaries = ref<{ id: number, name: string }[]>([])
+const permissions = ref<{ id: number, name: string }[]>([])
 
 const newUser = ref({
   name: '',
@@ -82,4 +89,4 @@ onMounted(() => {
 h1 {
     margin-bottom: 20px;
 }
-</style></script>
+</style>

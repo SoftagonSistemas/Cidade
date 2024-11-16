@@ -2,13 +2,13 @@
 import { onMounted, ref } from 'vue'
 import { FileService } from '../services/FileService'
 
-const pdfFiles = ref([])
+const pdfFiles = ref<any>([])
 
 onMounted(async () => {
   pdfFiles.value = await FileService.listPdfFiles()
 })
 
-function viewPdf(file) {
+function viewPdf(file: any) {
   const filePath = `/private/pdfs/${file}`
   window.open(filePath, '_blank')
 }

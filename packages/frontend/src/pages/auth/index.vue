@@ -5,12 +5,12 @@ const rememberMe = ref(false)
 
 function login() {
   // Implement login logic here
-  console.log('Logging in with', email.value, password.value, rememberMe.value)
+  console.warn('Logging in with', email.value, password.value, rememberMe.value)
 }
 
 function forgotPassword() {
   // Implement forgot password logic here
-  console.log('Forgot password')
+  console.warn('Forgot password')
 }
 </script>
 
@@ -50,7 +50,7 @@ function forgotPassword() {
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn text @click="forgotPassword">
+        <v-btn @click="forgotPassword">
           Forgot Password?
         </v-btn>
       </v-card-actions>

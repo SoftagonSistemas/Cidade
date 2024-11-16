@@ -9,7 +9,7 @@ const auditLogs = ref([
 ])
 
 function updateResponseDeadline() {
-  console.log('Response deadline updated to:', responseDeadline.value, 'days')
+  console.warn('Response deadline updated to:', responseDeadline.value, 'days')
 }
 
 function fetchAuditLogs() {
@@ -64,4 +64,4 @@ onMounted(() => {
 h1 {
     margin-bottom: 20px;
 }
-</style></VCard>
+</style>

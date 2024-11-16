@@ -62,15 +62,15 @@ onMounted(() => {
       holder: editorContainer.value,
       tools: {
         header: {
-          class: Header,
+          class: Header as any,
           inlineToolbar: true,
         },
         list: {
-          class: List,
+          class: List as any,
           inlineToolbar: true,
         },
         table: {
-          class: Table,
+          class: Table as any,
           config: {
             rows: 3,
             cols: 3,

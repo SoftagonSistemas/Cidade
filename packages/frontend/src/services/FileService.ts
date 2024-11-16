@@ -1,5 +1,5 @@
 import type { BunFile } from 'bun'
-import { mkdir, readdir } from 'node:fs/promises'
+import { readdir } from 'node:fs/promises'
 import { join } from 'node:path'
 
 const pdfDirectory = join(__dirname, '../../../private/pdfs')
@@ -9,7 +9,7 @@ export class FileService {
     try {
       await readdir(pdfDirectory)
     }
-    catch (error) {
+    catch (error: any) {
       if (error.code === 'ENOENT') {
         console.error('PDF directory does not exist:', error)
       }

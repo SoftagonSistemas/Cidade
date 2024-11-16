@@ -58,4 +58,4 @@ const systemNotifications = ref(true)
 h1 {
     margin-bottom: 20px;
 }
-</style></VCardText></VContainer>
+</style>
