@@ -1,36 +1,88 @@
-<script setup>
+<script setup lang="ts">
+import * as pdfjsLib from 'pdfjs-dist'
 import { computed, defineEmits, onMounted, ref } from 'vue'
 
-const emit = defineEmits(['view'])
-const search = ref('')
-const isGridView = ref(true)
-const pdfs = ref([
-  // Exemplo de dados; substitua pela lógica de obtenção dos PDFs
-  { name: 'Bíblia Católica', url: '/pdfs/Biblia-Catolica-Ave-Maria.pdf', thumbnail: '/thumbnails/application-pdf.png' },
-  { name: 'Vire à Direita', url: '/pdfs/03.pdf', thumbnail: '/thumbnails/thumb-file.png' },
-  { name: 'Livro sobre ChatGPT', url: '/pdfs/Livro-Sobre-ChatGPT.pdf', thumbnail: '/thumbnails/thumb-file.png' },
+const emit = defineEmits<{
+  (e: 'view', name: string, url: string): void
+}>()
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`
+
+// Tipos personalizados
+interface PDF {
+  name: string
+  url: string
+  thumbnail?: string
+}
+
+const search = ref<string>('')
+const isGridView = ref<boolean>(true)
+const pdfs = ref<PDF[]>([
+  { name: 'Bíblia Católica', url: '/pdfs/Biblia-Catolica-Ave-Maria.pdf' },
+  { name: 'Vire à Direita', url: '/pdfs/03.pdf' },
+  { name: 'Livro sobre ChatGPT', url: '/pdfs/Livro-Sobre-ChatGPT.pdf' },
 ])
 
-const filteredPDFs = computed(() => {
-  return pdfs.value.filter(pdf =>
+const filteredPDFs = computed(() =>
+  pdfs.value.filter(pdf =>
     pdf.name.toLowerCase().includes(search.value.toLowerCase()),
-  )
+  ),
+)
+
+// Gera os thumbnails dinamicamente ao montar o componente
+onMounted(() => {
+  generateThumbnails()
 })
 
-function toggleView() {
+async function generateThumbnails(): Promise<void> {
+  for (const pdf of pdfs.value) {
+    try {
+      pdf.thumbnail = await generateThumbnail(pdf.url)
+    }
+    catch (error) {
+      console.error(`Erro ao gerar thumbnail para ${pdf.name}:`, error)
+      pdf.thumbnail = '/thumbnails/default-thumbnail.png' // Imagem padrão
+    }
+  }
+}
+
+async function generateThumbnail(pdfUrl: string): Promise<string> {
+  const pdf = await pdfjsLib.getDocument(pdfUrl).promise
+  const page = await pdf.getPage(1)
+
+  const canvas = document.createElement('canvas')
+  const context = canvas.getContext('2d') as CanvasRenderingContext2D
+
+  const viewport = page.getViewport({ scale: 0.5 }) // Escala menor para thumbnail
+  canvas.width = viewport.width
+  canvas.height = viewport.height
+
+  const renderContext = {
+    canvasContext: context,
+    viewport,
+  }
+  await page.render(renderContext).promise
+
+  return canvas.toDataURL('image/png') // Retorna o thumbnail como Data URL
+}
+
+function toggleView(): void {
   isGridView.value = !isGridView.value
 }
 
-function viewPDF(name, url) {
+function viewPDF(name: string, url: string): void {
   emit('view', name, url)
 }
 
-function downloadPDF() {
-  // Lógica para baixar o PDF
+function downloadPDF(url: string): void {
+  const link = document.createElement('a')
+  link.href = url
+  link.download = ''
+  link.click()
 }
 
-function deletePDF() {
-  // Lógica para excluir o PDF
+function deletePDF(name: string): void {
+  pdfs.value = pdfs.value.filter(pdf => pdf.name !== name)
 }
 </script>
 
@@ -42,7 +94,6 @@ function deletePDF() {
           v-model="search"
           label="Pesquisar PDFs"
           append-icon="mdi-magnify"
-          @click:append="filterPDFs"
         />
         <v-btn @click="toggleView">
           <v-icon>{{ isGridView ? 'mdi-view-list' : 'mdi-view-grid' }}</v-icon>
@@ -57,9 +108,9 @@ function deletePDF() {
         md="4"
         lg="3"
       >
-        <v-card>
+        <v-card class="pdf-card">
           <v-img
-            :src="pdf.thumbnail"
+            :src="pdf.thumbnail || '/thumbnails/default-thumbnail.png'"
             aspect-ratio="1.7"
             @click="viewPDF(pdf.name, pdf.url)"
           />
@@ -79,5 +130,10 @@ function deletePDF() {
 </template>
 
 <style scoped>
-/* Estilos adicionais */
+.pdf-card {
+  transition: transform 0.3s ease;
+}
+.pdf-card:hover {
+  transform: scale(1.03);
+}
 </style>
