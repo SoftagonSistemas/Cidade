@@ -1,7 +1,7 @@
+// @stores/authStore.ts
 import { defineStore } from 'pinia'
 
 const apiUrl = import.meta.env.VITE_BACK3ND_URL
-
 function isTokenExpired(token: string): boolean {
   try {
     const tokenPart = token.split('.')[1]
@@ -27,7 +27,6 @@ interface User {
   id: number
   name: string
   email: string
-  // Defina mais propriedades de usuário conforme necessário
 }
 
 interface AuthState {
@@ -111,6 +110,10 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.user = null
       await setTokenStorage(null)
+    },
+
+    isTokenExpired(token: string): boolean {
+      return isTokenExpired(token)
     },
   },
 })

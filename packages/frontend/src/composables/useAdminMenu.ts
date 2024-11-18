@@ -29,7 +29,7 @@ export function useAdminMenu(secondaryDrawer: { value: boolean }) {
     secondaryDrawer.value = false // Fecha o segundo drawer ao navegar
   }
 
-  function toggleExpandMenu(itemLabel: string) {
+  function toggleExpandMenu(itemLabel: string | null) {
     if (expandedMenu.value === itemLabel) {
       expandedMenu.value = null
       secondaryDrawer.value = false

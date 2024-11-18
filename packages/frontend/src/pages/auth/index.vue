@@ -1,65 +1,109 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+import { useRouter } from 'vue-router'
+
+// State
 const email = ref('')
 const password = ref('')
-const rememberMe = ref(false)
+const authStore = useAuthStore()
+const router = useRouter()
 
-function login() {
-  // Implement login logic here
-  console.warn('Logging in with', email.value, password.value, rememberMe.value)
-}
-
-function forgotPassword() {
-  // Implement forgot password logic here
-  console.warn('Forgot password')
+// Login Function
+async function login() {
+  try {
+    const user = await authStore.login(email.value, password.value)
+    if (user && !authStore.isTokenExpired(authStore.token!)) {
+      toast.success('Acesso concedido com sucesso!')
+      setTimeout(() => {
+        router.push('/admin')
+      }, 1000)
+    }
+    else {
+      throw new Error('Token inválido ou expirado')
+    }
+  }
+  catch (error: any) {
+    toast.error(`Falha no login: ${error.message}`)
+    console.error('Login failed:', error)
+  }
 }
 </script>
 
 <template>
-  <v-container class="fill-height d-flex flex-column justify-center align-center">
-    <v-card class="pa-4">
-      <v-card-title class="text-h5">
-        Login
-      </v-card-title>
-      <v-card-text>
-        <v-form>
+  <v-app>
+    <v-container class="fill-height d-flex justify-center align-center" dark>
+      <v-card class="login-card" elevation="10">
+        <v-card-text class="text-center">
+          <v-img
+            :width="99"
+            aspect-ratio="1/1"
+            cover
+            src="@/assets/softagon.svg"
+            class="mx-auto"
+          />
+
+          <!-- Login Heading -->
+          <h2 class="text-h5 font-weight-bold">
+            Cidade Transparente
+          </h2>
+        </v-card-text>
+
+        <v-card-text>
+          <!-- Email -->
           <v-text-field
             v-model="email"
-            label="Email"
-            type="email"
-            required
+            label="E-mail"
+            variant="outlined"
+            dense
+            hide-details
+            class="mb-n1"
           />
+
+          <!-- Password -->
           <v-text-field
             v-model="password"
-            label="Password"
+            label="Senha"
             type="password"
-            required
+            variant="outlined"
+            dense
+            hide-details
           />
-          <v-checkbox
-            v-model="rememberMe"
-            label="Remember me"
-          />
-          <v-btn
-            class="mt-4"
-            color="primary"
-            :disabled="!email || !password"
-            @click="login"
-          >
-            Login
+          <v-row>
+            <!-- Remember Me -->
+            <v-col cols="6" class="d-flex align-center">
+              <v-checkbox label="Salvar" dense hide-details />
+            </v-col>
+
+            <!-- Forgot Password -->
+            <v-col cols="6" class="text-right">
+              <v-btn variant="plain" color="primary" class="pa-0">
+                Esqueceu senha
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+
+        <v-card-actions class="justify-center">
+          <!-- Log In Button -->
+          <v-btn variant="tonal" block color="primary" @click="login">
+            Acessar
           </v-btn>
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn @click="forgotPassword">
-          Forgot Password?
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-container>
+        </v-card-actions>
+
+        <v-card-text class="text-center mt-4">
+          <span>Sem acesso? </span>
+          <v-btn variant="plain" class="pa-0">
+            Criar agora
+          </v-btn>
+        </v-card-text>
+      </v-card>
+    </v-container>
+  </v-app>
 </template>
 
 <style scoped>
-.fill-height {
-    height: 100vh;
+.login-card {
+  width: 400px;
+  padding: 32px;
 }
 </style>

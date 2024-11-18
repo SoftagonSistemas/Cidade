@@ -15,6 +15,7 @@ function openPDFViewer(name, url) {
 
 <template>
   <v-container>
+    <h1> Meus documentos</h1>
     <PDFUpload @uploaded="fetchPDFs" />
     <PDFList @view="openPDFViewer" />
     <PDFViewer ref="pdfViewerRef" />

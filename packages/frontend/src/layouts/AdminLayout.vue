@@ -51,7 +51,7 @@ const adminMenuItem = {
             v-for="item in primaryMenuItems"
             :key="item.label"
             :value="item.label"
-            @click="item.children.length ? toggleExpandMenu(item.label) : item.route && navigate(item.route)"
+            @click="item.children.length ? toggleExpandMenu(item.label) : toggleExpandMenu(null), item.route && navigate(item.route)"
           >
             <template #prepend>
               <v-icon>{{ item.icon }}</v-icon>
@@ -119,7 +119,6 @@ const adminMenuItem = {
     <NotificationMenu :model-value="notificationDrawerOpen" />
     <!-- Conteúdo Principal -->
     <v-main>
-
       <v-container
         class="d-flex justify-center align-center "
         style="height: 100%"

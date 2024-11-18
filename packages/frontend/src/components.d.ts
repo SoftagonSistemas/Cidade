@@ -17,5 +17,6 @@ declare module 'vue' {
     PDFViewer: typeof import('./components/Documents/PDFViewer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SoftagonIcon: typeof import('./components/SoftagonIcon.vue')['default']
   }
 }
