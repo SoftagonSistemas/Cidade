@@ -28,7 +28,7 @@ watch(drawer, (newValue) => {
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    absolute
+    :absolute="true"
     temporary
     location="right"
     :mobile="true"
