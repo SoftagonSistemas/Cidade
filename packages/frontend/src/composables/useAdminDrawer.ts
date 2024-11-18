@@ -15,7 +15,7 @@ export function useAdminDrawer() {
     if (!newVal && !secondaryDrawer.value) {
       const secondaryDrawerElement = document.querySelector('.secondary-drawer')
       if (secondaryDrawerElement) {
-        (secondaryDrawerElement as HTMLElement).style.marginLeft = '-80px'
+        // (secondaryDrawerElement as HTMLElement).style.marginLeft = '-80px'
       }
     }
   })

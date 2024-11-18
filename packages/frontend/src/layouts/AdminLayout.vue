@@ -30,12 +30,12 @@ const adminMenuItem = {
       <v-toolbar-title>CidadeTransparente</v-toolbar-title>
       <v-spacer />
 
-      <v-btn size="small" icon @click="notificationDrawerOpen = !notificationDrawerOpen">
+      <v-btn size="small" icon @click="notificationDrawerOpen = !notificationDrawerOpen, avatarDrawerOpen = false">
         <v-icon color="on-primary">
           mdi-bell
         </v-icon>
       </v-btn>
-      <v-btn size="small" variant="tonal" class="ml-2 mr-2" icon @click="avatarDrawerOpen = !avatarDrawerOpen">
+      <v-btn size="small" variant="tonal" class="ml-2 mr-2" icon @click="avatarDrawerOpen = !avatarDrawerOpen, notificationDrawerOpen = false">
         <v-icon color="on-primary">
           mdi-account-tie
         </v-icon>
@@ -43,7 +43,7 @@ const adminMenuItem = {
     </v-app-bar>
 
     <!-- Drawer de Navegação Lateral Primário -->
-    <v-navigation-drawer v-model="drawer" app width="56">
+    <v-navigation-drawer v-model="drawer" app width="56" :rail="true" :permanent="true">
       <v-list dense nav class="d-flex flex-column" style="height: 100%;">
         <!-- Ícones do Menu Principal -->
         <div>
@@ -115,11 +115,11 @@ const adminMenuItem = {
         </v-list>
       </template>
     </v-navigation-drawer>
-
+    <AvatarMenu :model-value="avatarDrawerOpen" />
+    <NotificationMenu :model-value="notificationDrawerOpen" />
     <!-- Conteúdo Principal -->
     <v-main>
-      <AvatarMenu :model-value="avatarDrawerOpen" />
-      <NotificationMenu :model-value="notificationDrawerOpen" />
+
       <v-container
         class="d-flex justify-center align-center "
         style="height: 100%"
@@ -155,7 +155,7 @@ const adminMenuItem = {
 
 .secondary-drawer-closed {
   transition: margin-left 0.3s ease;
-  left: 56px; /* Ajuste conforme necessário */
+  left: 0 !important; /* Ajuste conforme necessário */
 }
 
 /* Remover estilos não utilizados */
