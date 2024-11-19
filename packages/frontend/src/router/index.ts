@@ -9,6 +9,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import AdminLayout from '@/layouts/AdminLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import { useAuthStore } from '@/stores/authStore'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 
@@ -82,6 +83,22 @@ router.onError((err, to) => {
   }
   else {
     console.error(err)
+  }
+})
+
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
+  await authStore.initializeAuthState()
+  if (to.path.startsWith('/admin')) {
+    if (!authStore.isAuthenticated()) {
+      next('/auth')
+    }
+    else {
+      next()
+    }
+  }
+  else {
+    next()
   }
 })
 

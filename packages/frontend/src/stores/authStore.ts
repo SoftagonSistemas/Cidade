@@ -115,5 +115,10 @@ export const useAuthStore = defineStore('auth', {
     isTokenExpired(token: string): boolean {
       return isTokenExpired(token)
     },
+
+    isAuthenticated(): boolean {
+      const isAuthenticated = !!this.token && !isTokenExpired(this.token)
+      return isAuthenticated
+    },
   },
 })

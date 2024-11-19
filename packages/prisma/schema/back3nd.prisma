@@ -151,3 +151,151 @@ model FileMetadata {
   checksum            String              // Checksum for file integrity verification.
   createdAt           DateTime            @default(now())
 }
+
+// Modelo Institution
+model Institution {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  departments Department[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+// Modelo Department
+model Department {
+  id              Int           @id @default(autoincrement())
+  name            String
+  description     String?
+  isSecretariat   Boolean        @default(false) // True se for uma secretaria
+  institution     Institution    @relation(fields: [institutionId], references: [id])
+  institutionId   String         @db.Uuid
+  parentSecretariat Department?  @relation("ParentDepartment", fields: [parentSecretariatId], references: [id])
+  parentSecretariatId Int?
+  childDepartments Department[]  @relation("ParentDepartment")
+  tickets         Ticket[]
+  helpTopics      HelpTopic[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+// Modelo UserDepartment
+model UserDepartment {
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user            User        @relation(fields: [userId], references: [id])
+  userId          String      @db.Uuid
+  department      Department  @relation(fields: [departmentId], references: [id])
+  departmentId    Int
+  role            String      // e.g., "member", "manager"
+  createdAt       DateTime    @default(now())
+}
+
+// Modelo Ticket
+model Ticket {
+  id                String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subject           String
+  description       String
+  status            TicketStatus         @relation(fields: [statusId], references: [id])
+  statusId          Int
+  priority          TicketPriority       @relation(fields: [priorityId], references: [id])
+  priorityId        Int
+  createdBy         User                 @relation("TicketsCreated", fields: [createdById], references: [id])
+  createdById       String               @db.Uuid
+  assignedTo        User?                @relation("TicketsAssigned", fields: [assignedToId], references: [id])
+  assignedToId      String?              @db.Uuid
+  department        Department           @relation(fields: [departmentId], references: [id])
+  departmentId      Int
+  helpTopic         HelpTopic            @relation(fields: [helpTopicId], references: [id])
+  helpTopicId       Int
+  slaPlan           SLAPlan?             @relation(fields: [slaPlanId], references: [id])
+  slaPlanId         Int?
+  dueDate           DateTime?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  closedAt          DateTime?
+  lastResponseAt    DateTime?
+  threads           TicketThread[]
+  attachments       TicketAttachment[]
+  collaborators     TicketCollaborator[]
+  customFields      TicketCustomField[]
+}
+
+// Modelo TicketStatus
+model TicketStatus {
+  id          Int       @id @default(autoincrement())
+  name        String
+  tickets     Ticket[]
+}
+
+// Modelo TicketPriority
+model TicketPriority {
+  id          Int       @id @default(autoincrement())
+  name        String
+  tickets     Ticket[]
+}
+
+// Modelo HelpTopic
+model HelpTopic {
+  id          Int         @id @default(autoincrement())
+  topic       String
+  description String?
+  department  Department  @relation(fields: [departmentId], references: [id])
+  departmentId Int
+  tickets     Ticket[]
+}
+
+// Modelo SLAPlan
+model SLAPlan {
+  id          Int       @id @default(autoincrement())
+  name        String
+  gracePeriod Int       // em horas
+  tickets     Ticket[]
+}
+
+// Modelo TicketThread
+model TicketThread {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticket      Ticket     @relation(fields: [ticketId], references: [id])
+  ticketId    String     @db.Uuid
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String     @db.Uuid
+  message     String
+  createdAt   DateTime   @default(now())
+}
+
+// Modelo TicketAttachment
+model TicketAttachment {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketThread   TicketThread   @relation(fields: [ticketThreadId], references: [id])
+  ticketThreadId String         @db.Uuid
+  filePath       String
+  fileName       String
+  mimeType       String
+  createdAt      DateTime       @default(now())
+}
+
+// Modelo TicketCollaborator
+model TicketCollaborator {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticket      Ticket     @relation(fields: [ticketId], references: [id])
+  ticketId    String     @db.Uuid
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String     @db.Uuid
+}
+
+// Modelo CustomField
+model CustomField {
+  id          Int        @id @default(autoincrement())
+  name        String
+  fieldType   String     // e.g., 'text', 'number', 'date'
+  tickets     TicketCustomField[]
+}
+
+// Modelo TicketCustomField
+model TicketCustomField {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticket      Ticket       @relation(fields: [ticketId], references: [id])
+  ticketId    String       @db.Uuid
+  field       CustomField  @relation(fields: [fieldId], references: [id])
+  fieldId     Int
+  value       String
+}

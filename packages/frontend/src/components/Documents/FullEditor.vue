@@ -21,6 +21,8 @@ const editor = ref<EditorJS | null>(null)
 const documentName = ref('')
 const loading = ref(false)
 
+const apiUrl = import.meta.env.VITE_BACK3ND_URL
+
 function debounce(func: (...args: any[]) => void, wait: number): (...args: any[]) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null
   return (...args: any[]) => {
@@ -81,15 +83,15 @@ onMounted(() => {
           class: ImageTool,
           config: {
             endpoints: {
-              byFile: 'http://localhost:8008/uploadFile',
-              byUrl: 'http://localhost:8008/fetchUrl',
+              byFile: `${apiUrl}files/upload`,
+              byUrl: `${apiUrl}/fetchUrl`,
             },
           },
         },
         linkTool: {
           class: LinkTool,
           config: {
-            endpoint: 'http://localhost:8008/fetchUrl',
+            endpoint: `${apiUrl}/fetchUrl`,
           },
         },
         paragraph: {
