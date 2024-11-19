@@ -3,6 +3,44 @@ import type { MenuItem } from '../composables/useAdminMenu'
 export const primaryMenuItems: MenuItem[] = [
   { icon: 'mdi-home', label: 'Dashboard', route: '/admin/dashboard/', children: [] },
   {
+    icon: 'mdi-eye-check-outline',
+    label: 'Ticket Management',
+    children: [
+      { title: 'Create Request', route: '/tickets/create' },
+      { title: 'Tickets Overview', route: '/tickets/overview' },
+      { title: 'My Tickets', route: '/tickets/my-tickets' },
+      { title: 'Assigned Tickets', route: '/tickets/assigned' },
+      { title: 'Department Tickets', route: '/tickets/department' },
+      { title: 'SLA Configuration', route: '/tickets/sla-config' },
+      { title: 'Performance Reports', route: '/tickets/reports/performance' },
+    ],
+  },
+  {
+    icon: 'mdi-domain',
+    label: 'Organization Management',
+    children: [
+      { title: 'Departments and Secretariats', route: '/organization/departments' },
+      { title: 'User Permissions', route: '/organization/user-permissions' },
+    ],
+  },
+  {
+    icon: 'mdi-briefcase-check',
+    label: 'Tasks',
+    children: [
+      { title: 'Task List', route: '/tasks/list' },
+      { title: 'Create Task', route: '/tasks/create' },
+    ],
+  },
+  {
+    icon: 'mdi-book-open-page-variant',
+    label: 'Knowledge Base',
+    children: [
+      { title: 'FAQs', route: '/knowledge-base/faqs' },
+      { title: 'Categories', route: '/knowledge-base/categories' },
+      { title: 'Canned Responses', route: '/knowledge-base/canned-responses' },
+    ],
+  },
+  {
     icon: 'mdi-file-document',
     label: 'Documentos',
     children: [
@@ -43,6 +81,10 @@ export const primaryMenuItems: MenuItem[] = [
 export function getMenuDescription(menuLabel: string): string {
   const descriptions: { [key: string]: string } = {
     'Dashboard': 'Indicadores de desempenho e notificações',
+    'Ticket Management': 'Manage all tickets and service requests.',
+    'Organization Management': 'Configure departments, secretariats, and user permissions.',
+    'Tasks': 'Create and manage tasks.',
+    'Knowledge Base': 'Access FAQs, categories, and predefined responses.',
     'Documentos': 'Gerenciamento de documentos',
     'Fluxos de Trabalho': 'Gerenciamento de fluxos de trabalho',
     'Assinaturas Digitais': 'Gerenciamento de assinaturas digitais',
