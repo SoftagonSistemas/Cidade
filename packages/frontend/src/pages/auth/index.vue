@@ -15,7 +15,6 @@ async function login() {
     if (user && !authStore.isTokenExpired(authStore.token!)) {
       toast.success('Acesso concedido com sucesso!')
       setTimeout(() => {
-        console.log('Login successful:', user)
         router.push('/admin/')
       }, 1000)
     }
