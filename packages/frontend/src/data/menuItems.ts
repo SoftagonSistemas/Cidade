@@ -48,6 +48,8 @@ export const primaryMenuItems: MenuItem[] = [
       { title: 'Meus Documentos', route: '/admin/documentos/MeusDocumentos' },
       { title: 'Documentos Recebidos', route: '/admin/documentos/DocumentosRecebidos' },
       { title: 'Documentos Enviados', route: '/admin/documentos/DocumentosEnviados' },
+      { title: 'separator' },
+      { title: 'Certificado digital', route: '/admin/documentos/CertificadoDigital' },
     ],
   },
   {

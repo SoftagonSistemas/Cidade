@@ -99,19 +99,22 @@ const adminMenuItem = {
         </div>
         <!-- Lista de itens do menu secundário -->
         <v-list dense nav>
-          <v-list-item
-            v-for="child in (expandedMenu === adminMenuItem.label ? adminMenuItem.children : primaryMenuItems.find((item: MenuItem) => item.label === expandedMenu)?.children)"
-            :key="child.title"
-            rounded="rounded"
-            variant="tonal"
-            density="compact"
-            @click="child.route && navigate(child.route)"
-          >
-            <template #prepend>
-              <v-icon icon="mdi-circle-outline" class="mr-n6" />
-            </template>
-            <v-list-item-title>{{ child.title }}</v-list-item-title>
-          </v-list-item>
+          <template v-for="(child, index) in (expandedMenu === adminMenuItem.label ? adminMenuItem.children : primaryMenuItems.find((item: MenuItem) => item.label === expandedMenu)?.children)">
+            <v-list-item
+              v-if="child.title !== 'separator'"
+              :key="child.title"
+              rounded="rounded"
+              variant="tonal"
+              density="compact"
+              @click="child.route && navigate(child.route)"
+            >
+              <template #prepend>
+                <v-icon icon="mdi-circle-outline" class="mr-n6" />
+              </template>
+              <v-list-item-title>{{ child.title }}</v-list-item-title>
+            </v-list-item>
+            <v-divider v-else :key="`divider-${index}`" class="my-2" />
+          </template>
         </v-list>
       </template>
     </v-navigation-drawer>

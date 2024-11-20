@@ -8,20 +8,24 @@ model User {
   email               String              @unique
   name                String?
   role                String              @default("user") // Roles: user, admin, secretary
-  documents           Document[]          @relation("UserDocuments")
-  sharedDocuments     SharedDocument[]    @relation("SharedDocuments")
-  certificates        DigitalCertificate[]
-  tasks               Task[]              // Tasks assigned to the user in workflows.
-  createdVersions     DocumentVersion[]   @relation("CreatedVersions") // Versions of documents created by the user.
-  auditLogs           AuditLog[]          @relation("PerformedBy") // Logs of user actions in tasks for traceability.
-  notifications       Notification[]      // Notifications sent to the user.
   createdAt           DateTime            @default(now())
+  userOnDocuments     UserOnDocuments[]   // Relacionamento N:M com Document via tabela intermediária
+  documentUsers       DocumentUser[]      @relation("DocumentUser_User")
+  documentVersionCreators DocumentVersionCreator[] @relation("DocumentVersionCreator_User")
+  sharedDocuments     SharedDocument[]    @relation("SharedDocument_User")
+  tasksAssigned       Task[]              @relation("Task_AssignedTo")
+  auditLogs           AuditLog[]          @relation("AuditLog_PerformedBy")
+  notifications       Notification[]
+  userDepartments     UserDepartment[]
+  ticketsCreated      Ticket[]            @relation("TicketsCreated")
+  ticketsAssigned     Ticket[]            @relation("TicketsAssigned")
+  ticketThreads       TicketThread[]
+  ticketCollaborators TicketCollaborator[]
+  taskUsers           TaskUser[]
+  ticketUsers         TicketUser[]
+  digitalCertificates DigitalCertificate[]
 }
 
-/// The `Document` model is central in a GED system, representing any file stored and managed.
-/// It supports various document types through `mimeType`, enabling flexible management of file types.
-/// This model can store search-related metadata (`keywords`, `ocrText`) and is linked to workflows in BPM.
-/// `signed` and `signedAt` help manage document authenticity through digital signing.
 model Document {
   id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title               String
@@ -29,33 +33,69 @@ model Document {
   mimeType            String              // MIME type to handle different file formats.
   keywords            String[]            // Keywords for search indexing.
   ocrText             String?             // OCR-extracted text for full-text search.
-  owner               User                @relation("UserDocuments", fields: [ownerId], references: [id])
   ownerId             String              @db.Uuid
+  sharedWith          SharedDocument[]    @relation("sharedWith") // Many-to-Many relation for shared documents.
   signed              Boolean             @default(false)
   signedAt            DateTime?           // Date and time the document was signed.
   signature           String?             // Details or file path for the digital signature.
-  sharedWith          SharedDocument[]    // Tracks document sharing with other users.
   versions            DocumentVersion[]   // Document version history.
   tasks               Task[]              // Tasks associated with the document in workflows.
   fileMetadata        FileMetadata?       // Metadata (size, checksum) for document management.
   attachments         Attachment[]        // Additional files linked to the document.
+  userOnDocuments     UserOnDocuments[]   // Relacionamento N:M com User via tabela intermediária
   createdAt           DateTime            @default(now())
+  documentUsers       DocumentUser[]      @relation("DocumentUser_Document")
+  sharedDocuments     SharedDocument[]    @relation("SharedDocument_Document")
 }
 
-/// The `DocumentVersion` model enables version control within GED.
-/// It stores previous document states, supporting document tracking and restoration.
-/// `versionNumber` and `changesDescription` enable an audit trail, valuable for compliance.
-/// This model is linked to a user (`createdBy`) for accountability.
+model UserOnDocuments {
+  user        User      @relation(fields: [userId], references: [id]) // Relaciona com User
+  userId      String    @db.Uuid
+  document    Document  @relation(fields: [documentId], references: [id]) // Relaciona com Document
+  documentId  String    @db.Uuid
+  assignedAt  DateTime  @default(now()) // Quando o usuário foi associado ao documento
+  role        String    // Papel do usuário no documento (e.g., owner, viewer, editor)
+
+  @@id([userId, documentId]) // Chave composta para evitar duplicação
+}
+
+model DocumentUser {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String   @db.Uuid
+  documentId  String   @db.Uuid
+  user        User     @relation("DocumentUser_User", fields: [userId], references: [id]) // Relaciona com User
+  document    Document @relation("DocumentUser_Document", fields: [documentId], references: [id]) // Relaciona com Document
+}
+
 model DocumentVersion {
   id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  document            Document            @relation(fields: [documentId], references: [id])
   documentId          String              @db.Uuid
+  document            Document            @relation(fields: [documentId], references: [id])
   versionNumber       Int                 // Indicates the version order of the document.
   filePath            String              // Path to the version file.
   changesDescription  String?             // Describes changes made in this version.
-  createdBy           User                @relation("CreatedVersions", fields: [createdById], references: [id])
   createdById         String              @db.Uuid
   createdAt           DateTime            @default(now())
+  documentVersionCreators DocumentVersionCreator[] @relation("DocumentVersionCreator_Version")
+}
+
+model DocumentVersionCreator {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String   @db.Uuid
+  versionId   String   @db.Uuid
+  user        User     @relation("DocumentVersionCreator_User", fields: [userId], references: [id]) // Relaciona com User
+  version     DocumentVersion @relation("DocumentVersionCreator_Version", fields: [versionId], references: [id]) // Relaciona com DocumentVersion
+}
+
+model SharedDocument {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId  String   @db.Uuid
+  userId      String   @db.Uuid
+  document    Document @relation("SharedDocument_Document", fields: [documentId], references: [id], map: "SharedDocument_documentId_fkey") // Relaciona com Document
+  sharedWith  Document @relation("sharedWith", fields: [documentId], references: [id], map: "SharedDocument_sharedWith_fkey")
+  user        User     @relation("SharedDocument_User", fields: [userId], references: [id]) // Relaciona com User
+  sharedAt    DateTime @default(now()) // Data do compartilhamento
+  permission  String   @default("read") // Permissões (e.g., read, write)
 }
 
 /// The `Workflow` model organizes business processes for document-based tasks in BPM.
@@ -80,7 +120,7 @@ model Task {
   id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   workflow            Workflow            @relation(fields: [workflowId], references: [id])
   workflowId          String              @db.Uuid
-  assignedTo          User?               @relation(fields: [assignedToId], references: [id])
+  assignedTo          User?               @relation("Task_AssignedTo", fields: [assignedToId], references: [id])
   assignedToId        String?             @db.Uuid
   document            Document?           @relation(fields: [documentId], references: [id])
   documentId          String?             @db.Uuid
@@ -89,6 +129,7 @@ model Task {
   status              String              // Task progress (e.g., pending, in_progress, completed).
   dueDate             DateTime?           // Task deadline.
   auditLogs           AuditLog[]          // Logs of actions for accountability.
+  taskUsers           TaskUser[]          @relation("Task_TaskUser")
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 }
@@ -102,7 +143,7 @@ model AuditLog {
   workflow            Workflow?           @relation(fields: [workflowId], references: [id])
   workflowId          String?             @db.Uuid
   action              String              // Action performed (e.g., creation, edit, signature).
-  performedBy         User                @relation("PerformedBy", fields: [performedById], references: [id])
+  performedBy         User                @relation("AuditLog_PerformedBy", fields: [performedById], references: [id])
   performedById       String              @db.Uuid
   timestamp           DateTime            @default(now()) // Action date and time.
   description         String?             // Additional details about the action.
@@ -154,148 +195,169 @@ model FileMetadata {
 
 // Modelo Institution
 model Institution {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
-  departments Department[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String
+  departments         Department[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
 }
 
 // Modelo Department
 model Department {
-  id              Int           @id @default(autoincrement())
-  name            String
-  description     String?
-  isSecretariat   Boolean        @default(false) // True se for uma secretaria
-  institution     Institution    @relation(fields: [institutionId], references: [id])
-  institutionId   String         @db.Uuid
-  parentSecretariat Department?  @relation("ParentDepartment", fields: [parentSecretariatId], references: [id])
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  description         String?
+  isSecretariat       Boolean             @default(false) // True se for uma secretaria
+  institution         Institution         @relation(fields: [institutionId], references: [id])
+  institutionId       String              @db.Uuid
+  parentSecretariat   Department?         @relation("ParentDepartment", fields: [parentSecretariatId], references: [id])
   parentSecretariatId Int?
-  childDepartments Department[]  @relation("ParentDepartment")
-  tickets         Ticket[]
-  helpTopics      HelpTopic[]
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  childDepartments    Department[]        @relation("ParentDepartment")
+  tickets             Ticket[]
+  userDepartments     UserDepartment[]    // Opposite relation field for UserDepartment
+  helpTopics          HelpTopic[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
 }
 
 // Modelo UserDepartment
 model UserDepartment {
-  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user            User        @relation(fields: [userId], references: [id])
-  userId          String      @db.Uuid
-  department      Department  @relation(fields: [departmentId], references: [id])
-  departmentId    Int
-  role            String      // e.g., "member", "manager"
-  createdAt       DateTime    @default(now())
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user                User                @relation(fields: [userId], references: [id])
+  userId              String              @db.Uuid
+  department          Department          @relation(fields: [departmentId], references: [id])
+  departmentId        Int
+  role                String              // e.g., "member", "manager"
+  createdAt           DateTime            @default(now())
 }
 
 // Modelo Ticket
 model Ticket {
-  id                String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subject           String
-  description       String
-  status            TicketStatus         @relation(fields: [statusId], references: [id])
-  statusId          Int
-  priority          TicketPriority       @relation(fields: [priorityId], references: [id])
-  priorityId        Int
-  createdBy         User                 @relation("TicketsCreated", fields: [createdById], references: [id])
-  createdById       String               @db.Uuid
-  assignedTo        User?                @relation("TicketsAssigned", fields: [assignedToId], references: [id])
-  assignedToId      String?              @db.Uuid
-  department        Department           @relation(fields: [departmentId], references: [id])
-  departmentId      Int
-  helpTopic         HelpTopic            @relation(fields: [helpTopicId], references: [id])
-  helpTopicId       Int
-  slaPlan           SLAPlan?             @relation(fields: [slaPlanId], references: [id])
-  slaPlanId         Int?
-  dueDate           DateTime?
-  createdAt         DateTime             @default(now())
-  updatedAt         DateTime             @updatedAt
-  closedAt          DateTime?
-  lastResponseAt    DateTime?
-  threads           TicketThread[]
-  attachments       TicketAttachment[]
-  collaborators     TicketCollaborator[]
-  customFields      TicketCustomField[]
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subject             String
+  description         String
+  status              TicketStatus        @relation(fields: [statusId], references: [id])
+  statusId            Int
+  priority            TicketPriority      @relation(fields: [priorityId], references: [id])
+  priorityId          Int
+  createdBy           User                @relation("TicketsCreated", fields: [createdById], references: [id])
+  createdById         String              @db.Uuid
+  assignedTo          User?               @relation("TicketsAssigned", fields: [assignedToId], references: [id])
+  assignedToId        String?             @db.Uuid
+  department          Department          @relation(fields: [departmentId], references: [id])
+  departmentId        Int
+  helpTopic           HelpTopic           @relation(fields: [helpTopicId], references: [id])
+  helpTopicId         Int
+  slaPlan             SLAPlan?            @relation(fields: [slaPlanId], references: [id])
+  slaPlanId           Int?
+  dueDate             DateTime?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  closedAt            DateTime?
+  lastResponseAt      DateTime?
+  threads             TicketThread[]
+  attachments         TicketAttachment[]
+  collaborators       TicketCollaborator[] @relation("Ticket_TicketUser")
+  customFields        TicketCustomField[]
+  ticketUsers         TicketUser[]        @relation("Ticket_TicketUser")
 }
 
 // Modelo TicketStatus
 model TicketStatus {
-  id          Int       @id @default(autoincrement())
-  name        String
-  tickets     Ticket[]
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  tickets             Ticket[]
 }
 
 // Modelo TicketPriority
 model TicketPriority {
-  id          Int       @id @default(autoincrement())
-  name        String
-  tickets     Ticket[]
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  tickets             Ticket[]
 }
 
 // Modelo HelpTopic
 model HelpTopic {
-  id          Int         @id @default(autoincrement())
-  topic       String
-  description String?
-  department  Department  @relation(fields: [departmentId], references: [id])
-  departmentId Int
-  tickets     Ticket[]
+  id                  Int                 @id @default(autoincrement())
+  topic               String
+  description         String?
+  department          Department          @relation(fields: [departmentId], references: [id])
+  departmentId        Int
+  tickets             Ticket[]
 }
 
 // Modelo SLAPlan
 model SLAPlan {
-  id          Int       @id @default(autoincrement())
-  name        String
-  gracePeriod Int       // em horas
-  tickets     Ticket[]
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  gracePeriod         Int                 // em horas
+  tickets             Ticket[]
 }
 
 // Modelo TicketThread
 model TicketThread {
-  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ticket      Ticket     @relation(fields: [ticketId], references: [id])
-  ticketId    String     @db.Uuid
-  user        User       @relation(fields: [userId], references: [id])
-  userId      String     @db.Uuid
-  message     String
-  createdAt   DateTime   @default(now())
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticket              Ticket              @relation(fields: [ticketId], references: [id])
+  ticketId            String              @unique @db.Uuid
+  user                User                @relation(fields: [userId], references: [id])
+  userId              String              @db.Uuid
+  message             String
+  createdAt           DateTime            @default(now())
+  attachments         TicketAttachment[]  @relation("TicketThread_TicketAttachment")
 }
 
 // Modelo TicketAttachment
 model TicketAttachment {
-  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ticketThread   TicketThread   @relation(fields: [ticketThreadId], references: [id])
-  ticketThreadId String         @db.Uuid
-  filePath       String
-  fileName       String
-  mimeType       String
-  createdAt      DateTime       @default(now())
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId            String              @db.Uuid
+  ticket              Ticket              @relation(fields: [ticketId], references: [id])
+  ticketThread        TicketThread        @relation("TicketThread_TicketAttachment", fields: [ticketThreadId], references: [ticketId])
+  ticketThreadId      String              @db.Uuid
+  filePath            String
+  fileName            String
+  mimeType            String
+  createdAt           DateTime            @default(now())
 }
 
 // Modelo TicketCollaborator
 model TicketCollaborator {
-  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ticket      Ticket     @relation(fields: [ticketId], references: [id])
-  ticketId    String     @db.Uuid
-  user        User       @relation(fields: [userId], references: [id])
-  userId      String     @db.Uuid
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticket              Ticket              @relation("Ticket_TicketUser", fields: [ticketId], references: [id])
+  ticketId            String              @db.Uuid
+  user                User                @relation(fields: [userId], references: [id])
+  userId              String              @db.Uuid
 }
 
 // Modelo CustomField
 model CustomField {
-  id          Int        @id @default(autoincrement())
-  name        String
-  fieldType   String     // e.g., 'text', 'number', 'date'
-  tickets     TicketCustomField[]
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  fieldType           String              // e.g., 'text', 'number', 'date'
+  tickets             TicketCustomField[]
 }
 
 // Modelo TicketCustomField
 model TicketCustomField {
-  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ticket      Ticket       @relation(fields: [ticketId], references: [id])
-  ticketId    String       @db.Uuid
-  field       CustomField  @relation(fields: [fieldId], references: [id])
-  fieldId     Int
-  value       String
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticket              Ticket              @relation(fields: [ticketId], references: [id])
+  ticketId            String              @db.Uuid
+  field               CustomField         @relation(fields: [fieldId], references: [id])
+  fieldId             Int
+  value               String
+}
+
+model TaskUser {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task                Task                @relation("Task_TaskUser", fields: [taskId], references: [id])
+  taskId              String              @db.Uuid
+  user                User                @relation(fields: [userId], references: [id])
+  userId              String              @db.Uuid
+}
+
+model TicketUser {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticket              Ticket              @relation("Ticket_TicketUser", fields: [ticketId], references: [id])
+  ticketId            String              @db.Uuid
+  user                User                @relation(fields: [userId], references: [id])
+  userId              String              @db.Uuid
 }

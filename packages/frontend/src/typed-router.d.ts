@@ -25,6 +25,7 @@ declare module 'vue-router/auto-routes' {
     '/admin/assinaturas/GerenciarCertificados': RouteRecordInfo<'/admin/assinaturas/GerenciarCertificados', '/admin/assinaturas/GerenciarCertificados', Record<never, never>, Record<never, never>>,
     '/admin/assinaturas/ValidacaoAssinaturas': RouteRecordInfo<'/admin/assinaturas/ValidacaoAssinaturas', '/admin/assinaturas/ValidacaoAssinaturas', Record<never, never>, Record<never, never>>,
     '/admin/dashboard/': RouteRecordInfo<'/admin/dashboard/', '/admin/dashboard', Record<never, never>, Record<never, never>>,
+    '/admin/documentos/CertificadoDigital': RouteRecordInfo<'/admin/documentos/CertificadoDigital', '/admin/documentos/CertificadoDigital', Record<never, never>, Record<never, never>>,
     '/admin/documentos/CriarDocumento': RouteRecordInfo<'/admin/documentos/CriarDocumento', '/admin/documentos/CriarDocumento', Record<never, never>, Record<never, never>>,
     '/admin/documentos/DocumentosEnviados': RouteRecordInfo<'/admin/documentos/DocumentosEnviados', '/admin/documentos/DocumentosEnviados', Record<never, never>, Record<never, never>>,
     '/admin/documentos/DocumentosRecebidos': RouteRecordInfo<'/admin/documentos/DocumentosRecebidos', '/admin/documentos/DocumentosRecebidos', Record<never, never>, Record<never, never>>,

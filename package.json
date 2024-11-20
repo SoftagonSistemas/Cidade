@@ -2,7 +2,8 @@
   "name": "cidade-transparente",
   "version": "1.0.0",
   "scripts": {
-    "frontend": "bun run --cwd packages/frontend dev"
+    "frontend": "bun run --cwd packages/frontend dev",
+    "prisma:migrate:dev": "prisma migrate dev"
   },
   "workspaces": [
     "packages/*"
