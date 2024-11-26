@@ -1,10 +1,16 @@
 <script setup lang="ts">
-const tabs = ref(0)
+import DigitalCertificateService from '@/services/DigitalCertificateService'
 
-const certificates = ref([
-  // Exemplo de certificado
-  { name: 'Certificado Exemplo', expirationDate: '2025-12-31', password: '123456', file: null },
-])
+const tabs = ref(0)
+const certificates = ref([])
+
+const certificateService = new DigitalCertificateService()
+
+async function fetchCertificates() {
+  certificates.value = await certificateService.getAll()
+}
+
+onMounted(fetchCertificates)
 </script>
 
 <template>
@@ -35,21 +41,28 @@ const certificates = ref([
       <v-tabs-window v-model="tabs">
         <v-tabs-window-item id="list-certificate" value="one">
           <v-list lines="two">
-            <v-list-item
-              v-for="(certificate, index) in certificates"
-              :key="index"
-              :subtitle="`vencimento ${certificate.expirationDate}`"
-              :title="certificate.name"
-            >
-              <template #append>
-                <v-btn
-                  color="grey-lighten-1"
-                  icon="mdi-tag-edit"
-                  variant="text"
-                  @click="(index)"
-                />
-              </template>
-            </v-list-item>
+            <template v-if="certificates.length === 0">
+              <v-list-item>
+                <v-list-item-title>Nenhum certificado registrado ainda.</v-list-item-title>
+              </v-list-item>
+            </template>
+            <template v-else>
+              <v-list-item
+                v-for="(certificate, index) in certificates"
+                :key="index"
+                :subtitle="`vencimento ${certificate.expiration}`"
+                :title="certificate.alias"
+              >
+                <template #append>
+                  <v-btn
+                    color="grey-lighten-1"
+                    icon="mdi-tag-edit"
+                    variant="text"
+                    @click="(index)"
+                  />
+                </template>
+              </v-list-item>
+            </template>
             <v-divider inset />
           </v-list>
         </v-tabs-window-item>

@@ -1,18 +1,46 @@
 <script setup lang="ts">
+import DigitalCertificateService from '@/services/DigitalCertificateService'
+
+const emit = defineEmits(['certificateAdded'])
 const form = ref(null)
 const newCertificate = ref({
-  name: '',
-  expirationDate: '',
+  alias: '',
+  expiration: '',
   password: '',
   file: null,
 })
 
-function addCertificate() {
-  if (form.value.validate()) {
-    certificates.value.push({ ...newCertificate.value })
-    newCertificate.value = { name: '', expirationDate: '', password: '', file: null }
+const certificateService = new DigitalCertificateService()
+async function addCertificate() {
+  if (form.value && form.value.validate()) {
+    try {
+      const filePath = ref()
+      if (newCertificate.value.file) {
+        filePath.value = await certificateService.upload(newCertificate.value.file)
+      }
+      else {
+        throw new Error('File is required')
+      }
+
+      const certificate = {
+        alias: newCertificate.value.alias,
+        expiration: new Date(newCertificate.value.expiration),
+        password: newCertificate.value.password,
+        file: filePath.value,
+      }
+
+      await certificateService.create(certificate)
+
+      newCertificate.value = { alias: '', expiration: '', password: '', file: null }
+
+      emit('certificateAdded')
+    }
+    catch (error) {
+      console.error('Erro ao adicionar certificado:', error)
+    }
   }
 }
+
 function editCertificate(index: number) {
   const certificate = certificates.value[index]
   newCertificate.value = { ...certificate }
@@ -29,12 +57,12 @@ function deleteCertificate(index: number) {
     <v-card-text>
       <v-form ref="form">
         <v-text-field
-          v-model="newCertificate.name"
+          v-model="newCertificate.alias"
           label="Nome do Certificado"
           required
         />
         <v-text-field
-          v-model="newCertificate.expirationDate"
+          v-model="newCertificate.expiration"
           label="Data de Expiração"
           type="date"
           required
@@ -47,8 +75,8 @@ function deleteCertificate(index: number) {
         />
         <v-file-input
           v-model="newCertificate.file"
-          label="Upload do Arquivo P12"
-          accept=".p12"
+          label="Upload do Arquivo P12/PFX"
+          accept=".p12,.pfx"
           required
         />
         <v-btn @click="addCertificate">

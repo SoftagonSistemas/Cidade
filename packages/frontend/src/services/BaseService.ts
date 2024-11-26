@@ -12,7 +12,7 @@ export default class BaseService<T = string> {
     this.table = table
   }
 
-  private async request<U>(url: string, options: RequestInit = {}): Promise<RequestResult<U>> {
+  public async request<U>(url: string, options: RequestInit = {}): Promise<RequestResult<U>> {
     const authStore = useAuthStore()
     const token = authStore.token
 
@@ -92,5 +92,44 @@ export default class BaseService<T = string> {
     const url = `items/${this.table}/?filter=${filter}`
     const { data } = await this.request<T>(url)
     return data
+  }
+
+  /**
+   * Uploads a file to the server.
+   * @param file The file to be uploaded.
+   * @param additionalData Any additional data to include in the FormData.
+   * @returns The server response for the uploaded file.
+   */
+  async uploadFile(file: File, additionalData: Record<string, any> = {}): Promise<T> {
+    const url = `files/upload`
+
+    const authStore = useAuthStore()
+    const token = authStore.token
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    // Add any additional data to the form
+    Object.entries(additionalData).forEach(([key, value]) => {
+      formData.append(key, value)
+    })
+
+    const headers = {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    }
+
+    const options: RequestInit = {
+      method: 'POST',
+      body: formData,
+      headers, // Content-Type é gerenciado automaticamente pelo FormData
+    }
+
+    const response = await fetch(`${this.baseURL}${url}`, options)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json() as Promise<T>
   }
 }
