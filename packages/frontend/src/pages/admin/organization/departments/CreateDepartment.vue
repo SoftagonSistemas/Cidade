@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <h1>Create New Department</h1>
+  <v-container style="height: 100%; overflow-y: auto">
+    <h2>Create New Department</h2>
     <v-stepper :items="['Department Information', 'Recall Options', 'Forms']" v-model="activeStep" :hide-actions="true">
       <template v-slot:item.1>
         <v-card flat>
