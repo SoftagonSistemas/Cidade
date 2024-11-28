@@ -4,6 +4,12 @@ const apiUrl = import.meta.env.VITE_BACK3ND_URL
 
 interface RequestResult<U> { data: U[], count?: number }
 
+interface UploadFileResponse {
+  message: string
+  path: string
+  versionId: string
+}
+
 export default class BaseService<T = string> {
   private readonly baseURL: string = apiUrl
   protected readonly table: string
@@ -100,7 +106,7 @@ export default class BaseService<T = string> {
    * @param additionalData Any additional data to include in the FormData.
    * @returns The server response for the uploaded file.
    */
-  async uploadFile(file: File, additionalData: Record<string, any> = {}): Promise<T> {
+  async uploadFile(file: File, additionalData: Record<string, any> = {}): Promise<UploadFileResponse> {
     const url = `files/upload`
 
     const authStore = useAuthStore()
@@ -130,6 +136,58 @@ export default class BaseService<T = string> {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    return response.json() as Promise<T>
+    return response.json() as Promise<UploadFileResponse>
+  }
+
+  async viewFile(versionId: string, path: string): Promise<Response> {
+    const authStore = useAuthStore()
+    const token = authStore.token
+
+    const url = `files/view?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
+
+    const headers = {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    }
+
+    const options: RequestInit = {
+      method: 'GET',
+      headers,
+    }
+
+    const response = await fetch(`${this.baseURL}${url}`, options)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response
+  }
+
+  /**
+   * Deletes a file from the server.
+   * @param versionId The version ID of the file to be deleted.
+   * @param path The path of the file to be deleted.
+   * @returns The server response for the deleted file.
+   */
+  async deleteFile(versionId: string, path: string): Promise<void> {
+    const authStore = useAuthStore()
+    const token = authStore.token
+
+    const url = `files/delete?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
+
+    const headers = {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    }
+
+    const options: RequestInit = {
+      method: 'DELETE',
+      headers,
+    }
+
+    const response = await fetch(`${this.baseURL}${url}`, options)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
   }
 }

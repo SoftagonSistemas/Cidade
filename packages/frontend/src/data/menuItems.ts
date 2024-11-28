@@ -3,6 +3,15 @@ import type { MenuItem } from '../composables/useAdminMenu'
 export const primaryMenuItems: MenuItem[] = [
   { icon: 'mdi-home', label: 'Dashboard', route: '/admin/dashboard/', children: [] },
   {
+    icon: 'mdi-city-switch',
+    label: 'Instituição',
+    children: [
+      { title: 'Institução', route: '/admin/instituicao/' },
+      { title: 'Entidade', route: '/admin/instituicao/entidade' },
+      { title: 'Organograma', route: '/admin/instituicao/organograma' },
+    ],
+  },
+  {
     icon: 'mdi-eye-check-outline',
     label: 'Ticket Management',
     children: [
@@ -92,6 +101,7 @@ export function getMenuDescription(menuLabel: string): string {
     'Assinaturas Digitais': 'Gerenciamento de assinaturas digitais',
     'Notificações': 'Central de notificações',
     'Relatórios': 'Relatórios gerenciais e exportação',
+    'Instituição': 'Definição da Prefeitura e sua organização',
   }
   return descriptions[menuLabel] || 'Descrição não disponível'
 }

@@ -20,5 +20,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SoftagonIcon: typeof import('./components/SoftagonIcon.vue')['default']
+    UploadImage: typeof import('./components/UploadImage.vue')['default']
+    UserForm: typeof import('./components/UserForm.vue')['default']
   }
 }

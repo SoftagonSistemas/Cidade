@@ -2,13 +2,22 @@
 /// In a GED context, users can create, own, and share documents.
 /// In a BPM context, users may be assigned tasks within workflows or manage them.
 /// A `role` field helps define user permissions and responsibilities.
+/// The `User` model represents system users with roles in the organizational structure.
 model User {
   id                      String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   apiUserId               String                   @unique
   email                   String                   @unique
-  name                    String?
-  role                    String                   @default("user")
+  name                    String
+  phoneNumber             String?
+  jobTitle                String? // E.g., "Mayor", "Vice-Mayor", "Secretary"
+  profilePhoto            String? // Path to the user's profile photo
+  role                    String                   @default("user") // Define system permissions
   createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  dateOfBirth             DateTime?                // Date of birth
+  addressId               String?                  @db.Uuid         // Foreign key to Address
+  // Relations
+  address                 Address?                 @relation(fields: [addressId], references: [id])
   auditLogs               AuditLog[]               @relation("AuditLog_PerformedBy")
   digitalCertificates     DigitalCertificate[]
   documentUsers           DocumentUser[]           @relation("DocumentUser_User")
@@ -23,6 +32,9 @@ model User {
   ticketThreads           TicketThread[]
   ticketUsers             TicketUser[]
   userDepartments         UserDepartment[]
+  headOfDepartments       Department[]             @relation("Department_Head") // Contra-relação
+  mayorInstitutions       Institution[]            @relation("Institution_Mayor")
+  viceMayorInstitutions   Institution[]            @relation("Institution_ViceMayor")
   userOnDocuments         UserOnDocuments[]
 }
 
@@ -197,36 +209,52 @@ model FileMetadata {
   document   Document @relation(fields: [documentId], references: [id])
 }
 
+/// The `Institution` model represents a municipality or organizational entity.
 model Institution {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
+  address     String?
+  phone       String?
+  email       String?
+  flag        String? // Path to the flag image
+  emblem      String? // Path to the emblem image
+  mayorId     String?      @db.Uuid
+  viceMayorId String?      @db.Uuid
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  // Relations
+  mayor       User?        @relation("Institution_Mayor", fields: [mayorId], references: [id])
+  viceMayor   User?        @relation("Institution_ViceMayor", fields: [viceMayorId], references: [id])
   departments Department[]
 }
 
+/// The `Department` model represents organizational units within an institution.
 model Department {
-  id                  Int              @id @default(autoincrement())
-  name                String
-  description         String?
-  isSecretariat       Boolean          @default(false)
-  institutionId       String           @db.Uuid
-  parentSecretariatId Int?
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
-  institution         Institution      @relation(fields: [institutionId], references: [id])
-  parentSecretariat   Department?      @relation("ParentDepartment", fields: [parentSecretariatId], references: [id])
-  childDepartments    Department[]     @relation("ParentDepartment")
-  helpTopics          HelpTopic[]
-  tickets             Ticket[]
-  userDepartments     UserDepartment[]
+  id                 Int              @id @default(autoincrement())
+  name               String
+  description        String?
+  isSecretariat      Boolean          @default(false) // True for secretariats
+  institutionId      String           @db.Uuid
+  parentDepartmentId Int?
+  headId             String?          @db.Uuid // The head of the department (e.g., Secretary, Director)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  // Relations
+  institution        Institution      @relation(fields: [institutionId], references: [id])
+  parentDepartment   Department?      @relation("ParentDepartment", fields: [parentDepartmentId], references: [id])
+  childDepartments   Department[]     @relation("ParentDepartment")
+  head               User?            @relation("Department_Head", fields: [headId], references: [id]) // Relacionamento corrigido
+  userDepartments    UserDepartment[]
+  tickets            Ticket[]
+  helpTopics         HelpTopic[]
 }
 
+/// The `UserDepartment` model links users to departments with specific roles.
 model UserDepartment {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId       String     @db.Uuid
   departmentId Int
-  role         String
+  role         String // E.g., "Director", "Supervisor", "Employee"
   createdAt    DateTime   @default(now())
   department   Department @relation(fields: [departmentId], references: [id])
   user         User       @relation(fields: [userId], references: [id])
@@ -356,4 +384,17 @@ model TicketUser {
   userId   String @db.Uuid
   ticket   Ticket @relation("Ticket_TicketUser", fields: [ticketId], references: [id])
   user     User   @relation(fields: [userId], references: [id])
+}
+
+model Address {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  street      String
+  city        String
+  state       String
+  country     String
+  postalCode  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  // Relations
+  users       User[]
 }
