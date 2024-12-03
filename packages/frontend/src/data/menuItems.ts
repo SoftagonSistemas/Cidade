@@ -19,8 +19,8 @@ export const primaryMenuItems: MenuItem[] = [
     icon: 'mdi-domain',
     label: 'Organization Management',
     children: [
-      { title: 'Departments and Secretariats', route: '/organization/departments' },
-      { title: 'User Permissions', route: '/organization/user-permissions' },
+      { title: 'Departments and Secretariats', route: '/admin/organization/departments' },
+      { title: 'User Permissions', route: '/admin/organization/user-permissions' },
     ],
   },
   {
