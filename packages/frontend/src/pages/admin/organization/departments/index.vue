@@ -37,7 +37,16 @@
 </template>
 
 <script setup lang="ts">
-const departments: any = ref([
+
+interface DepartmentItem {
+  topic: string,
+  status: string,
+  type: string,
+  parentTopic: string,
+  internalNote: string
+}
+
+const departments: Ref<DepartmentItem[]> = ref([
   {
     topic: "Public Works",
     status: "Active",
@@ -74,7 +83,7 @@ const departments: any = ref([
     internalNote: "Traffic optimization in progress.",
   },
 ]);
-const selectedItems = ref([]);
+const selectedItems: Ref<string[]> = ref([]);
 function deleteItem(item: any) {
   departments.value = departments.value.filter(
     (d: any) => d.topic !== item.topic
@@ -85,7 +94,7 @@ function editItem(item: any) {
 }
 function deleteSelected() {
   departments.value = departments.value.filter(
-    (d: any) => !selectedItems.value.includes(d.topic)
+    (d: DepartmentItem) => !selectedItems.value.includes(d.topic)
   );
   selectedItems.value = [];
 }
