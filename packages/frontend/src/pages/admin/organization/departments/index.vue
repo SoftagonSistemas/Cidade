@@ -37,7 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { DepartmentItem } from '@/data/models';
+import { DepartmentItem } from '../../../../data/models';
+import { Ref, ref } from 'vue';
 
 const departments: Ref<DepartmentItem[]> = ref([
   {
