@@ -37,14 +37,7 @@
 </template>
 
 <script setup lang="ts">
-
-interface DepartmentItem {
-  topic: string,
-  status: string,
-  type: string,
-  parentTopic: string,
-  internalNote: string
-}
+import { DepartmentItem } from '@/data/models';
 
 const departments: Ref<DepartmentItem[]> = ref([
   {

@@ -121,7 +121,6 @@ const adminMenuItem = {
     <v-main>
       <v-container
         class="d-flex justify-center align-center "
-        style="height: 100%"
       >
         <v-sheet
           elevation="0"

@@ -11,7 +11,7 @@ export const primaryMenuItems: MenuItem[] = [
       { title: 'My Tickets', route: '/tickets/my-tickets' },
       { title: 'Assigned Tickets', route: '/tickets/assigned' },
       { title: 'Department Tickets', route: '/tickets/department' },
-      { title: 'SLA Configuration', route: '/tickets/sla-config' },
+      { title: 'SLA Configuration', route: '/admin/tickets/sla-config' },
       { title: 'Performance Reports', route: '/tickets/reports/performance' },
     ],
   },

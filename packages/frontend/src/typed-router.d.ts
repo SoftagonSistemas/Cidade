@@ -36,9 +36,11 @@ declare module 'vue-router/auto-routes' {
     '/admin/notificacoes/NotificacoesTempoReal': RouteRecordInfo<'/admin/notificacoes/NotificacoesTempoReal', '/admin/notificacoes/NotificacoesTempoReal', Record<never, never>, Record<never, never>>,
     '/admin/organization/departments/': RouteRecordInfo<'/admin/organization/departments/', '/admin/organization/departments', Record<never, never>, Record<never, never>>,
     '/admin/organization/departments/CreateDepartment': RouteRecordInfo<'/admin/organization/departments/CreateDepartment', '/admin/organization/departments/CreateDepartment', Record<never, never>, Record<never, never>>,
-    '/admin/organization/departments/UserPermissions': RouteRecordInfo<'/admin/organization/departments/UserPermissions', '/admin/organization/departments/UserPermissions', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/Exportacao': RouteRecordInfo<'/admin/relatorios/Exportacao', '/admin/relatorios/Exportacao', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/RelatoriosGerenciais': RouteRecordInfo<'/admin/relatorios/RelatoriosGerenciais', '/admin/relatorios/RelatoriosGerenciais', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/sla-config': RouteRecordInfo<'/admin/tickets/sla-config', '/admin/tickets/sla-config', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/sla-config-add': RouteRecordInfo<'/admin/tickets/sla-config-add', '/admin/tickets/sla-config-add', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/sla-config-update': RouteRecordInfo<'/admin/tickets/sla-config-update', '/admin/tickets/sla-config-update', Record<never, never>, Record<never, never>>,
     '/auth/': RouteRecordInfo<'/auth/', '/auth', Record<never, never>, Record<never, never>>,
   }
 }
