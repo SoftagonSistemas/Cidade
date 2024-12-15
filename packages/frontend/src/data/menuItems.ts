@@ -7,7 +7,7 @@ export const primaryMenuItems: MenuItem[] = [
     label: 'Ticket Management',
     children: [
       { title: 'Create Request', route: '/admin/tickets/create-ticket' },
-      { title: 'Tickets Overview', route: '/tickets/overview' },
+      { title: 'Tickets Overview', route: '/admin/tickets' },
       { title: 'My Tickets', route: '/tickets/my-tickets' },
       { title: 'Assigned Tickets', route: '/tickets/assigned' },
       { title: 'Department Tickets', route: '/tickets/department' },
