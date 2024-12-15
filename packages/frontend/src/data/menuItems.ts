@@ -6,7 +6,7 @@ export const primaryMenuItems: MenuItem[] = [
     icon: 'mdi-eye-check-outline',
     label: 'Ticket Management',
     children: [
-      { title: 'Create Request', route: '/tickets/create' },
+      { title: 'Create Request', route: '/admin/tickets/create-ticket' },
       { title: 'Tickets Overview', route: '/tickets/overview' },
       { title: 'My Tickets', route: '/tickets/my-tickets' },
       { title: 'Assigned Tickets', route: '/tickets/assigned' },

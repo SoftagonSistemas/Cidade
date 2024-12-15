@@ -38,9 +38,12 @@ declare module 'vue-router/auto-routes' {
     '/admin/organization/departments/CreateDepartment': RouteRecordInfo<'/admin/organization/departments/CreateDepartment', '/admin/organization/departments/CreateDepartment', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/Exportacao': RouteRecordInfo<'/admin/relatorios/Exportacao', '/admin/relatorios/Exportacao', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/RelatoriosGerenciais': RouteRecordInfo<'/admin/relatorios/RelatoriosGerenciais', '/admin/relatorios/RelatoriosGerenciais', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/': RouteRecordInfo<'/admin/tickets/', '/admin/tickets', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/create-ticket': RouteRecordInfo<'/admin/tickets/create-ticket', '/admin/tickets/create-ticket', Record<never, never>, Record<never, never>>,
     '/admin/tickets/sla-config': RouteRecordInfo<'/admin/tickets/sla-config', '/admin/tickets/sla-config', Record<never, never>, Record<never, never>>,
     '/admin/tickets/sla-config-add': RouteRecordInfo<'/admin/tickets/sla-config-add', '/admin/tickets/sla-config-add', Record<never, never>, Record<never, never>>,
     '/admin/tickets/sla-config-update': RouteRecordInfo<'/admin/tickets/sla-config-update', '/admin/tickets/sla-config-update', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/ticket-details': RouteRecordInfo<'/admin/tickets/ticket-details', '/admin/tickets/ticket-details', Record<never, never>, Record<never, never>>,
     '/auth/': RouteRecordInfo<'/auth/', '/auth', Record<never, never>, Record<never, never>>,
   }
 }
