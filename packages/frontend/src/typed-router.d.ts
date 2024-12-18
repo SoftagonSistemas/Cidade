@@ -35,6 +35,7 @@ declare module 'vue-router/auto-routes' {
     '/admin/instituicao/entidade': RouteRecordInfo<'/admin/instituicao/entidade', '/admin/instituicao/entidade', Record<never, never>, Record<never, never>>,
     '/admin/instituicao/instituicao': RouteRecordInfo<'/admin/instituicao/instituicao', '/admin/instituicao/instituicao', Record<never, never>, Record<never, never>>,
     '/admin/instituicao/organograma': RouteRecordInfo<'/admin/instituicao/organograma', '/admin/instituicao/organograma', Record<never, never>, Record<never, never>>,
+    '/admin/instituicao/secretarias': RouteRecordInfo<'/admin/instituicao/secretarias', '/admin/instituicao/secretarias', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/Exportacao': RouteRecordInfo<'/admin/relatorios/Exportacao', '/admin/relatorios/Exportacao', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/notificacoes/CentralNotificacoes': RouteRecordInfo<'/admin/relatorios/notificacoes/CentralNotificacoes', '/admin/relatorios/notificacoes/CentralNotificacoes', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/notificacoes/NotificacoesTempoReal': RouteRecordInfo<'/admin/relatorios/notificacoes/NotificacoesTempoReal', '/admin/relatorios/notificacoes/NotificacoesTempoReal', Record<never, never>, Record<never, never>>,

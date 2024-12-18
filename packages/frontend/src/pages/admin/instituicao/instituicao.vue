@@ -7,6 +7,7 @@ export default {
         nome: "",
         endereco: "",
         responsavel: "",
+        telefone: "",
       },
       secretarias: [
         { nome: "Secretaria de Esporte" },
@@ -41,11 +42,13 @@ export default {
 
 <template>
   <v-container>
+    <h1>Instituição</h1>
+
     <v-card class="my-4">
       <v-card-title>
         <v-text-field
           v-model="instituicao.nome"
-          label="Nome da Instituição"
+          label="Nome da Prefeitura"
           outlined
           dense
           :readonly="!editandoInstituicao"
@@ -69,10 +72,19 @@ export default {
           :readonly="!editandoInstituicao"
         />
       </v-card-subtitle>
+      <v-card-subtitle>
+        <v-text-field
+          v-model="instituicao.telefone"
+          label="Telefone"
+          outlined
+          dense
+          :readonly="!editandoInstituicao"
+        />
+      </v-card-subtitle>
+
       <v-card-actions>
         <v-btn
-          class="ms-auto"
-          color="primary"
+          class="bg-primary ms-auto"
           @click="toggleEdicaoInstituicao"
         >
           {{ editandoInstituicao ? "Salvar" : "Editar" }}
@@ -111,5 +123,7 @@ export default {
 </template>
 
 <style scoped>
-
+  h1 {
+    margin-bottom: 20px;
+  }
 </style>
