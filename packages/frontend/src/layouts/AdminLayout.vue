@@ -27,7 +27,7 @@ const adminMenuItem = {
     <!-- Barra de Navegação Superior -->
     <v-app-bar app color="primary" density="compact" elevation="0">
       <v-app-bar-nav-icon icon="mdi-view-dashboard" @click="toggleMenu()" />
-      <v-toolbar-title>CidadeTransparente</v-toolbar-title>
+      <v-toolbar-title>Cidade Transparente</v-toolbar-title>
       <v-spacer />
 
       <v-btn size="small" icon @click="notificationDrawerOpen = !notificationDrawerOpen, avatarDrawerOpen = false">

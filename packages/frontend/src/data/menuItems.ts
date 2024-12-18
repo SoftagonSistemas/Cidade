@@ -2,6 +2,18 @@ import type { MenuItem } from '../composables/useAdminMenu'
 
 export const primaryMenuItems: MenuItem[] = [
   { icon: 'mdi-home', label: 'Dashboard', route: '/admin/dashboard/', children: [] },
+
+  {
+    icon: 'mdi-city-switch',
+    label: 'Instituição',
+    route: '',
+    children: [
+      { title: 'Instituição', route: ''},
+      { title: 'Entidade', route: ''},
+      { title: 'Organograma', route: ''},
+    ]
+  },
+
   {
     icon: 'mdi-eye-check-outline',
     label: 'Ticket Management',
@@ -81,6 +93,7 @@ export const primaryMenuItems: MenuItem[] = [
 export function getMenuDescription(menuLabel: string): string {
   const descriptions: { [key: string]: string } = {
     'Dashboard': 'Indicadores de desempenho e notificações',
+    'Instituição': 'Definição da Prefeitura e sua organização',
     'Ticket Management': 'Manage all tickets and service requests.',
     'Organization Management': 'Configure departments, secretariats, and user permissions.',
     'Tasks': 'Create and manage tasks.',
