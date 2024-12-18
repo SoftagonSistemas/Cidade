@@ -6,11 +6,10 @@ export const primaryMenuItems: MenuItem[] = [
   {
     icon: 'mdi-city-switch',
     label: 'Instituição',
-    route: '',
     children: [
-      { title: 'Instituição', route: ''},
-      { title: 'Entidade', route: ''},
-      { title: 'Organograma', route: ''},
+      { title: 'Instituição', route: '/admin/instituicao/instituicao'},
+      { title: 'Entidade', route: '/admin/instituicao/entidade'},
+      { title: 'Organograma', route: '/admin/instituicao/organograma'},
     ]
   },
 
