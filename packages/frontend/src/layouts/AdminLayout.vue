@@ -120,12 +120,12 @@ const adminMenuItem = {
     <!-- Conteúdo Principal -->
     <v-main>
       <v-container
-        class="d-flex justify-center align-center "
+        class="d-flex justify-center align-center main-container px-0"
       >
         <v-sheet
           elevation="0"
           style="height: 100%; width: 100%;"
-          class="pl-8 pt-4 pr-4 pb-4"
+          class="p-lg-4"
         >
           <router-view />
         </v-sheet>
@@ -141,10 +141,6 @@ const adminMenuItem = {
 </template>
 
 <style scoped>
-.v-main {
-  background-color: #f5f5f5;
-}
-
 .secondary-drawer {
   transition: margin-left 0.3s ease;
   position: absolute;
@@ -185,5 +181,8 @@ const adminMenuItem = {
   height: calc(100vh - 64px); /* Ajusta a altura, subtraindo a altura do app-bar */
   overflow-y: auto; /* Permite scroll interno no conteúdo principal, se necessário */
   background-color: #f5f5f5;
+}
+.v-application{
+  overflow: hidden;
 }
 </style>
