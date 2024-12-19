@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-//
 </script>
 
 <template>
-  Hermes Alves
+  <container>
+    Hermes Alves
+  </container>
 </template>

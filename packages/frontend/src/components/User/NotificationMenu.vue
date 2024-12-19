@@ -46,6 +46,7 @@ watch(drawer, (newValue) => {
     temporary
     location="right"
     :mobile="true"
+    touchless
     class="user-drawer"
   >
     <v-list>
