@@ -32,6 +32,7 @@ declare module 'vue-router/auto-routes' {
     '/admin/fluxos/CriarFluxo': RouteRecordInfo<'/admin/fluxos/CriarFluxo', '/admin/fluxos/CriarFluxo', Record<never, never>, Record<never, never>>,
     '/admin/fluxos/HistoricoFluxos': RouteRecordInfo<'/admin/fluxos/HistoricoFluxos', '/admin/fluxos/HistoricoFluxos', Record<never, never>, Record<never, never>>,
     '/admin/fluxos/MeusFluxos': RouteRecordInfo<'/admin/fluxos/MeusFluxos', '/admin/fluxos/MeusFluxos', Record<never, never>, Record<never, never>>,
+    '/admin/instituicao/departamentos': RouteRecordInfo<'/admin/instituicao/departamentos', '/admin/instituicao/departamentos', Record<never, never>, Record<never, never>>,
     '/admin/instituicao/entidade': RouteRecordInfo<'/admin/instituicao/entidade', '/admin/instituicao/entidade', Record<never, never>, Record<never, never>>,
     '/admin/instituicao/instituicao': RouteRecordInfo<'/admin/instituicao/instituicao', '/admin/instituicao/instituicao', Record<never, never>, Record<never, never>>,
     '/admin/instituicao/organograma': RouteRecordInfo<'/admin/instituicao/organograma', '/admin/instituicao/organograma', Record<never, never>, Record<never, never>>,

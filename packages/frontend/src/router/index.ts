@@ -91,15 +91,17 @@ router.beforeEach(async (to, from, next) => {
   await authStore.initializeAuthState()
   if (to.path.startsWith('/admin')) {
     if (!authStore.isAuthenticated()) {
-      next('/auth')
+      // Comentada para evitar redirecionamento para a página de login
+      // next('/auth')
     }
     else {
-      next()
+      // next() Comentada para evitar redirecionamento para a página de login
     }
   }
   else {
-    next()
+    // next() Comentada para evitar redirecionamento para a página de login
   }
+  return next() // permitir a navegação
 })
 
 router.isReady().then(() => {
