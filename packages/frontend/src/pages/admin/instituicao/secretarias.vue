@@ -1,62 +1,71 @@
-<script>
-export default {
-  data() {
-    return {
-      instituicao: {
-        nome: "Prefeitura de Araripina",
-      },
-      secretarias: [
-        { nome: "Secretaria de Saúde", descricao: "Cuida da saúde pública." },
-        { nome: "Secretaria de Educação", descricao: "Responsável pelas escolas municipais." },
-        { nome: "Secretaria de Infraestrutura", descricao: "Gerencia obras e serviços urbanos." },
-      ],
-      modalAberto: false,
-      secretariaSelecionada: null,
-      novaSecretaria: {
-        nome: "",
-        descricao: "",
-        responsavel: "",
-        departamento: "",
-      },
-    };
-  },
-  methods: {
-    abrirModalAdicionar() {
-      this.resetarFormulario();
-      this.modalAberto = true;
-    },
-    abrirModalEditar(index) {
-      this.secretariaSelecionada = index;
-      this.novaSecretaria = { ...this.secretarias[index] };
-      this.modalAberto = true;
-    },
-    salvarSecretaria() {
-      if (this.secretariaSelecionada !== null) {
-        this.secretarias[this.secretariaSelecionada] = { ...this.novaSecretaria };
-      } else {
-        this.secretarias.push({ ...this.novaSecretaria });
-      }
-      this.fecharModal();
-    },
-    excluirSecretaria(index) {
-      if (confirm("Tem certeza que deseja excluir esta secretaria?")) {
-        this.secretarias.splice(index, 1);
-      }
-    },
-    fecharModal() {
-      this.modalAberto = false;
-      this.secretariaSelecionada = null;
-    },
-    resetarFormulario() {
-      this.novaSecretaria = {
-        nome: "",
-        descricao: "",
-        responsavel: "",
-        departamento: "",
-      };
-    },
-  },
-};
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function gerenciarDepartamentos() {
+  router.push('/admin/instituicao/departamentos');
+}
+
+const instituicao = ref({
+  nome: "Prefeitura de Araripina",
+});
+
+const secretarias = ref([
+  { nome: "Secretaria de Saúde", descricao: "UBS", responsavel: "Maria",departamento: "Vigilância" },
+  { nome: "Secretaria de Educação", descricao: "Escolas", responsavel: "Joao",departamento: "Educacao" },
+  { nome: "Secretaria de Infraestrutura", descricao: "Obras", responsavel: "Gilberto",departamento: "Obras" },
+]);
+
+const modalAberto = ref(false);
+const secretariaSelecionada = ref<number | null>(null);
+const novaSecretaria = ref({
+  nome: "",
+  descricao: "",
+  responsavel: "",
+  departamento: "",
+});
+
+function abrirModalAdicionar() {
+  resetarFormulario();
+  modalAberto.value = true;
+}
+
+function abrirModalEditar(index: number) {
+  secretariaSelecionada.value = index;
+  novaSecretaria.value = { ...secretarias.value[index] };
+  modalAberto.value = true;
+}
+
+function salvarSecretaria() {
+  if (secretariaSelecionada.value !== null) {
+    secretarias.value[secretariaSelecionada.value] = { ...novaSecretaria.value };
+  } else {
+    secretarias.value.push({ ...novaSecretaria.value });
+  }
+  fecharModal();
+}
+
+function excluirSecretaria(index: number) {
+  if (confirm("Tem certeza que deseja excluir esta secretaria?")) {
+    secretarias.value.splice(index, 1);
+  }
+}
+
+function fecharModal() {
+  modalAberto.value = false;
+  secretariaSelecionada.value = null;
+}
+
+function resetarFormulario() {
+  novaSecretaria.value = {
+    nome: "",
+    descricao: "",
+    responsavel: "",
+    departamento: "",
+  };
+}
 </script>
 
 <template>
@@ -73,19 +82,20 @@ export default {
           v-for="(secretaria, index) in secretarias"
           :key="index"
           class="my-4"
+          @click="gerenciarDepartamentos"
         >
           <v-card-title>{{ secretaria.nome }}</v-card-title>
           <v-card-subtitle>{{ secretaria.descricao }}</v-card-subtitle>
           <v-card-actions>
             <v-btn
               color="primary"
-              @click="abrirModalEditar(index)"
+              @click.stop="abrirModalEditar(index)"
             >
               Editar
             </v-btn>
             <v-btn
               color="error"
-              @click="excluirSecretaria(index)"
+              @click.stop="excluirSecretaria(index)"
               size="x-small"
             >
               Excluir
@@ -95,7 +105,6 @@ export default {
         <v-btn
           class="ms-auto"
           color="primary"
-          variant="fab"
           @click="abrirModalAdicionar"
         >
           <v-icon>mdi-plus</v-icon>
@@ -147,7 +156,6 @@ export default {
             Salvar
           </v-btn>
           <v-btn
-            text
             @click="fecharModal"
           >
             Cancelar
@@ -159,9 +167,13 @@ export default {
 </template>
 
 <style scoped>
-.text-center {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
+  .text-center {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
 </style>

@@ -1,43 +1,39 @@
-<script>
-export default {
-  data() {
-    return {
-      editandoInstituicao: false,
-      instituicao: {
-        nome: "",
-        endereco: "",
-        responsavel: "",
-        telefone: "",
-      },
-      secretarias: [
-        { nome: "Secretaria de Esporte" },
-        { nome: "Secretaria de Educação" },
-        { nome: "Secretaria de Saúde" },
-      ],
-    };
-  },
-  methods: {
-    toggleEdicaoInstituicao() {
-      if (this.editandoInstituicao) {
-        console.log("Dados da instituição salvos:", this.instituicao);
-      }
-      this.editandoInstituicao = !this.editandoInstituicao;
-    },
-    adicionarSecretaria() {
-      const novaSecretaria = prompt("Digite o nome da nova secretaria:");
-      if (novaSecretaria) {
-        this.secretarias.push({ nome: novaSecretaria });
-      }
-    },
-    editarSecretaria(index) {
-      const nomeAtual = this.secretarias[index].nome;
-      const novoNome = prompt("Edite o nome da secretaria:", nomeAtual);
-      if (novoNome) {
-        this.secretarias[index].nome = novoNome;
-      }
-    },
-  },
-};
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function gerenciarSecretarias() {
+  router.push('/admin/instituicao/secretarias');
+}
+
+const editandoInstituicao = ref(false);
+const instituicao = ref({
+  nome: "Prefeitura de Araripina",
+  endereco: "Araripe, 123",
+  responsavel: "Prefeito da Cidade",
+  telefone: "870000-0000",
+});
+const secretarias = ref([
+  { nome: "Secretaria de Esporte" },
+  { nome: "Secretaria de Educação" },
+  { nome: "Secretaria de Saúde" },
+]);
+
+function toggleEdicaoInstituicao() {
+  if (editandoInstituicao.value) {
+    console.log("Dados da instituição salvos:", instituicao.value);
+  }
+  editandoInstituicao.value = !editandoInstituicao.value;
+}
+
+// function adicionarSecretaria() {
+//   const novaSecretaria = prompt("Digite o nome da nova secretaria:");
+//   if (novaSecretaria) {
+//     secretarias.value.push({ nome: novaSecretaria });
+//   }
+// }
 </script>
 
 <template>
@@ -97,7 +93,7 @@ export default {
           <v-list-item
             v-for="(secretaria, index) in secretarias"
             :key="index"
-            @click="editarSecretaria(index)"
+            @click="gerenciarSecretarias"
           >
             <v-list-item-title>{{ secretaria.nome }}</v-list-item-title>
             <v-list-item-icon>
@@ -111,8 +107,7 @@ export default {
         <v-btn
         class="ms-auto"
         color="primary"
-        variant="fab"
-          @click="adicionarSecretaria"
+          @click="gerenciarSecretarias"
         >
           <v-icon>mdi-plus</v-icon>
           Adicionar Secretaria

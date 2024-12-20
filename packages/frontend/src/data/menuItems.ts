@@ -7,7 +7,7 @@ export const primaryMenuItems: MenuItem[] = [
     icon: 'mdi-city-switch',
     label: 'Instituição',
     children: [
-      { title: 'Instituição', route: '/admin/instituicao/instituicao'},
+      { title: 'Instituição', route: '/admin/instituicao'},
       { title: 'Entidade', route: '/admin/instituicao/entidade'},
       { title: 'Organograma', route: '/admin/instituicao/organograma'},
     ]

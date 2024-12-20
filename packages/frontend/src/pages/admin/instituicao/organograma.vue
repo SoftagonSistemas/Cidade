@@ -1,41 +1,37 @@
-<script>
-export default {
-  data() {
-    return {
-      // Dados da instituição
-      instituicao: {
-        nome: "Prefeitura Municipal",
-        descricao: "Organização central da cidade.",
-        secretarias: [
-          {
-            id: 1,
-            nome: "Secretaria de Saúde",
-            descricao: "Gestão da saúde pública.",
-            departamentos: [
-              { id: 11, nome: "Departamento de Vigilância", descricao: "Cuidados preventivos." },
-              { id: 12, nome: "Departamento de Atendimento", descricao: "Atendimento ao cidadão." },
-            ],
-          },
-          {
-            id: 2,
-            nome: "Secretaria de Educação",
-            descricao: "Gestão da educação municipal.",
-            departamentos: [
-              { id: 21, nome: "Departamento de Ensino", descricao: "Supervisão das escolas." },
-              { id: 22, nome: "Departamento de Transporte Escolar", descricao: "Transporte para estudantes." },
-            ],
-          },
-        ],
-      },
-    };
-  },
-  methods: {
-    abrirDetalhes(tipo, item) {
-      alert(`Abrir detalhes de ${tipo}: ${item.nome}`);
-      // Implemente a navegação ou abertura de modal para edição aqui
+<script setup lang="ts">
+  import { ref } from 'vue';
+
+// Dados da instituição
+const instituicao = ref({
+  nome: "Prefeitura Municipal",
+  descricao: "Organização central da cidade.",
+  secretarias: [
+    {
+      id: 1,
+      nome: "Secretaria de Saúde",
+      descricao: "Gestão da saúde pública.",
+      departamentos: [
+        { id: 11, nome: "Departamento de Vigilância", descricao: "Cuidados preventivos." },
+        { id: 12, nome: "Departamento de Atendimento", descricao: "Atendimento ao cidadão." },
+      ],
     },
-  },
-};
+    {
+      id: 2,
+      nome: "Secretaria de Educação",
+      descricao: "Gestão da educação municipal.",
+      departamentos: [
+        { id: 21, nome: "Departamento de Ensino", descricao: "Supervisão das escolas." },
+        { id: 22, nome: "Departamento de Transporte Escolar", descricao: "Transporte para estudantes." },
+      ],
+    },
+  ],
+});
+
+// Função para abrir os detalhes
+function abrirDetalhes(tipo: string, item: any) {
+  alert(`Abrir detalhes de ${tipo}: ${item.nome}`);
+  // Implemente a navegação ou abertura de modal para edição aqui
+}
 </script>
 
 <template>
@@ -102,8 +98,12 @@ export default {
 </template>
 
 <style>
-.card-departamento {
-  margin-bottom: 16px;
-}
+  .card-departamento {
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
 </style>
 
