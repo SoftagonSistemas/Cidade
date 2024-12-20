@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/authStore'
+import { AuthService } from '@/services/AuthService'
+import { useAuthStore } from '@/stores/AuthStore'
 import { useRouter } from 'vue-router'
 
 // State
-const email = ref('admin@example.com')
-const password = ref('complexAdminFakePass123')
+const email = ref('user@back3nd.com')
+const password = ref('adminPassword123')
 const authStore = useAuthStore()
 const router = useRouter()
+const authService = new AuthService()
 
 // Login Function
 async function login() {
   try {
-    const user = await authStore.login(email.value, password.value)
-    if (user && !authStore.isTokenExpired(authStore.token!)) {
+    const user = await authService.login(email.value, password.value)
+    authStore.login(user)
+    if (user) {
       toast.success('Acesso concedido com sucesso!')
       setTimeout(() => {
         router.push('/admin/')

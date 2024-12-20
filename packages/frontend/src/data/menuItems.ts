@@ -25,31 +25,6 @@ export const primaryMenuItems: MenuItem[] = [
     ],
   },
   {
-    icon: 'mdi-domain',
-    label: 'Organization Management',
-    children: [
-      { title: 'Departments and Secretariats', route: '/organization/departments' },
-      { title: 'User Permissions', route: '/organization/user-permissions' },
-    ],
-  },
-  {
-    icon: 'mdi-briefcase-check',
-    label: 'Tasks',
-    children: [
-      { title: 'Task List', route: '/tasks/list' },
-      { title: 'Create Task', route: '/tasks/create' },
-    ],
-  },
-  {
-    icon: 'mdi-book-open-page-variant',
-    label: 'Knowledge Base',
-    children: [
-      { title: 'FAQs', route: '/knowledge-base/faqs' },
-      { title: 'Categories', route: '/knowledge-base/categories' },
-      { title: 'Canned Responses', route: '/knowledge-base/canned-responses' },
-    ],
-  },
-  {
     icon: 'mdi-file-document',
     label: 'Documentos',
     children: [
@@ -59,15 +34,6 @@ export const primaryMenuItems: MenuItem[] = [
       { title: 'Documentos Enviados', route: '/admin/documentos/DocumentosEnviados' },
       { title: 'separator' },
       { title: 'Certificado digital', route: '/admin/documentos/CertificadoDigital' },
-    ],
-  },
-  {
-    icon: 'mdi-repeat',
-    label: 'Fluxos de Trabalho',
-    children: [
-      { title: 'Criar Fluxo', route: '/admin/fluxos/CriarFluxo' },
-      { title: 'Meus Fluxos', route: '/admin/fluxos/MeusFluxos' },
-      { title: 'Histórico de Fluxos', route: '/admin/fluxos/HistoricoFluxos' },
     ],
   },
   {
@@ -93,11 +59,7 @@ export function getMenuDescription(menuLabel: string): string {
   const descriptions: { [key: string]: string } = {
     'Dashboard': 'Indicadores de desempenho e notificações',
     'Ticket Management': 'Manage all tickets and service requests.',
-    'Organization Management': 'Configure departments, secretariats, and user permissions.',
-    'Tasks': 'Create and manage tasks.',
-    'Knowledge Base': 'Access FAQs, categories, and predefined responses.',
     'Documentos': 'Gerenciamento de documentos',
-    'Fluxos de Trabalho': 'Gerenciamento de fluxos de trabalho',
     'Assinaturas Digitais': 'Gerenciamento de assinaturas digitais',
     'Notificações': 'Central de notificações',
     'Relatórios': 'Relatórios gerenciais e exportação',

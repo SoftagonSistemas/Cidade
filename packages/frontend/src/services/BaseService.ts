@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/AuthStore'
 
 const apiUrl = import.meta.env.VITE_BACK3ND_URL
 
