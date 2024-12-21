@@ -9,7 +9,8 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import AdminLayout from '@/layouts/AdminLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import { useAuthStore } from '@/stores/authStore'
+import { AuthService } from '@/services/AuthService'
+import { useAuthStore } from '@/stores/AuthStore'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 
@@ -43,24 +44,24 @@ function getLayoutName(path: string): string {
  */
 function injectLayout(routes: RouteRecordRaw[]) {
   return routes.map((route) => {
-    // Obter layout com base no meta.layout ou no prefixo da rota
     const layoutName = String(route.meta?.layout || getLayoutName(route.path))
     const layout = layoutMap[layoutName]
     if (!layoutMap[layoutName]) {
       console.warn(`Layout "${layoutName}" not found. Using DefaultLayout.`)
     }
 
+    const childRoute = {
+      ...route,
+      path: '', // Preserva o mesmo path
+      name: `${String(route.name) || route.path}-child`,
+      component: route.component || null,
+    }
+
     return {
       ...route,
-      component: layout, // Garante que seja um componente válido
-      children: [
-        {
-          ...route,
-          path: '',
-          component: route.component || null, // Fallback para evitar erro de undefined
-        },
-      ],
-    } as RouteRecordRaw // Garante a compatibilidade com o tipo
+      component: layout,
+      children: [childRoute],
+    } as RouteRecordRaw
   })
 }
 
@@ -88,20 +89,19 @@ router.onError((err, to) => {
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
-  await authStore.initializeAuthState()
+  const authService = new AuthService()
+  await authService.getSession()
   if (to.path.startsWith('/admin')) {
-    if (!authStore.isAuthenticated()) {
-      // Comentada para evitar redirecionamento para a página de login
-      // next('/auth')
+    if (!authStore.isAuthenticated) {
+      next('/auth')
     }
     else {
-      // next() Comentada para evitar redirecionamento para a página de login
+      next()
     }
   }
   else {
-    // next() Comentada para evitar redirecionamento para a página de login
+    next()
   }
-  return next() // permitir a navegação
 })
 
 router.isReady().then(() => {
