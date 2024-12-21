@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { AuthService } from '@/services/AuthService'
+import type { Institution } from '@prisma/client'
+import BaseService from '@/services/BaseService'
 import { OrganizationService } from '@/services/OrganizationService'
 import { onMounted, ref } from 'vue'
 
 const organizations = ref(null)
 const organizationService = new OrganizationService()
 
-const authService = new AuthService()
-
+const baseService = new BaseService<Institution>('institution')
 onMounted(async () => {
   try {
-    const teste = await authService.postgrestToken()
+    const teste = await baseService.getAll()
     console.log(teste)
     organizations.value = await organizationService.listOrganizations()
   }

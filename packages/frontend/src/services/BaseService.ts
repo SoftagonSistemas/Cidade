@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client'
 import { useAuthStore } from '@/stores/AuthStore'
 import { PostgrestClient } from '@supabase/postgrest-js'
 
@@ -5,11 +6,11 @@ const apiUrl = import.meta.env.VITE_POSTGREST_URL
 
 export default class BaseService<T> {
   private client: PostgrestClient
+  private baseURL = import.meta.env.VITE_BACK3ND_URL
 
   constructor(private readonly table: string) {
     const authStore = useAuthStore()
     const token = authStore.getPostgrestToken()
-
     this.client = new PostgrestClient(apiUrl, {
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -19,7 +20,7 @@ export default class BaseService<T> {
 
   async getById(id: string): Promise<T | null> {
     const { data, error } = await this.client
-      .from<T>(this.table)
+      .from(this.table)
       .select('*')
       .eq('id', id)
       .single()
@@ -30,11 +31,11 @@ export default class BaseService<T> {
   }
 
   async getAll(
-    orderBy?: keyof T,
+    orderBy?: string,
     ascending = true,
     limit?: number,
-  ): Promise<T[]> {
-    let query = this.client.from<T>(this.table).select('*')
+  ) {
+    let query = this.client.from(this.table).select('*')
 
     if (orderBy) {
       query = query.order(orderBy as string, { ascending })
@@ -51,9 +52,9 @@ export default class BaseService<T> {
     return data || []
   }
 
-  async create(record: Partial<T>): Promise<T> {
+  async create(record: T): Promise<T | null> {
     const { data, error } = await this.client
-      .from<T>(this.table)
+      .from(this.table)
       .insert(record)
       .select()
       .single()
@@ -65,7 +66,7 @@ export default class BaseService<T> {
 
   async update(id: string, updates: Partial<T>): Promise<T | null> {
     const { data, error } = await this.client
-      .from<T>(this.table)
+      .from(this.table)
       .update(updates)
       .eq('id', id)
       .select()
@@ -78,7 +79,7 @@ export default class BaseService<T> {
 
   async softDelete(id: string): Promise<T | null> {
     const { data, error } = await this.client
-      .from<T>(this.table)
+      .from(this.table)
       .update({ deleted_at: new Date().toISOString() } as unknown as Partial<T>)
       .eq('id', id)
       .select()
@@ -91,7 +92,7 @@ export default class BaseService<T> {
 
   async countEntries(): Promise<number> {
     const { count, error } = await this.client
-      .from<T>(this.table)
+      .from(this.table)
       .select('*', { count: 'exact', head: true })
 
     if (error)
@@ -101,7 +102,7 @@ export default class BaseService<T> {
 
   async filter(column: keyof T, value: string): Promise<T[]> {
     const { data, error } = await this.client
-      .from<T>(this.table)
+      .from(this.table)
       .select('*')
       .eq(column as string, value)
 
@@ -116,7 +117,7 @@ export default class BaseService<T> {
    * @param additionalData Any additional data to include in the FormData.
    * @returns The server response for the uploaded file.
    */
-  async uploadFile(file: File, additionalData: Record<string, any> = {}): Promise<UploadFileResponse> {
+  async uploadFile(file: File, additionalData: Record<string, any> = {}) {
     const url = `/files/upload`
 
     const formData = new FormData()
@@ -133,13 +134,13 @@ export default class BaseService<T> {
       credentials: 'include',
     }
 
-    const response = await fetch(`${this.baseURL}${url}`, options)
+    const response = await fetch(`${this.baseURL}/${url}`, options)
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    return response.json() as Promise<UploadFileResponse>
+    return response.json()
   }
 
   async viewFile(versionId: string, path: string): Promise<Response> {
