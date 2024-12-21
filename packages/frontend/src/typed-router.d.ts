@@ -39,5 +39,6 @@ declare module 'vue-router/auto-routes' {
     '/admin/relatorios/Exportacao': RouteRecordInfo<'/admin/relatorios/Exportacao', '/admin/relatorios/Exportacao', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/RelatoriosGerenciais': RouteRecordInfo<'/admin/relatorios/RelatoriosGerenciais', '/admin/relatorios/RelatoriosGerenciais', Record<never, never>, Record<never, never>>,
     '/auth/': RouteRecordInfo<'/auth/', '/auth', Record<never, never>, Record<never, never>>,
+    '/auth/organization': RouteRecordInfo<'/auth/organization', '/auth/organization', Record<never, never>, Record<never, never>>,
   }
 }

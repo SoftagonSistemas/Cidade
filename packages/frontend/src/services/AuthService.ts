@@ -129,6 +129,46 @@ export class AuthService {
   }
 
   /**
+   * Retrieves a list of organizations and their IDs.
+   * @returns A promise resolving to an array of organizations with their details.
+   */
+  async listOrganizations(): Promise<{ id: string, name: string, logo: string, metadata: string, createdAt: Date, slug: string }[]> {
+    try {
+      const { data } = await this.client.organization.list()
+      return data.map((org: any) => ({
+        id: org.id,
+        name: org.name,
+        logo: org.logo,
+        metadata: org.metadata,
+        createdAt: new Date(org.createdAt),
+        slug: org.slug,
+      }))
+    }
+    catch (error) {
+      throw new Error(`Failed to list organizations: ${(error as Error).message}`)
+    }
+  }
+
+  /**
+   * Sets the active organization by ID.
+   * @param organizationId The ID of the organization to set as active.
+   * @returns A promise resolving to the response of the set active request.
+   */
+  async setActiveOrganization(organizationId: string): Promise<void> {
+    try {
+      const { data } = await this.client.organization.setActive({
+        organizationId,
+      })
+      const authStore = useAuthStore()
+      authStore.setOrganization(data)
+      return data
+    }
+    catch (error) {
+      throw new Error(`Failed to set active organization: ${(error as Error).message}`)
+    }
+  }
+
+  /**
    * Requests a remote token.
    * @returns A promise resolving to the token.
    */

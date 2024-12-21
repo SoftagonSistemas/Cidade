@@ -18,7 +18,7 @@ async function login() {
     if (user) {
       toast.success('Acesso concedido com sucesso!')
       setTimeout(() => {
-        router.push('/admin/')
+        router.push('organization')
       }, 1000)
     }
     else {

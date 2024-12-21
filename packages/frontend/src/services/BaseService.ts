@@ -1,8 +1,5 @@
-import type { Prisma } from '@prisma/client'
 import { useAuthStore } from '@/stores/AuthStore'
 import { PostgrestClient } from '@supabase/postgrest-js'
-
-const apiUrl = import.meta.env.VITE_POSTGREST_URL
 
 export default class BaseService<T> {
   private client: PostgrestClient
@@ -11,11 +8,19 @@ export default class BaseService<T> {
   constructor(private readonly table: string) {
     const authStore = useAuthStore()
     const token = authStore.getPostgrestToken()
-    this.client = new PostgrestClient(apiUrl, {
+    const postgrestUrl = this.getPostgresUrl()
+    this.client = new PostgrestClient(postgrestUrl, {
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
       },
     })
+  }
+
+  getPostgresUrl() {
+    const authStore = useAuthStore()
+    const rawMetadata = authStore.organization?.metadata
+    const postgrestUrl = rawMetadata ? JSON.parse(rawMetadata).postgrest : null
+    return postgrestUrl
   }
 
   async getById(id: string): Promise<T | null> {

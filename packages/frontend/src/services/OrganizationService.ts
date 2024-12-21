@@ -1,4 +1,5 @@
 import { AuthService } from './AuthService'
+
 /**
  * Organization Service class for managing organization-related requests.
  */
@@ -13,10 +14,13 @@ export class OrganizationService extends AuthService {
    */
   async listOrganizations() {
     try {
-      const response = await this.client.organization.setActive({
-        organizationId: 'zViH5YbyJ4lC9Y26raPfu', // Substitua pelo ID correto
-      })
-      return response
+      //     const active = await this.client.organization.getActiveMember()
+      //   const response = await this.client.organization.setActive({
+      //   organizationId: 'zViH5YbyJ4lC9Y26raPfu', // Substitua pelo ID correto
+      // })
+      // return response
+      const list = await this.client.organization.list()
+      console.log('Lista de organizações:', list)
     }
     catch (error) {
       throw new Error(`Failed to list organizations: ${(error as Error).message}`)
