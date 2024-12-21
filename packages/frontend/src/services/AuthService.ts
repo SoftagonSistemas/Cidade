@@ -1,4 +1,5 @@
 import type { ClientOptions, User } from 'better-auth/types'
+import { useAuthStore } from '@/stores/AuthStore'
 import { organizationClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
 
@@ -33,6 +34,9 @@ export class AuthService {
       if (!data) {
         throw new Error('Login failed: No data returned')
       }
+
+      // Get autorization token for PostgREST
+      await this.postgrestToken()
       return data.user as User
     }
     catch (error) {
@@ -140,6 +144,7 @@ export class AuthService {
       }
 
       const data = await response.json()
+      useAuthStore().setPostgrestToken(data.token)
       return data.token
     }
     catch (error) {

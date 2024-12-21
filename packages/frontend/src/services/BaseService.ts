@@ -8,7 +8,7 @@ export default class BaseService<T> {
 
   constructor(private readonly table: string) {
     const authStore = useAuthStore()
-    const token = authStore.token
+    const token = authStore.getPostgrestToken()
 
     this.client = new PostgrestClient(apiUrl, {
       headers: {

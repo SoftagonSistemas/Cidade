@@ -1,4 +1,4 @@
-import type { TUser } from '@/types/Tuser'
+import type { User } from 'better-auth/types'
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore, skipHydrate } from 'pinia'
 import { computed } from 'vue'
@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   })
 
-  function login(userData: TUser) {
+  function login(userData: User) {
     user.value = JSON.stringify(userData)
   }
 
@@ -42,11 +42,14 @@ export const useAuthStore = defineStore('auth', () => {
   async function setPostgrestToken(token: string) {
     postgrestToken.value = token
   }
-
+  function getPostgrestToken(): string | null {
+    return postgrestToken.value
+  }
   return {
     user: skipHydrate(parsedUser), // Persisted via localStorage
     isAuthenticated,
     setPostgrestToken,
+    getPostgrestToken,
     login,
     logout,
   }
