@@ -1,15 +1,20 @@
-import type { TUser } from '@/types/Tuser'
+import type { ClientOptions, User } from 'better-auth/types'
+import { organizationClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
+
 /**
  * Authentication Service class for managing authentication requests.
  */
 export class AuthService {
-  public client: ReturnType<typeof createAuthClient>
+  public client: any
 
   constructor() {
     const AUTH_API = `${import.meta.env.VITE_BACK3ND_URL}/auth`
-    this.client = createAuthClient({
+    this.client = createAuthClient<ClientOptions>({
       baseURL: AUTH_API,
+      plugins: [
+        organizationClient(),
+      ],
     })
   }
 
@@ -19,7 +24,7 @@ export class AuthService {
    * @param password User's password
    * @returns A promise resolving to the user's session.
    */
-  async login(email: string, password: string): Promise<TUser> {
+  async login(email: string, password: string): Promise<User> {
     try {
       const { data } = await this.client.signIn.email({
         email,
@@ -28,7 +33,7 @@ export class AuthService {
       if (!data) {
         throw new Error('Login failed: No data returned')
       }
-      return data.user as TUser
+      return data.user as User
     }
     catch (error) {
       throw new Error(`Login failed: ${(error as Error).message}`)
@@ -69,7 +74,7 @@ export class AuthService {
       image: image ?? undefined,
     })
     if (response.data) {
-      return response.data as TUser
+      return response.data as User
     }
     else {
       console.error(`Registration failed: ${response.error.message}`)
