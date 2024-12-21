@@ -1,103 +1,113 @@
 import { useAuthStore } from '@/stores/AuthStore'
+import { PostgrestClient } from '@supabase/postgrest-js'
 
-const apiUrl = import.meta.env.VITE_BACK3ND_URL
+const apiUrl = import.meta.env.VITE_POSTGREST_URL
 
-interface RequestResult<U> { data: U[], count?: number }
+export default class BaseService<T> {
+  private client: PostgrestClient
 
-interface UploadFileResponse {
-  message: string
-  path: string
-  versionId: string
-}
-
-export default class BaseService<T = string> {
-  private readonly baseURL: string = apiUrl
-  protected readonly table: string
-
-  constructor(table: string) {
-    this.table = table
-  }
-
-  public async request<U>(url: string, options: RequestInit = {}): Promise<RequestResult<U>> {
+  constructor(private readonly table: string) {
     const authStore = useAuthStore()
     const token = authStore.token
 
-    const headers = {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    }
-
-    const response = await fetch(`${this.baseURL}${url}`, { ...options, headers })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-
-    return response.json() as Promise<RequestResult<U>>
+    this.client = new PostgrestClient(apiUrl, {
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    })
   }
 
   async getById(id: string): Promise<T | null> {
-    const { data } = await this.request<T>(`items/${this.table}/${id}`)
-    return data[0] ?? null
+    const { data, error } = await this.client
+      .from<T>(this.table)
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error)
+      throw new Error(error.message)
+    return data
   }
 
   async getAll(
-    orderBy?: string,
+    orderBy?: keyof T,
     ascending = true,
     limit?: number,
   ): Promise<T[]> {
-    const params = new URLSearchParams({
-      ascending: ascending.toString(),
-      ...(orderBy && { orderBy }),
-      ...(limit && { limit: limit.toString() }),
-    })
+    let query = this.client.from<T>(this.table).select('*')
 
-    const url = `items/${this.table}/?${params.toString()}`
-    const { data } = await this.request<T>(url)
-    return data
+    if (orderBy) {
+      query = query.order(orderBy as string, { ascending })
+    }
+
+    if (limit) {
+      query = query.limit(limit)
+    }
+
+    const { data, error } = await query
+
+    if (error)
+      throw new Error(error.message)
+    return data || []
   }
 
   async create(record: Partial<T>): Promise<T> {
-    const url = `items/${this.table}`
-    const options: RequestInit = {
-      method: 'POST',
-      body: JSON.stringify(record),
-    }
-    const { data } = await this.request<T>(url, options)
-    return data[0]
+    const { data, error } = await this.client
+      .from<T>(this.table)
+      .insert(record)
+      .select()
+      .single()
+
+    if (error)
+      throw new Error(error.message)
+    return data
   }
 
   async update(id: string, updates: Partial<T>): Promise<T | null> {
-    const url = `items/${this.table}/${id}`
-    const options: RequestInit = {
-      method: 'PUT',
-      body: JSON.stringify(updates),
-    }
-    const { data } = await this.request<T>(url, options)
-    return data[0] ?? null
+    const { data, error } = await this.client
+      .from<T>(this.table)
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error)
+      throw new Error(error.message)
+    return data
   }
 
   async softDelete(id: string): Promise<T | null> {
-    const url = `items/${this.table}/${id}`
-    const options: RequestInit = {
-      method: 'PATCH',
-      body: JSON.stringify({ deleted_at: new Date().toISOString() }),
-    }
-    const { data } = await this.request<T>(url, options)
-    return data[0] ?? null
+    const { data, error } = await this.client
+      .from<T>(this.table)
+      .update({ deleted_at: new Date().toISOString() } as unknown as Partial<T>)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error)
+      throw new Error(error.message)
+    return data
   }
 
   async countEntries(): Promise<number> {
-    const { count } = await this.request<never>(`items/${this.table}`)
-    return count ?? 0
+    const { count, error } = await this.client
+      .from<T>(this.table)
+      .select('*', { count: 'exact', head: true })
+
+    if (error)
+      throw new Error(error.message)
+    return count || 0
   }
 
   async filter(column: keyof T, value: string): Promise<T[]> {
-    const filter = encodeURIComponent(JSON.stringify({ [column]: { _eq: value } }))
-    const url = `items/${this.table}/?filter=${filter}`
-    const { data } = await this.request<T>(url)
-    return data
+    const { data, error } = await this.client
+      .from<T>(this.table)
+      .select('*')
+      .eq(column as string, value)
+
+    if (error)
+      throw new Error(error.message)
+    return data || []
   }
 
   /**
@@ -107,10 +117,7 @@ export default class BaseService<T = string> {
    * @returns The server response for the uploaded file.
    */
   async uploadFile(file: File, additionalData: Record<string, any> = {}): Promise<UploadFileResponse> {
-    const url = `files/upload`
-
-    const authStore = useAuthStore()
-    const token = authStore.token
+    const url = `/files/upload`
 
     const formData = new FormData()
     formData.append('file', file)
@@ -120,14 +127,10 @@ export default class BaseService<T = string> {
       formData.append(key, value)
     })
 
-    const headers = {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    }
-
     const options: RequestInit = {
       method: 'POST',
       body: formData,
-      headers, // Content-Type é gerenciado automaticamente pelo FormData
+      credentials: 'include',
     }
 
     const response = await fetch(`${this.baseURL}${url}`, options)
@@ -140,18 +143,11 @@ export default class BaseService<T = string> {
   }
 
   async viewFile(versionId: string, path: string): Promise<Response> {
-    const authStore = useAuthStore()
-    const token = authStore.token
-
-    const url = `files/view?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
-
-    const headers = {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    }
+    const url = `/files/view?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
 
     const options: RequestInit = {
       method: 'GET',
-      headers,
+      credentials: 'include',
     }
 
     const response = await fetch(`${this.baseURL}${url}`, options)
@@ -170,18 +166,11 @@ export default class BaseService<T = string> {
    * @returns The server response for the deleted file.
    */
   async deleteFile(versionId: string, path: string): Promise<void> {
-    const authStore = useAuthStore()
-    const token = authStore.token
-
-    const url = `files/delete?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
-
-    const headers = {
-      ...(token && { Authorization: `Bearer ${token}` }),
-    }
+    const url = `/files/delete?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
 
     const options: RequestInit = {
       method: 'DELETE',
-      headers,
+      credentials: 'include',
     }
 
     const response = await fetch(`${this.baseURL}${url}`, options)

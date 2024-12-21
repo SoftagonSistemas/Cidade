@@ -5,6 +5,7 @@ import { computed } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = useLocalStorage<string | null>('auth/user', null)
+  const postgrestToken = useLocalStorage<string | null>('auth/postgrestToken', null)
 
   const isAuthenticated = computed(() => {
     if (!user.value)
@@ -38,9 +39,14 @@ export const useAuthStore = defineStore('auth', () => {
     }
   })
 
+  async function setPostgrestToken(token: string) {
+    postgrestToken.value = token
+  }
+
   return {
     user: skipHydrate(parsedUser), // Persisted via localStorage
     isAuthenticated,
+    setPostgrestToken,
     login,
     logout,
   }

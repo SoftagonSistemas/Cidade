@@ -123,4 +123,27 @@ export class AuthService {
       throw new Error(`Password reset failed: ${(error as Error).message}`)
     }
   }
+
+  /**
+   * Requests a remote token.
+   * @returns A promise resolving to the token.
+   */
+  async postgrestToken(): Promise<string> {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACK3ND_URL}/postgrest/token`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+
+      if (!response.ok) {
+        throw new Error(`Token request failed: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      return data.token
+    }
+    catch (error) {
+      throw new Error(`Token request failed: ${(error as Error).message}`)
+    }
+  }
 }

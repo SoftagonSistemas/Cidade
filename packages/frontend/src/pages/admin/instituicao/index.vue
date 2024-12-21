@@ -3,17 +3,17 @@ import UploadImage from '@/components/UploadImage.vue'
 import { z } from 'zod'
 
 const formData = ref({
-  nome: '',
-  bandeira: null,
-  brasao: null,
-  telefone: '',
-  whatsapp: '',
-  email: '',
-  endereco: '',
-  cidade: '',
-  estado: '',
-  prefeito: null,
-  vicePrefeito: null,
+  nome: 'Prefeitura de Teste',
+  bandeira: 'bandeira-teste.png',
+  brasao: 'brasao-teste.png',
+  telefone: '123456789',
+  whatsapp: '987654321',
+  email: 'teste@prefeitura.com',
+  endereco: 'Rua de Teste, 123',
+  cidade: 'Cidade Teste',
+  estado: 'Estado Teste',
+  prefeito: { id: 1, name: 'João Prefeito' },
+  vicePrefeito: { id: 2, name: 'Maria Vice' },
 })
 
 const usuarios = ref([

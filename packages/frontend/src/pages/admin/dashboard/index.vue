@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { AuthService } from '@/services/AuthService'
 import { OrganizationService } from '@/services/OrganizationService'
 import { onMounted, ref } from 'vue'
 
 const organizations = ref(null)
 const organizationService = new OrganizationService()
 
+const authService = new AuthService()
+
 onMounted(async () => {
   try {
+    const teste = await authService.postgrestToken()
+    console.log(teste)
     organizations.value = await organizationService.listOrganizations()
   }
   catch (error) {
