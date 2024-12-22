@@ -19,6 +19,7 @@ const formData = ref({
 })
 
 const isFormValid = ref(false)
+const formErrors = ref({})
 
 const schema = z.object({
   name: z.string().min(1, 'Campo obrigatório'),
@@ -40,7 +41,17 @@ const usuarios = ref([])
 
 function validateForm() {
   const result = schema.safeParse(formData.value)
+  console.warn('Validação do formulário:', result)
   isFormValid.value = result.success
+
+  if (!result.success) {
+    formErrors.value = result.error.flatten().fieldErrors
+    console.warn('Erros nos campos:', formErrors.value)
+  }
+  else {
+    formErrors.value = {}
+  }
+
   return result
 }
 
@@ -60,7 +71,10 @@ async function submitForm() {
     }
   }
   else {
-    toast.error('Erros de validação no formulário.')
+    const errorMessages = Object.entries(formErrors.value)
+      .map(([field, errors]) => `${field}: ${errors.join(', ')}`)
+      .join(' | ')
+    toast.error(`Erros de validação no formulário: ${errorMessages}`)
   }
 }
 
@@ -142,21 +156,7 @@ onMounted(async () => {
             :items="usuarios"
             item-title="name"
             item-value="id"
-            return-object
-          >
-            <template #append-item>
-              <v-list-item
-                value="new"
-                class="d-flex align-center"
-                @click="cadastrarUsuario('prefeito')"
-              >
-                <v-icon left>
-                  mdi-plus
-                </v-icon>
-                Cadastrar Novo Prefeito
-              </v-list-item>
-            </template>
-          </v-select>
+          />
         </v-col>
         <v-col cols="12" sm="6">
           <v-select
@@ -165,21 +165,7 @@ onMounted(async () => {
             :items="usuarios"
             item-title="name"
             item-value="id"
-            return-object
-          >
-            <template #append-item>
-              <v-list-item
-                value="new"
-                class="d-flex align-center"
-                @click="cadastrarUsuario('vice-prefeito')"
-              >
-                <v-icon left>
-                  mdi-plus
-                </v-icon>
-                Cadastrar Novo Vice-Prefeito
-              </v-list-item>
-            </template>
-          </v-select>
+          />
         </v-col>
 
         <v-col cols="12" class="d-flex justify-end">

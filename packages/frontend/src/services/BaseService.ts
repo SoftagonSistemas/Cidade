@@ -1,9 +1,12 @@
 import { useAuthStore } from '@/stores/AuthStore'
 import { PostgrestClient } from '@supabase/postgrest-js'
 
+const authStore = useAuthStore()
+
 export default class BaseService<T> {
   private client: PostgrestClient
-
+  private userId = authStore.user?.id
+  private orgId = authStore.organization?.id
   constructor(private readonly table: string) {
     const authStore = useAuthStore()
     const token = authStore.getPostgrestToken()
@@ -64,9 +67,15 @@ export default class BaseService<T> {
   }
 
   async create(record: T): Promise<T | null> {
+    const recordWithAudit = {
+      ...record,
+      updatedBy: this.userId,
+      tenantId: this.orgId,
+    } as unknown as T
+
     const { data, error } = await this.client
       .from(this.table)
-      .insert(record)
+      .insert(recordWithAudit)
       .select()
       .single()
 
@@ -76,9 +85,14 @@ export default class BaseService<T> {
   }
 
   async update(id: string, updates: Partial<T>): Promise<T | null> {
+    const updatesWithAudit = {
+      ...updates,
+      createdBy: this.userId,
+    } as unknown as Partial<T>
+
     const { data, error } = await this.client
       .from(this.table)
-      .update(updates)
+      .update(updatesWithAudit)
       .eq('id', id)
       .select()
       .single()
@@ -91,7 +105,10 @@ export default class BaseService<T> {
   async softDelete(id: string): Promise<T | null> {
     const { data, error } = await this.client
       .from(this.table)
-      .update({ deleted_at: new Date().toISOString() } as unknown as Partial<T>)
+      .update({
+        deletedAt: new Date().toISOString(),
+        updatedBy: this.userId,
+      } as unknown as Partial<T>)
       .eq('id', id)
       .select()
       .single()

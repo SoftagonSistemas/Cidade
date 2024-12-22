@@ -12,65 +12,65 @@ import type { Prisma } from '@prisma/client';
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id','apiUserId','email','name','phoneNumber','jobTitle','profilePhoto','role','createdAt','updatedAt','dateOfBirth','addressId']);
+export const UserScalarFieldEnumSchema = z.enum(['id','apiUserId','email','name','phoneNumber','jobTitle','profilePhoto','role','createdAt','updatedAt','dateOfBirth','addressId','createdBy','updatedBy','tenantId','deletedAt']);
 
-export const DocumentScalarFieldEnumSchema = z.enum(['id','title','filePath','mimeType','keywords','ocrText','ownerId','signed','signedAt','signature','createdAt']);
+export const DocumentScalarFieldEnumSchema = z.enum(['id','title','filePath','mimeType','keywords','ocrText','ownerId','signed','signedAt','signature','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const UserOnDocumentsScalarFieldEnumSchema = z.enum(['userId','documentId','assignedAt','role','createdAt']);
+export const UserOnDocumentsScalarFieldEnumSchema = z.enum(['userId','documentId','assignedAt','role','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const DocumentUserScalarFieldEnumSchema = z.enum(['id','userId','documentId','createdAt']);
+export const DocumentUserScalarFieldEnumSchema = z.enum(['id','userId','documentId','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const DocumentVersionScalarFieldEnumSchema = z.enum(['id','documentId','versionNumber','filePath','changesDescription','createdById','createdAt']);
+export const DocumentVersionScalarFieldEnumSchema = z.enum(['id','documentId','versionNumber','filePath','changesDescription','createdById','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const DocumentVersionCreatorScalarFieldEnumSchema = z.enum(['id','userId','versionId','createdAt']);
+export const DocumentVersionCreatorScalarFieldEnumSchema = z.enum(['id','userId','versionId','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const SharedDocumentScalarFieldEnumSchema = z.enum(['id','documentId','userId','sharedAt','permission','createdAt']);
+export const SharedDocumentScalarFieldEnumSchema = z.enum(['id','documentId','userId','sharedAt','permission','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const WorkflowScalarFieldEnumSchema = z.enum(['id','name','description','type','status','createdAt','updatedAt']);
+export const WorkflowScalarFieldEnumSchema = z.enum(['id','name','description','type','status','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
-export const TaskScalarFieldEnumSchema = z.enum(['id','workflowId','assignedToId','documentId','title','description','status','dueDate','createdAt','updatedAt']);
+export const TaskScalarFieldEnumSchema = z.enum(['id','workflowId','assignedToId','documentId','title','description','status','dueDate','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
-export const AuditLogScalarFieldEnumSchema = z.enum(['id','taskId','workflowId','action','performedById','timestamp','description']);
+export const AuditLogScalarFieldEnumSchema = z.enum(['id','taskId','workflowId','action','performedById','timestamp','description','createdBy','updatedBy','tenantId','deletedAt','createdAt','updatedAt']);
 
-export const NotificationScalarFieldEnumSchema = z.enum(['id','userId','message','read','createdAt']);
+export const NotificationScalarFieldEnumSchema = z.enum(['id','userId','message','read','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const AttachmentScalarFieldEnumSchema = z.enum(['id','documentId','filePath','fileName','mimeType','createdAt']);
+export const AttachmentScalarFieldEnumSchema = z.enum(['id','documentId','filePath','fileName','mimeType','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const DigitalCertificateScalarFieldEnumSchema = z.enum(['id','userId','alias','filePath','password','createdAt','expiration']);
+export const DigitalCertificateScalarFieldEnumSchema = z.enum(['id','userId','alias','filePath','password','createdAt','expiration','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const FileMetadataScalarFieldEnumSchema = z.enum(['id','documentId','fileSize','mimeType','checksum','createdAt']);
+export const FileMetadataScalarFieldEnumSchema = z.enum(['id','documentId','fileSize','mimeType','checksum','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const InstitutionScalarFieldEnumSchema = z.enum(['id','name','address','city','state','phone','whatsapp','email','flag','emblem','mayorId','viceMayorId','createdAt','updatedAt']);
+export const InstitutionScalarFieldEnumSchema = z.enum(['id','name','address','city','state','phone','whatsapp','email','flag','emblem','mayorId','viceMayorId','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
-export const DepartmentScalarFieldEnumSchema = z.enum(['id','name','description','isSecretariat','institutionId','parentDepartmentId','headId','createdAt','updatedAt']);
+export const DepartmentScalarFieldEnumSchema = z.enum(['id','name','description','isSecretariat','institutionId','parentDepartmentId','headId','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
-export const UserDepartmentScalarFieldEnumSchema = z.enum(['id','userId','departmentId','role','createdAt']);
+export const UserDepartmentScalarFieldEnumSchema = z.enum(['id','userId','departmentId','role','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const TicketScalarFieldEnumSchema = z.enum(['id','subject','description','statusId','priorityId','createdById','assignedToId','departmentId','helpTopicId','slaPlanId','dueDate','createdAt','updatedAt','closedAt','lastResponseAt']);
+export const TicketScalarFieldEnumSchema = z.enum(['id','subject','description','statusId','priorityId','createdById','assignedToId','departmentId','helpTopicId','slaPlanId','dueDate','createdAt','updatedAt','closedAt','lastResponseAt','updatedBy','tenantId','deletedAt']);
 
-export const TicketStatusScalarFieldEnumSchema = z.enum(['id','name','createdAt']);
+export const TicketStatusScalarFieldEnumSchema = z.enum(['id','name','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const TicketPriorityScalarFieldEnumSchema = z.enum(['id','name','createdAt']);
+export const TicketPriorityScalarFieldEnumSchema = z.enum(['id','name','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const HelpTopicScalarFieldEnumSchema = z.enum(['id','topic','description','departmentId','createdAt']);
+export const HelpTopicScalarFieldEnumSchema = z.enum(['id','topic','description','departmentId','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const SLAPlanScalarFieldEnumSchema = z.enum(['id','name','gracePeriod','createdAt']);
+export const SLAPlanScalarFieldEnumSchema = z.enum(['id','name','gracePeriod','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const TicketThreadScalarFieldEnumSchema = z.enum(['id','ticketId','userId','message','createdAt']);
+export const TicketThreadScalarFieldEnumSchema = z.enum(['id','ticketId','userId','message','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const TicketAttachmentScalarFieldEnumSchema = z.enum(['id','ticketId','ticketThreadId','filePath','fileName','mimeType','createdAt']);
+export const TicketAttachmentScalarFieldEnumSchema = z.enum(['id','ticketId','ticketThreadId','filePath','fileName','mimeType','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const TicketCollaboratorScalarFieldEnumSchema = z.enum(['id','ticketId','userId']);
+export const TicketCollaboratorScalarFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId','deletedAt','createdAt','updatedAt']);
 
-export const CustomFieldScalarFieldEnumSchema = z.enum(['id','name','fieldType','createdAt']);
+export const CustomFieldScalarFieldEnumSchema = z.enum(['id','name','fieldType','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const TicketCustomFieldScalarFieldEnumSchema = z.enum(['id','ticketId','fieldId','value']);
+export const TicketCustomFieldScalarFieldEnumSchema = z.enum(['id','ticketId','fieldId','value','createdBy','updatedBy','tenantId','deletedAt','createdAt','updatedAt']);
 
-export const TaskUserScalarFieldEnumSchema = z.enum(['id','taskId','userId']);
+export const TaskUserScalarFieldEnumSchema = z.enum(['id','taskId','userId','createdBy','updatedBy','tenantId','deletedAt','createdAt','updatedAt']);
 
-export const TicketUserScalarFieldEnumSchema = z.enum(['id','ticketId','userId']);
+export const TicketUserScalarFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId','deletedAt','createdAt','updatedAt']);
 
-export const AddressScalarFieldEnumSchema = z.enum(['id','street','city','state','country','postalCode','createdAt','updatedAt']);
+export const AddressScalarFieldEnumSchema = z.enum(['id','street','city','state','country','postalCode','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
 export const SortOrderSchema = z.enum(['asc','desc']);
 
@@ -78,65 +78,65 @@ export const QueryModeSchema = z.enum(['default','insensitive']);
 
 export const NullsOrderSchema = z.enum(['first','last']);
 
-export const UserOrderByRelevanceFieldEnumSchema = z.enum(['id','apiUserId','email','name','phoneNumber','jobTitle','profilePhoto','role','addressId']);
+export const UserOrderByRelevanceFieldEnumSchema = z.enum(['id','apiUserId','email','name','phoneNumber','jobTitle','profilePhoto','role','addressId','createdBy','updatedBy','tenantId']);
 
-export const DocumentOrderByRelevanceFieldEnumSchema = z.enum(['id','title','filePath','mimeType','keywords','ocrText','ownerId','signature']);
+export const DocumentOrderByRelevanceFieldEnumSchema = z.enum(['id','title','filePath','mimeType','keywords','ocrText','ownerId','signature','createdBy','updatedBy','tenantId']);
 
-export const UserOnDocumentsOrderByRelevanceFieldEnumSchema = z.enum(['userId','documentId','role']);
+export const UserOnDocumentsOrderByRelevanceFieldEnumSchema = z.enum(['userId','documentId','role','createdBy','updatedBy','tenantId']);
 
-export const DocumentUserOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','documentId']);
+export const DocumentUserOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','documentId','createdBy','updatedBy','tenantId']);
 
-export const DocumentVersionOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','filePath','changesDescription','createdById']);
+export const DocumentVersionOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','filePath','changesDescription','createdById','createdBy','updatedBy','tenantId']);
 
-export const DocumentVersionCreatorOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','versionId']);
+export const DocumentVersionCreatorOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','versionId','createdBy','updatedBy','tenantId']);
 
-export const SharedDocumentOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','userId','permission']);
+export const SharedDocumentOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','userId','permission','createdBy','updatedBy','tenantId']);
 
-export const WorkflowOrderByRelevanceFieldEnumSchema = z.enum(['id','name','description','type','status']);
+export const WorkflowOrderByRelevanceFieldEnumSchema = z.enum(['id','name','description','type','status','createdBy','updatedBy','tenantId']);
 
-export const TaskOrderByRelevanceFieldEnumSchema = z.enum(['id','workflowId','assignedToId','documentId','title','description','status']);
+export const TaskOrderByRelevanceFieldEnumSchema = z.enum(['id','workflowId','assignedToId','documentId','title','description','status','createdBy','updatedBy','tenantId']);
 
-export const AuditLogOrderByRelevanceFieldEnumSchema = z.enum(['id','taskId','workflowId','action','performedById','description']);
+export const AuditLogOrderByRelevanceFieldEnumSchema = z.enum(['id','taskId','workflowId','action','performedById','description','createdBy','updatedBy','tenantId']);
 
-export const NotificationOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','message']);
+export const NotificationOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','message','createdBy','updatedBy','tenantId']);
 
-export const AttachmentOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','filePath','fileName','mimeType']);
+export const AttachmentOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','filePath','fileName','mimeType','createdBy','updatedBy','tenantId']);
 
-export const DigitalCertificateOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','alias','filePath','password']);
+export const DigitalCertificateOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','alias','filePath','password','createdBy','updatedBy','tenantId']);
 
-export const FileMetadataOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','mimeType','checksum']);
+export const FileMetadataOrderByRelevanceFieldEnumSchema = z.enum(['id','documentId','mimeType','checksum','createdBy','updatedBy','tenantId']);
 
-export const InstitutionOrderByRelevanceFieldEnumSchema = z.enum(['id','name','address','city','state','phone','whatsapp','email','flag','emblem','mayorId','viceMayorId']);
+export const InstitutionOrderByRelevanceFieldEnumSchema = z.enum(['id','name','address','city','state','phone','whatsapp','email','flag','emblem','mayorId','viceMayorId','createdBy','updatedBy','tenantId']);
 
-export const DepartmentOrderByRelevanceFieldEnumSchema = z.enum(['name','description','institutionId','headId']);
+export const DepartmentOrderByRelevanceFieldEnumSchema = z.enum(['name','description','institutionId','headId','createdBy','updatedBy','tenantId']);
 
-export const UserDepartmentOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','role']);
+export const UserDepartmentOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','role','createdBy','updatedBy','tenantId']);
 
-export const TicketOrderByRelevanceFieldEnumSchema = z.enum(['id','subject','description','createdById','assignedToId']);
+export const TicketOrderByRelevanceFieldEnumSchema = z.enum(['id','subject','description','createdById','assignedToId','updatedBy','tenantId']);
 
-export const TicketStatusOrderByRelevanceFieldEnumSchema = z.enum(['name']);
+export const TicketStatusOrderByRelevanceFieldEnumSchema = z.enum(['name','createdBy','updatedBy','tenantId']);
 
-export const TicketPriorityOrderByRelevanceFieldEnumSchema = z.enum(['name']);
+export const TicketPriorityOrderByRelevanceFieldEnumSchema = z.enum(['name','createdBy','updatedBy','tenantId']);
 
-export const HelpTopicOrderByRelevanceFieldEnumSchema = z.enum(['topic','description']);
+export const HelpTopicOrderByRelevanceFieldEnumSchema = z.enum(['topic','description','createdBy','updatedBy','tenantId']);
 
-export const SLAPlanOrderByRelevanceFieldEnumSchema = z.enum(['name']);
+export const SLAPlanOrderByRelevanceFieldEnumSchema = z.enum(['name','createdBy','updatedBy','tenantId']);
 
-export const TicketThreadOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId','message']);
+export const TicketThreadOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId','message','createdBy','updatedBy','tenantId']);
 
-export const TicketAttachmentOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','ticketThreadId','filePath','fileName','mimeType']);
+export const TicketAttachmentOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','ticketThreadId','filePath','fileName','mimeType','createdBy','updatedBy','tenantId']);
 
-export const TicketCollaboratorOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId']);
+export const TicketCollaboratorOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId']);
 
-export const CustomFieldOrderByRelevanceFieldEnumSchema = z.enum(['name','fieldType']);
+export const CustomFieldOrderByRelevanceFieldEnumSchema = z.enum(['name','fieldType','createdBy','updatedBy','tenantId']);
 
-export const TicketCustomFieldOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','value']);
+export const TicketCustomFieldOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','value','createdBy','updatedBy','tenantId']);
 
-export const TaskUserOrderByRelevanceFieldEnumSchema = z.enum(['id','taskId','userId']);
+export const TaskUserOrderByRelevanceFieldEnumSchema = z.enum(['id','taskId','userId','createdBy','updatedBy','tenantId']);
 
-export const TicketUserOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId']);
+export const TicketUserOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId']);
 
-export const AddressOrderByRelevanceFieldEnumSchema = z.enum(['id','street','city','state','country','postalCode']);
+export const AddressOrderByRelevanceFieldEnumSchema = z.enum(['id','street','city','state','country','postalCode','createdBy','updatedBy','tenantId']);
 /////////////////////////////////////////
 // MODELS
 /////////////////////////////////////////
@@ -161,6 +161,10 @@ export const UserSchema = z.object({
   updatedAt: z.coerce.date(),
   dateOfBirth: z.coerce.date().nullable(),
   addressId: z.string().nullable(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
 })
 
 export type User = z.infer<typeof UserSchema>
@@ -181,6 +185,11 @@ export const DocumentSchema = z.object({
   signedAt: z.coerce.date().nullable(),
   signature: z.string().nullable(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type Document = z.infer<typeof DocumentSchema>
@@ -195,6 +204,11 @@ export const UserOnDocumentsSchema = z.object({
   assignedAt: z.coerce.date(),
   role: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type UserOnDocuments = z.infer<typeof UserOnDocumentsSchema>
@@ -208,6 +222,11 @@ export const DocumentUserSchema = z.object({
   userId: z.string(),
   documentId: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type DocumentUser = z.infer<typeof DocumentUserSchema>
@@ -224,6 +243,11 @@ export const DocumentVersionSchema = z.object({
   changesDescription: z.string().nullable(),
   createdById: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type DocumentVersion = z.infer<typeof DocumentVersionSchema>
@@ -237,6 +261,11 @@ export const DocumentVersionCreatorSchema = z.object({
   userId: z.string(),
   versionId: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type DocumentVersionCreator = z.infer<typeof DocumentVersionCreatorSchema>
@@ -252,6 +281,11 @@ export const SharedDocumentSchema = z.object({
   sharedAt: z.coerce.date(),
   permission: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type SharedDocument = z.infer<typeof SharedDocumentSchema>
@@ -273,6 +307,10 @@ export const WorkflowSchema = z.object({
   status: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
 })
 
 export type Workflow = z.infer<typeof WorkflowSchema>
@@ -297,6 +335,10 @@ export const TaskSchema = z.object({
   dueDate: z.coerce.date().nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
 })
 
 export type Task = z.infer<typeof TaskSchema>
@@ -317,6 +359,12 @@ export const AuditLogSchema = z.object({
   performedById: z.string(),
   timestamp: z.coerce.date(),
   description: z.string().nullable(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type AuditLog = z.infer<typeof AuditLogSchema>
@@ -335,6 +383,11 @@ export const NotificationSchema = z.object({
   message: z.string(),
   read: z.boolean(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type Notification = z.infer<typeof NotificationSchema>
@@ -354,6 +407,11 @@ export const AttachmentSchema = z.object({
   fileName: z.string(),
   mimeType: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type Attachment = z.infer<typeof AttachmentSchema>
@@ -373,6 +431,11 @@ export const DigitalCertificateSchema = z.object({
   password: z.string(),
   createdAt: z.coerce.date(),
   expiration: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type DigitalCertificate = z.infer<typeof DigitalCertificateSchema>
@@ -391,6 +454,11 @@ export const FileMetadataSchema = z.object({
   mimeType: z.string(),
   checksum: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type FileMetadata = z.infer<typeof FileMetadataSchema>
@@ -417,6 +485,10 @@ export const InstitutionSchema = z.object({
   viceMayorId: z.string().nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
 })
 
 export type Institution = z.infer<typeof InstitutionSchema>
@@ -438,6 +510,10 @@ export const DepartmentSchema = z.object({
   headId: z.string().nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
 })
 
 export type Department = z.infer<typeof DepartmentSchema>
@@ -455,6 +531,11 @@ export const UserDepartmentSchema = z.object({
   departmentId: z.number().int(),
   role: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type UserDepartment = z.infer<typeof UserDepartmentSchema>
@@ -479,6 +560,9 @@ export const TicketSchema = z.object({
   updatedAt: z.coerce.date(),
   closedAt: z.coerce.date().nullable(),
   lastResponseAt: z.coerce.date().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
 })
 
 export type Ticket = z.infer<typeof TicketSchema>
@@ -491,6 +575,11 @@ export const TicketStatusSchema = z.object({
   id: z.number().int(),
   name: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TicketStatus = z.infer<typeof TicketStatusSchema>
@@ -503,6 +592,11 @@ export const TicketPrioritySchema = z.object({
   id: z.number().int(),
   name: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TicketPriority = z.infer<typeof TicketPrioritySchema>
@@ -517,6 +611,11 @@ export const HelpTopicSchema = z.object({
   description: z.string().nullable(),
   departmentId: z.number().int(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type HelpTopic = z.infer<typeof HelpTopicSchema>
@@ -530,6 +629,11 @@ export const SLAPlanSchema = z.object({
   name: z.string(),
   gracePeriod: z.number().int(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type SLAPlan = z.infer<typeof SLAPlanSchema>
@@ -544,6 +648,11 @@ export const TicketThreadSchema = z.object({
   userId: z.string(),
   message: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TicketThread = z.infer<typeof TicketThreadSchema>
@@ -560,6 +669,11 @@ export const TicketAttachmentSchema = z.object({
   fileName: z.string(),
   mimeType: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TicketAttachment = z.infer<typeof TicketAttachmentSchema>
@@ -572,6 +686,12 @@ export const TicketCollaboratorSchema = z.object({
   id: z.string(),
   ticketId: z.string(),
   userId: z.string(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TicketCollaborator = z.infer<typeof TicketCollaboratorSchema>
@@ -585,6 +705,11 @@ export const CustomFieldSchema = z.object({
   name: z.string(),
   fieldType: z.string(),
   createdAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type CustomField = z.infer<typeof CustomFieldSchema>
@@ -598,6 +723,12 @@ export const TicketCustomFieldSchema = z.object({
   ticketId: z.string(),
   fieldId: z.number().int(),
   value: z.string(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TicketCustomField = z.infer<typeof TicketCustomFieldSchema>
@@ -610,6 +741,12 @@ export const TaskUserSchema = z.object({
   id: z.string(),
   taskId: z.string(),
   userId: z.string(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TaskUser = z.infer<typeof TaskUserSchema>
@@ -622,6 +759,12 @@ export const TicketUserSchema = z.object({
   id: z.string(),
   ticketId: z.string(),
   userId: z.string(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable(),
+  updatedAt: z.coerce.date().nullable(),
 })
 
 export type TicketUser = z.infer<typeof TicketUserSchema>
@@ -639,6 +782,10 @@ export const AddressSchema = z.object({
   postalCode: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  createdBy: z.string().nullable(),
+  updatedBy: z.string().nullable(),
+  tenantId: z.string().nullable(),
+  deletedAt: z.coerce.date().nullable(),
 })
 
 export type Address = z.infer<typeof AddressSchema>
@@ -716,6 +863,10 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   updatedAt: z.boolean().optional(),
   dateOfBirth: z.boolean().optional(),
   addressId: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   address: z.union([z.boolean(),z.lazy(() => AddressArgsSchema)]).optional(),
   auditLogs: z.union([z.boolean(),z.lazy(() => AuditLogFindManyArgsSchema)]).optional(),
   digitalCertificates: z.union([z.boolean(),z.lazy(() => DigitalCertificateFindManyArgsSchema)]).optional(),
@@ -782,6 +933,11 @@ export const DocumentSelectSchema: z.ZodType<Prisma.DocumentSelect> = z.object({
   signedAt: z.boolean().optional(),
   signature: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   attachments: z.union([z.boolean(),z.lazy(() => AttachmentFindManyArgsSchema)]).optional(),
   documentUsers: z.union([z.boolean(),z.lazy(() => DocumentUserFindManyArgsSchema)]).optional(),
   versions: z.union([z.boolean(),z.lazy(() => DocumentVersionFindManyArgsSchema)]).optional(),
@@ -811,6 +967,11 @@ export const UserOnDocumentsSelectSchema: z.ZodType<Prisma.UserOnDocumentsSelect
   assignedAt: z.boolean().optional(),
   role: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -833,6 +994,11 @@ export const DocumentUserSelectSchema: z.ZodType<Prisma.DocumentUserSelect> = z.
   userId: z.boolean().optional(),
   documentId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -867,6 +1033,11 @@ export const DocumentVersionSelectSchema: z.ZodType<Prisma.DocumentVersionSelect
   changesDescription: z.boolean().optional(),
   createdById: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
   documentVersionCreators: z.union([z.boolean(),z.lazy(() => DocumentVersionCreatorFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => DocumentVersionCountOutputTypeArgsSchema)]).optional(),
@@ -890,6 +1061,11 @@ export const DocumentVersionCreatorSelectSchema: z.ZodType<Prisma.DocumentVersio
   userId: z.boolean().optional(),
   versionId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   version: z.union([z.boolean(),z.lazy(() => DocumentVersionArgsSchema)]).optional(),
 }).strict()
@@ -914,6 +1090,11 @@ export const SharedDocumentSelectSchema: z.ZodType<Prisma.SharedDocumentSelect> 
   sharedAt: z.boolean().optional(),
   permission: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -949,6 +1130,10 @@ export const WorkflowSelectSchema: z.ZodType<Prisma.WorkflowSelect> = z.object({
   status: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   auditLogs: z.union([z.boolean(),z.lazy(() => AuditLogFindManyArgsSchema)]).optional(),
   tasks: z.union([z.boolean(),z.lazy(() => TaskFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => WorkflowCountOutputTypeArgsSchema)]).optional(),
@@ -991,6 +1176,10 @@ export const TaskSelectSchema: z.ZodType<Prisma.TaskSelect> = z.object({
   dueDate: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   auditLogs: z.union([z.boolean(),z.lazy(() => AuditLogFindManyArgsSchema)]).optional(),
   assignedTo: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
@@ -1021,6 +1210,12 @@ export const AuditLogSelectSchema: z.ZodType<Prisma.AuditLogSelect> = z.object({
   performedById: z.boolean().optional(),
   timestamp: z.boolean().optional(),
   description: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   performedBy: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   task: z.union([z.boolean(),z.lazy(() => TaskArgsSchema)]).optional(),
   workflow: z.union([z.boolean(),z.lazy(() => WorkflowArgsSchema)]).optional(),
@@ -1044,6 +1239,11 @@ export const NotificationSelectSchema: z.ZodType<Prisma.NotificationSelect> = z.
   message: z.boolean().optional(),
   read: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
 
@@ -1066,6 +1266,11 @@ export const AttachmentSelectSchema: z.ZodType<Prisma.AttachmentSelect> = z.obje
   fileName: z.boolean().optional(),
   mimeType: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
 }).strict()
 
@@ -1089,6 +1294,11 @@ export const DigitalCertificateSelectSchema: z.ZodType<Prisma.DigitalCertificate
   password: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   expiration: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
 
@@ -1111,6 +1321,11 @@ export const FileMetadataSelectSchema: z.ZodType<Prisma.FileMetadataSelect> = z.
   mimeType: z.boolean().optional(),
   checksum: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   document: z.union([z.boolean(),z.lazy(() => DocumentArgsSchema)]).optional(),
 }).strict()
 
@@ -1152,6 +1367,10 @@ export const InstitutionSelectSchema: z.ZodType<Prisma.InstitutionSelect> = z.ob
   viceMayorId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   mayor: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   viceMayor: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   departments: z.union([z.boolean(),z.lazy(() => DepartmentFindManyArgsSchema)]).optional(),
@@ -1198,6 +1417,10 @@ export const DepartmentSelectSchema: z.ZodType<Prisma.DepartmentSelect> = z.obje
   headId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   institution: z.union([z.boolean(),z.lazy(() => InstitutionArgsSchema)]).optional(),
   parentDepartment: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
   childDepartments: z.union([z.boolean(),z.lazy(() => DepartmentFindManyArgsSchema)]).optional(),
@@ -1227,6 +1450,11 @@ export const UserDepartmentSelectSchema: z.ZodType<Prisma.UserDepartmentSelect> 
   departmentId: z.boolean().optional(),
   role: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   department: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -1282,6 +1510,9 @@ export const TicketSelectSchema: z.ZodType<Prisma.TicketSelect> = z.object({
   updatedAt: z.boolean().optional(),
   closedAt: z.boolean().optional(),
   lastResponseAt: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   assignedTo: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   createdBy: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
   department: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
@@ -1322,6 +1553,11 @@ export const TicketStatusSelectSchema: z.ZodType<Prisma.TicketStatusSelect> = z.
   id: z.boolean().optional(),
   name: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TicketStatusCountOutputTypeArgsSchema)]).optional(),
 }).strict()
@@ -1351,6 +1587,11 @@ export const TicketPrioritySelectSchema: z.ZodType<Prisma.TicketPrioritySelect> 
   id: z.boolean().optional(),
   name: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TicketPriorityCountOutputTypeArgsSchema)]).optional(),
 }).strict()
@@ -1383,6 +1624,11 @@ export const HelpTopicSelectSchema: z.ZodType<Prisma.HelpTopicSelect> = z.object
   description: z.boolean().optional(),
   departmentId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   department: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => HelpTopicCountOutputTypeArgsSchema)]).optional(),
@@ -1414,6 +1660,11 @@ export const SLAPlanSelectSchema: z.ZodType<Prisma.SLAPlanSelect> = z.object({
   name: z.boolean().optional(),
   gracePeriod: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => SLAPlanCountOutputTypeArgsSchema)]).optional(),
 }).strict()
@@ -1447,6 +1698,11 @@ export const TicketThreadSelectSchema: z.ZodType<Prisma.TicketThreadSelect> = z.
   userId: z.boolean().optional(),
   message: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   attachments: z.union([z.boolean(),z.lazy(() => TicketAttachmentFindManyArgsSchema)]).optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
@@ -1474,6 +1730,11 @@ export const TicketAttachmentSelectSchema: z.ZodType<Prisma.TicketAttachmentSele
   fileName: z.boolean().optional(),
   mimeType: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
   ticketThread: z.union([z.boolean(),z.lazy(() => TicketThreadArgsSchema)]).optional(),
 }).strict()
@@ -1495,6 +1756,12 @@ export const TicketCollaboratorSelectSchema: z.ZodType<Prisma.TicketCollaborator
   id: z.boolean().optional(),
   ticketId: z.boolean().optional(),
   userId: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -1525,6 +1792,11 @@ export const CustomFieldSelectSchema: z.ZodType<Prisma.CustomFieldSelect> = z.ob
   name: z.boolean().optional(),
   fieldType: z.boolean().optional(),
   createdAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketCustomFieldFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => CustomFieldCountOutputTypeArgsSchema)]).optional(),
 }).strict()
@@ -1547,6 +1819,12 @@ export const TicketCustomFieldSelectSchema: z.ZodType<Prisma.TicketCustomFieldSe
   ticketId: z.boolean().optional(),
   fieldId: z.boolean().optional(),
   value: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   field: z.union([z.boolean(),z.lazy(() => CustomFieldArgsSchema)]).optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
 }).strict()
@@ -1568,6 +1846,12 @@ export const TaskUserSelectSchema: z.ZodType<Prisma.TaskUserSelect> = z.object({
   id: z.boolean().optional(),
   taskId: z.boolean().optional(),
   userId: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   task: z.union([z.boolean(),z.lazy(() => TaskArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -1589,6 +1873,12 @@ export const TicketUserSelectSchema: z.ZodType<Prisma.TicketUserSelect> = z.obje
   id: z.boolean().optional(),
   ticketId: z.boolean().optional(),
   userId: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
 }).strict()
@@ -1623,6 +1913,10 @@ export const AddressSelectSchema: z.ZodType<Prisma.AddressSelect> = z.object({
   postalCode: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  tenantId: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
   users: z.union([z.boolean(),z.lazy(() => UserFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => AddressCountOutputTypeArgsSchema)]).optional(),
 }).strict()
@@ -1648,6 +1942,10 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   dateOfBirth: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   addressId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   address: z.union([ z.lazy(() => AddressNullableScalarRelationFilterSchema),z.lazy(() => AddressWhereInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogListRelationFilterSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateListRelationFilterSchema).optional(),
@@ -1682,6 +1980,10 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   dateOfBirth: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   addressId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   address: z.lazy(() => AddressOrderByWithRelationInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogOrderByRelationAggregateInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateOrderByRelationAggregateInputSchema).optional(),
@@ -1748,6 +2050,10 @@ export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> 
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   dateOfBirth: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   addressId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   address: z.union([ z.lazy(() => AddressNullableScalarRelationFilterSchema),z.lazy(() => AddressWhereInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogListRelationFilterSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateListRelationFilterSchema).optional(),
@@ -1782,6 +2088,10 @@ export const UserOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserOrderBy
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   dateOfBirth: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   addressId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => UserCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => UserMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => UserMinOrderByAggregateInputSchema).optional()
@@ -1803,6 +2113,10 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.UserScal
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   dateOfBirth: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   addressId: z.union([ z.lazy(() => UuidNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DocumentWhereInputSchema: z.ZodType<Prisma.DocumentWhereInput> = z.object({
@@ -1820,6 +2134,11 @@ export const DocumentWhereInputSchema: z.ZodType<Prisma.DocumentWhereInput> = z.
   signedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   signature: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentListRelationFilterSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserListRelationFilterSchema).optional(),
   versions: z.lazy(() => DocumentVersionListRelationFilterSchema).optional(),
@@ -1841,6 +2160,11 @@ export const DocumentOrderByWithRelationInputSchema: z.ZodType<Prisma.DocumentOr
   signedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   signature: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   attachments: z.lazy(() => AttachmentOrderByRelationAggregateInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserOrderByRelationAggregateInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionOrderByRelationAggregateInputSchema).optional(),
@@ -1869,6 +2193,11 @@ export const DocumentWhereUniqueInputSchema: z.ZodType<Prisma.DocumentWhereUniqu
   signedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   signature: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentListRelationFilterSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserListRelationFilterSchema).optional(),
   versions: z.lazy(() => DocumentVersionListRelationFilterSchema).optional(),
@@ -1890,6 +2219,11 @@ export const DocumentOrderByWithAggregationInputSchema: z.ZodType<Prisma.Documen
   signedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   signature: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => DocumentCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => DocumentMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => DocumentMinOrderByAggregateInputSchema).optional()
@@ -1910,6 +2244,11 @@ export const DocumentScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Docu
   signedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   signature: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsWhereInputSchema: z.ZodType<Prisma.UserOnDocumentsWhereInput> = z.object({
@@ -1921,6 +2260,11 @@ export const UserOnDocumentsWhereInputSchema: z.ZodType<Prisma.UserOnDocumentsWh
   assignedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   role: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -1931,6 +2275,11 @@ export const UserOnDocumentsOrderByWithRelationInputSchema: z.ZodType<Prisma.Use
   assignedAt: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => UserOnDocumentsOrderByRelevanceInputSchema).optional()
@@ -1949,6 +2298,11 @@ export const UserOnDocumentsWhereUniqueInputSchema: z.ZodType<Prisma.UserOnDocum
   assignedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   role: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
@@ -1959,6 +2313,11 @@ export const UserOnDocumentsOrderByWithAggregationInputSchema: z.ZodType<Prisma.
   assignedAt: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => UserOnDocumentsCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => UserOnDocumentsMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => UserOnDocumentsMinOrderByAggregateInputSchema).optional()
@@ -1973,6 +2332,11 @@ export const UserOnDocumentsScalarWhereWithAggregatesInputSchema: z.ZodType<Pris
   assignedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   role: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserWhereInputSchema: z.ZodType<Prisma.DocumentUserWhereInput> = z.object({
@@ -1983,6 +2347,11 @@ export const DocumentUserWhereInputSchema: z.ZodType<Prisma.DocumentUserWhereInp
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   documentId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -1992,6 +2361,11 @@ export const DocumentUserOrderByWithRelationInputSchema: z.ZodType<Prisma.Docume
   userId: z.lazy(() => SortOrderSchema).optional(),
   documentId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => DocumentUserOrderByRelevanceInputSchema).optional()
@@ -2008,6 +2382,11 @@ export const DocumentUserWhereUniqueInputSchema: z.ZodType<Prisma.DocumentUserWh
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   documentId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
@@ -2017,6 +2396,11 @@ export const DocumentUserOrderByWithAggregationInputSchema: z.ZodType<Prisma.Doc
   userId: z.lazy(() => SortOrderSchema).optional(),
   documentId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => DocumentUserCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => DocumentUserMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => DocumentUserMinOrderByAggregateInputSchema).optional()
@@ -2030,6 +2414,11 @@ export const DocumentUserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   userId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   documentId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionWhereInputSchema: z.ZodType<Prisma.DocumentVersionWhereInput> = z.object({
@@ -2043,6 +2432,11 @@ export const DocumentVersionWhereInputSchema: z.ZodType<Prisma.DocumentVersionWh
   changesDescription: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdById: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorListRelationFilterSchema).optional()
 }).strict();
@@ -2055,6 +2449,11 @@ export const DocumentVersionOrderByWithRelationInputSchema: z.ZodType<Prisma.Doc
   changesDescription: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdById: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => DocumentVersionOrderByRelevanceInputSchema).optional()
@@ -2074,6 +2473,11 @@ export const DocumentVersionWhereUniqueInputSchema: z.ZodType<Prisma.DocumentVer
   changesDescription: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdById: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorListRelationFilterSchema).optional()
 }).strict());
@@ -2086,6 +2490,11 @@ export const DocumentVersionOrderByWithAggregationInputSchema: z.ZodType<Prisma.
   changesDescription: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdById: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => DocumentVersionCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => DocumentVersionAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => DocumentVersionMaxOrderByAggregateInputSchema).optional(),
@@ -2104,6 +2513,11 @@ export const DocumentVersionScalarWhereWithAggregatesInputSchema: z.ZodType<Pris
   changesDescription: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdById: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorWhereInputSchema: z.ZodType<Prisma.DocumentVersionCreatorWhereInput> = z.object({
@@ -2114,6 +2528,11 @@ export const DocumentVersionCreatorWhereInputSchema: z.ZodType<Prisma.DocumentVe
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   versionId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   version: z.union([ z.lazy(() => DocumentVersionScalarRelationFilterSchema),z.lazy(() => DocumentVersionWhereInputSchema) ]).optional(),
 }).strict();
@@ -2123,6 +2542,11 @@ export const DocumentVersionCreatorOrderByWithRelationInputSchema: z.ZodType<Pri
   userId: z.lazy(() => SortOrderSchema).optional(),
   versionId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   version: z.lazy(() => DocumentVersionOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => DocumentVersionCreatorOrderByRelevanceInputSchema).optional()
@@ -2139,6 +2563,11 @@ export const DocumentVersionCreatorWhereUniqueInputSchema: z.ZodType<Prisma.Docu
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   versionId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   version: z.union([ z.lazy(() => DocumentVersionScalarRelationFilterSchema),z.lazy(() => DocumentVersionWhereInputSchema) ]).optional(),
 }).strict());
@@ -2148,6 +2577,11 @@ export const DocumentVersionCreatorOrderByWithAggregationInputSchema: z.ZodType<
   userId: z.lazy(() => SortOrderSchema).optional(),
   versionId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => DocumentVersionCreatorCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => DocumentVersionCreatorMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => DocumentVersionCreatorMinOrderByAggregateInputSchema).optional()
@@ -2161,6 +2595,11 @@ export const DocumentVersionCreatorScalarWhereWithAggregatesInputSchema: z.ZodTy
   userId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   versionId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentWhereInputSchema: z.ZodType<Prisma.SharedDocumentWhereInput> = z.object({
@@ -2173,6 +2612,11 @@ export const SharedDocumentWhereInputSchema: z.ZodType<Prisma.SharedDocumentWher
   sharedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   permission: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -2184,6 +2628,11 @@ export const SharedDocumentOrderByWithRelationInputSchema: z.ZodType<Prisma.Shar
   sharedAt: z.lazy(() => SortOrderSchema).optional(),
   permission: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => SharedDocumentOrderByRelevanceInputSchema).optional()
@@ -2202,6 +2651,11 @@ export const SharedDocumentWhereUniqueInputSchema: z.ZodType<Prisma.SharedDocume
   sharedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   permission: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
@@ -2213,6 +2667,11 @@ export const SharedDocumentOrderByWithAggregationInputSchema: z.ZodType<Prisma.S
   sharedAt: z.lazy(() => SortOrderSchema).optional(),
   permission: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => SharedDocumentCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => SharedDocumentMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => SharedDocumentMinOrderByAggregateInputSchema).optional()
@@ -2228,6 +2687,11 @@ export const SharedDocumentScalarWhereWithAggregatesInputSchema: z.ZodType<Prism
   sharedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   permission: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const WorkflowWhereInputSchema: z.ZodType<Prisma.WorkflowWhereInput> = z.object({
@@ -2241,6 +2705,10 @@ export const WorkflowWhereInputSchema: z.ZodType<Prisma.WorkflowWhereInput> = z.
   status: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogListRelationFilterSchema).optional(),
   tasks: z.lazy(() => TaskListRelationFilterSchema).optional()
 }).strict();
@@ -2253,6 +2721,10 @@ export const WorkflowOrderByWithRelationInputSchema: z.ZodType<Prisma.WorkflowOr
   status: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   auditLogs: z.lazy(() => AuditLogOrderByRelationAggregateInputSchema).optional(),
   tasks: z.lazy(() => TaskOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => WorkflowOrderByRelevanceInputSchema).optional()
@@ -2272,6 +2744,10 @@ export const WorkflowWhereUniqueInputSchema: z.ZodType<Prisma.WorkflowWhereUniqu
   status: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogListRelationFilterSchema).optional(),
   tasks: z.lazy(() => TaskListRelationFilterSchema).optional()
 }).strict());
@@ -2284,6 +2760,10 @@ export const WorkflowOrderByWithAggregationInputSchema: z.ZodType<Prisma.Workflo
   status: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => WorkflowCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => WorkflowMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => WorkflowMinOrderByAggregateInputSchema).optional()
@@ -2300,6 +2780,10 @@ export const WorkflowScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Work
   status: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TaskWhereInputSchema: z.ZodType<Prisma.TaskWhereInput> = z.object({
@@ -2316,6 +2800,10 @@ export const TaskWhereInputSchema: z.ZodType<Prisma.TaskWhereInput> = z.object({
   dueDate: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogListRelationFilterSchema).optional(),
   assignedTo: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentNullableScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional().nullable(),
@@ -2334,6 +2822,10 @@ export const TaskOrderByWithRelationInputSchema: z.ZodType<Prisma.TaskOrderByWit
   dueDate: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   auditLogs: z.lazy(() => AuditLogOrderByRelationAggregateInputSchema).optional(),
   assignedTo: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional(),
@@ -2359,6 +2851,10 @@ export const TaskWhereUniqueInputSchema: z.ZodType<Prisma.TaskWhereUniqueInput> 
   dueDate: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogListRelationFilterSchema).optional(),
   assignedTo: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentNullableScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional().nullable(),
@@ -2377,6 +2873,10 @@ export const TaskOrderByWithAggregationInputSchema: z.ZodType<Prisma.TaskOrderBy
   dueDate: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TaskCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TaskMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => TaskMinOrderByAggregateInputSchema).optional()
@@ -2396,6 +2896,10 @@ export const TaskScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.TaskScal
   dueDate: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const AuditLogWhereInputSchema: z.ZodType<Prisma.AuditLogWhereInput> = z.object({
@@ -2409,6 +2913,12 @@ export const AuditLogWhereInputSchema: z.ZodType<Prisma.AuditLogWhereInput> = z.
   performedById: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   timestamp: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   performedBy: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   task: z.union([ z.lazy(() => TaskNullableScalarRelationFilterSchema),z.lazy(() => TaskWhereInputSchema) ]).optional().nullable(),
   workflow: z.union([ z.lazy(() => WorkflowNullableScalarRelationFilterSchema),z.lazy(() => WorkflowWhereInputSchema) ]).optional().nullable(),
@@ -2422,6 +2932,12 @@ export const AuditLogOrderByWithRelationInputSchema: z.ZodType<Prisma.AuditLogOr
   performedById: z.lazy(() => SortOrderSchema).optional(),
   timestamp: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   performedBy: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   task: z.lazy(() => TaskOrderByWithRelationInputSchema).optional(),
   workflow: z.lazy(() => WorkflowOrderByWithRelationInputSchema).optional(),
@@ -2442,6 +2958,12 @@ export const AuditLogWhereUniqueInputSchema: z.ZodType<Prisma.AuditLogWhereUniqu
   performedById: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   timestamp: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   performedBy: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   task: z.union([ z.lazy(() => TaskNullableScalarRelationFilterSchema),z.lazy(() => TaskWhereInputSchema) ]).optional().nullable(),
   workflow: z.union([ z.lazy(() => WorkflowNullableScalarRelationFilterSchema),z.lazy(() => WorkflowWhereInputSchema) ]).optional().nullable(),
@@ -2455,6 +2977,12 @@ export const AuditLogOrderByWithAggregationInputSchema: z.ZodType<Prisma.AuditLo
   performedById: z.lazy(() => SortOrderSchema).optional(),
   timestamp: z.lazy(() => SortOrderSchema).optional(),
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => AuditLogCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => AuditLogMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => AuditLogMinOrderByAggregateInputSchema).optional()
@@ -2471,6 +2999,12 @@ export const AuditLogScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Audi
   performedById: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   timestamp: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const NotificationWhereInputSchema: z.ZodType<Prisma.NotificationWhereInput> = z.object({
@@ -2482,6 +3016,11 @@ export const NotificationWhereInputSchema: z.ZodType<Prisma.NotificationWhereInp
   message: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   read: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
 
@@ -2491,6 +3030,11 @@ export const NotificationOrderByWithRelationInputSchema: z.ZodType<Prisma.Notifi
   message: z.lazy(() => SortOrderSchema).optional(),
   read: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => NotificationOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -2507,6 +3051,11 @@ export const NotificationWhereUniqueInputSchema: z.ZodType<Prisma.NotificationWh
   message: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   read: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
 
@@ -2516,6 +3065,11 @@ export const NotificationOrderByWithAggregationInputSchema: z.ZodType<Prisma.Not
   message: z.lazy(() => SortOrderSchema).optional(),
   read: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => NotificationCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => NotificationMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => NotificationMinOrderByAggregateInputSchema).optional()
@@ -2530,6 +3084,11 @@ export const NotificationScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   message: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   read: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const AttachmentWhereInputSchema: z.ZodType<Prisma.AttachmentWhereInput> = z.object({
@@ -2542,6 +3101,11 @@ export const AttachmentWhereInputSchema: z.ZodType<Prisma.AttachmentWhereInput> 
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
 }).strict();
 
@@ -2552,6 +3116,11 @@ export const AttachmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Attachme
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => AttachmentOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -2569,6 +3138,11 @@ export const AttachmentWhereUniqueInputSchema: z.ZodType<Prisma.AttachmentWhereU
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
 }).strict());
 
@@ -2579,6 +3153,11 @@ export const AttachmentOrderByWithAggregationInputSchema: z.ZodType<Prisma.Attac
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => AttachmentCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => AttachmentMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => AttachmentMinOrderByAggregateInputSchema).optional()
@@ -2594,6 +3173,11 @@ export const AttachmentScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.At
   fileName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateWhereInputSchema: z.ZodType<Prisma.DigitalCertificateWhereInput> = z.object({
@@ -2607,6 +3191,11 @@ export const DigitalCertificateWhereInputSchema: z.ZodType<Prisma.DigitalCertifi
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   expiration: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
 
@@ -2618,6 +3207,11 @@ export const DigitalCertificateOrderByWithRelationInputSchema: z.ZodType<Prisma.
   password: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   expiration: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => DigitalCertificateOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -2636,6 +3230,11 @@ export const DigitalCertificateWhereUniqueInputSchema: z.ZodType<Prisma.DigitalC
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   expiration: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
 
@@ -2647,6 +3246,11 @@ export const DigitalCertificateOrderByWithAggregationInputSchema: z.ZodType<Pris
   password: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   expiration: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => DigitalCertificateCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => DigitalCertificateMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => DigitalCertificateMinOrderByAggregateInputSchema).optional()
@@ -2663,6 +3267,11 @@ export const DigitalCertificateScalarWhereWithAggregatesInputSchema: z.ZodType<P
   password: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   expiration: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const FileMetadataWhereInputSchema: z.ZodType<Prisma.FileMetadataWhereInput> = z.object({
@@ -2675,6 +3284,11 @@ export const FileMetadataWhereInputSchema: z.ZodType<Prisma.FileMetadataWhereInp
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   checksum: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
 }).strict();
 
@@ -2685,6 +3299,11 @@ export const FileMetadataOrderByWithRelationInputSchema: z.ZodType<Prisma.FileMe
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   checksum: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   document: z.lazy(() => DocumentOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => FileMetadataOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -2711,6 +3330,11 @@ export const FileMetadataWhereUniqueInputSchema: z.ZodType<Prisma.FileMetadataWh
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   checksum: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   document: z.union([ z.lazy(() => DocumentScalarRelationFilterSchema),z.lazy(() => DocumentWhereInputSchema) ]).optional(),
 }).strict());
 
@@ -2721,6 +3345,11 @@ export const FileMetadataOrderByWithAggregationInputSchema: z.ZodType<Prisma.Fil
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   checksum: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => FileMetadataCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => FileMetadataAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => FileMetadataMaxOrderByAggregateInputSchema).optional(),
@@ -2738,6 +3367,11 @@ export const FileMetadataScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   mimeType: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   checksum: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const InstitutionWhereInputSchema: z.ZodType<Prisma.InstitutionWhereInput> = z.object({
@@ -2758,6 +3392,10 @@ export const InstitutionWhereInputSchema: z.ZodType<Prisma.InstitutionWhereInput
   viceMayorId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   mayor: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   viceMayor: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   departments: z.lazy(() => DepartmentListRelationFilterSchema).optional()
@@ -2778,6 +3416,10 @@ export const InstitutionOrderByWithRelationInputSchema: z.ZodType<Prisma.Institu
   viceMayorId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   mayor: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   viceMayor: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   departments: z.lazy(() => DepartmentOrderByRelationAggregateInputSchema).optional(),
@@ -2805,6 +3447,10 @@ export const InstitutionWhereUniqueInputSchema: z.ZodType<Prisma.InstitutionWher
   viceMayorId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   mayor: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   viceMayor: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   departments: z.lazy(() => DepartmentListRelationFilterSchema).optional()
@@ -2825,6 +3471,10 @@ export const InstitutionOrderByWithAggregationInputSchema: z.ZodType<Prisma.Inst
   viceMayorId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => InstitutionCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => InstitutionMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => InstitutionMinOrderByAggregateInputSchema).optional()
@@ -2848,6 +3498,10 @@ export const InstitutionScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.I
   viceMayorId: z.union([ z.lazy(() => UuidNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DepartmentWhereInputSchema: z.ZodType<Prisma.DepartmentWhereInput> = z.object({
@@ -2863,6 +3517,10 @@ export const DepartmentWhereInputSchema: z.ZodType<Prisma.DepartmentWhereInput> 
   headId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   institution: z.union([ z.lazy(() => InstitutionScalarRelationFilterSchema),z.lazy(() => InstitutionWhereInputSchema) ]).optional(),
   parentDepartment: z.union([ z.lazy(() => DepartmentNullableScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentListRelationFilterSchema).optional(),
@@ -2882,6 +3540,10 @@ export const DepartmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Departme
   headId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   institution: z.lazy(() => InstitutionOrderByWithRelationInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentOrderByWithRelationInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentOrderByRelationAggregateInputSchema).optional(),
@@ -2908,6 +3570,10 @@ export const DepartmentWhereUniqueInputSchema: z.ZodType<Prisma.DepartmentWhereU
   headId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   institution: z.union([ z.lazy(() => InstitutionScalarRelationFilterSchema),z.lazy(() => InstitutionWhereInputSchema) ]).optional(),
   parentDepartment: z.union([ z.lazy(() => DepartmentNullableScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentListRelationFilterSchema).optional(),
@@ -2927,6 +3593,10 @@ export const DepartmentOrderByWithAggregationInputSchema: z.ZodType<Prisma.Depar
   headId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => DepartmentCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => DepartmentAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => DepartmentMaxOrderByAggregateInputSchema).optional(),
@@ -2947,6 +3617,10 @@ export const DepartmentScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.De
   headId: z.union([ z.lazy(() => UuidNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentWhereInputSchema: z.ZodType<Prisma.UserDepartmentWhereInput> = z.object({
@@ -2958,6 +3632,11 @@ export const UserDepartmentWhereInputSchema: z.ZodType<Prisma.UserDepartmentWher
   departmentId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   role: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -2968,6 +3647,11 @@ export const UserDepartmentOrderByWithRelationInputSchema: z.ZodType<Prisma.User
   departmentId: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   department: z.lazy(() => DepartmentOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => UserDepartmentOrderByRelevanceInputSchema).optional()
@@ -2985,6 +3669,11 @@ export const UserDepartmentWhereUniqueInputSchema: z.ZodType<Prisma.UserDepartme
   departmentId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   role: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
@@ -2995,6 +3684,11 @@ export const UserDepartmentOrderByWithAggregationInputSchema: z.ZodType<Prisma.U
   departmentId: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => UserDepartmentCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => UserDepartmentAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => UserDepartmentMaxOrderByAggregateInputSchema).optional(),
@@ -3011,6 +3705,11 @@ export const UserDepartmentScalarWhereWithAggregatesInputSchema: z.ZodType<Prism
   departmentId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   role: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketWhereInputSchema: z.ZodType<Prisma.TicketWhereInput> = z.object({
@@ -3032,6 +3731,9 @@ export const TicketWhereInputSchema: z.ZodType<Prisma.TicketWhereInput> = z.obje
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   closedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   lastResponseAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   assignedTo: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
@@ -3062,6 +3764,9 @@ export const TicketOrderByWithRelationInputSchema: z.ZodType<Prisma.TicketOrderB
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   closedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   lastResponseAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   assignedTo: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   createdBy: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   department: z.lazy(() => DepartmentOrderByWithRelationInputSchema).optional(),
@@ -3099,6 +3804,9 @@ export const TicketWhereUniqueInputSchema: z.ZodType<Prisma.TicketWhereUniqueInp
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   closedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   lastResponseAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   assignedTo: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
   department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
@@ -3129,6 +3837,9 @@ export const TicketOrderByWithAggregationInputSchema: z.ZodType<Prisma.TicketOrd
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   closedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   lastResponseAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => TicketAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketMaxOrderByAggregateInputSchema).optional(),
@@ -3155,6 +3866,9 @@ export const TicketScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Ticket
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   closedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   lastResponseAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketStatusWhereInputSchema: z.ZodType<Prisma.TicketStatusWhereInput> = z.object({
@@ -3164,6 +3878,11 @@ export const TicketStatusWhereInputSchema: z.ZodType<Prisma.TicketStatusWhereInp
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict();
 
@@ -3171,6 +3890,11 @@ export const TicketStatusOrderByWithRelationInputSchema: z.ZodType<Prisma.Ticket
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   tickets: z.lazy(() => TicketOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => TicketStatusOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -3185,6 +3909,11 @@ export const TicketStatusWhereUniqueInputSchema: z.ZodType<Prisma.TicketStatusWh
   NOT: z.union([ z.lazy(() => TicketStatusWhereInputSchema),z.lazy(() => TicketStatusWhereInputSchema).array() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict());
 
@@ -3192,6 +3921,11 @@ export const TicketStatusOrderByWithAggregationInputSchema: z.ZodType<Prisma.Tic
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketStatusCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => TicketStatusAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketStatusMaxOrderByAggregateInputSchema).optional(),
@@ -3206,6 +3940,11 @@ export const TicketStatusScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketPriorityWhereInputSchema: z.ZodType<Prisma.TicketPriorityWhereInput> = z.object({
@@ -3215,6 +3954,11 @@ export const TicketPriorityWhereInputSchema: z.ZodType<Prisma.TicketPriorityWher
   id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict();
 
@@ -3222,6 +3966,11 @@ export const TicketPriorityOrderByWithRelationInputSchema: z.ZodType<Prisma.Tick
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   tickets: z.lazy(() => TicketOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => TicketPriorityOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -3236,6 +3985,11 @@ export const TicketPriorityWhereUniqueInputSchema: z.ZodType<Prisma.TicketPriori
   NOT: z.union([ z.lazy(() => TicketPriorityWhereInputSchema),z.lazy(() => TicketPriorityWhereInputSchema).array() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict());
 
@@ -3243,6 +3997,11 @@ export const TicketPriorityOrderByWithAggregationInputSchema: z.ZodType<Prisma.T
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketPriorityCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => TicketPriorityAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketPriorityMaxOrderByAggregateInputSchema).optional(),
@@ -3257,6 +4016,11 @@ export const TicketPriorityScalarWhereWithAggregatesInputSchema: z.ZodType<Prism
   id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const HelpTopicWhereInputSchema: z.ZodType<Prisma.HelpTopicWhereInput> = z.object({
@@ -3268,6 +4032,11 @@ export const HelpTopicWhereInputSchema: z.ZodType<Prisma.HelpTopicWhereInput> = 
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   departmentId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict();
@@ -3278,6 +4047,11 @@ export const HelpTopicOrderByWithRelationInputSchema: z.ZodType<Prisma.HelpTopic
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   department: z.lazy(() => DepartmentOrderByWithRelationInputSchema).optional(),
   tickets: z.lazy(() => TicketOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => HelpTopicOrderByRelevanceInputSchema).optional()
@@ -3295,6 +4069,11 @@ export const HelpTopicWhereUniqueInputSchema: z.ZodType<Prisma.HelpTopicWhereUni
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   departmentId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict());
@@ -3305,6 +4084,11 @@ export const HelpTopicOrderByWithAggregationInputSchema: z.ZodType<Prisma.HelpTo
   description: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => HelpTopicCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => HelpTopicAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => HelpTopicMaxOrderByAggregateInputSchema).optional(),
@@ -3321,6 +4105,11 @@ export const HelpTopicScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Hel
   description: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   departmentId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const SLAPlanWhereInputSchema: z.ZodType<Prisma.SLAPlanWhereInput> = z.object({
@@ -3331,6 +4120,11 @@ export const SLAPlanWhereInputSchema: z.ZodType<Prisma.SLAPlanWhereInput> = z.ob
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   gracePeriod: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict();
 
@@ -3339,6 +4133,11 @@ export const SLAPlanOrderByWithRelationInputSchema: z.ZodType<Prisma.SLAPlanOrde
   name: z.lazy(() => SortOrderSchema).optional(),
   gracePeriod: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   tickets: z.lazy(() => TicketOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => SLAPlanOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -3354,6 +4153,11 @@ export const SLAPlanWhereUniqueInputSchema: z.ZodType<Prisma.SLAPlanWhereUniqueI
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   gracePeriod: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional()
 }).strict());
 
@@ -3362,6 +4166,11 @@ export const SLAPlanOrderByWithAggregationInputSchema: z.ZodType<Prisma.SLAPlanO
   name: z.lazy(() => SortOrderSchema).optional(),
   gracePeriod: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => SLAPlanCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => SLAPlanAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => SLAPlanMaxOrderByAggregateInputSchema).optional(),
@@ -3377,6 +4186,11 @@ export const SLAPlanScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.SLAPl
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   gracePeriod: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketThreadWhereInputSchema: z.ZodType<Prisma.TicketThreadWhereInput> = z.object({
@@ -3388,6 +4202,11 @@ export const TicketThreadWhereInputSchema: z.ZodType<Prisma.TicketThreadWhereInp
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   message: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
@@ -3399,6 +4218,11 @@ export const TicketThreadOrderByWithRelationInputSchema: z.ZodType<Prisma.Ticket
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   attachments: z.lazy(() => TicketAttachmentOrderByRelationAggregateInputSchema).optional(),
   ticket: z.lazy(() => TicketOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
@@ -3426,6 +4250,11 @@ export const TicketThreadWhereUniqueInputSchema: z.ZodType<Prisma.TicketThreadWh
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   message: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
@@ -3437,6 +4266,11 @@ export const TicketThreadOrderByWithAggregationInputSchema: z.ZodType<Prisma.Tic
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketThreadCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketThreadMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => TicketThreadMinOrderByAggregateInputSchema).optional()
@@ -3451,6 +4285,11 @@ export const TicketThreadScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.
   userId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   message: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentWhereInputSchema: z.ZodType<Prisma.TicketAttachmentWhereInput> = z.object({
@@ -3464,6 +4303,11 @@ export const TicketAttachmentWhereInputSchema: z.ZodType<Prisma.TicketAttachment
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   ticketThread: z.union([ z.lazy(() => TicketThreadScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
 }).strict();
@@ -3476,6 +4320,11 @@ export const TicketAttachmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Ti
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   ticket: z.lazy(() => TicketOrderByWithRelationInputSchema).optional(),
   ticketThread: z.lazy(() => TicketThreadOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => TicketAttachmentOrderByRelevanceInputSchema).optional()
@@ -3495,6 +4344,11 @@ export const TicketAttachmentWhereUniqueInputSchema: z.ZodType<Prisma.TicketAtta
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   ticketThread: z.union([ z.lazy(() => TicketThreadScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
 }).strict());
@@ -3507,6 +4361,11 @@ export const TicketAttachmentOrderByWithAggregationInputSchema: z.ZodType<Prisma
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketAttachmentCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketAttachmentMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => TicketAttachmentMinOrderByAggregateInputSchema).optional()
@@ -3523,6 +4382,11 @@ export const TicketAttachmentScalarWhereWithAggregatesInputSchema: z.ZodType<Pri
   fileName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorWhereInputSchema: z.ZodType<Prisma.TicketCollaboratorWhereInput> = z.object({
@@ -3532,6 +4396,12 @@ export const TicketCollaboratorWhereInputSchema: z.ZodType<Prisma.TicketCollabor
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -3540,6 +4410,12 @@ export const TicketCollaboratorOrderByWithRelationInputSchema: z.ZodType<Prisma.
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   ticket: z.lazy(() => TicketOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => TicketCollaboratorOrderByRelevanceInputSchema).optional()
@@ -3555,6 +4431,12 @@ export const TicketCollaboratorWhereUniqueInputSchema: z.ZodType<Prisma.TicketCo
   NOT: z.union([ z.lazy(() => TicketCollaboratorWhereInputSchema),z.lazy(() => TicketCollaboratorWhereInputSchema).array() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
@@ -3563,6 +4445,12 @@ export const TicketCollaboratorOrderByWithAggregationInputSchema: z.ZodType<Pris
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketCollaboratorCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketCollaboratorMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => TicketCollaboratorMinOrderByAggregateInputSchema).optional()
@@ -3575,6 +4463,12 @@ export const TicketCollaboratorScalarWhereWithAggregatesInputSchema: z.ZodType<P
   id: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const CustomFieldWhereInputSchema: z.ZodType<Prisma.CustomFieldWhereInput> = z.object({
@@ -3585,6 +4479,11 @@ export const CustomFieldWhereInputSchema: z.ZodType<Prisma.CustomFieldWhereInput
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   fieldType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketCustomFieldListRelationFilterSchema).optional()
 }).strict();
 
@@ -3593,6 +4492,11 @@ export const CustomFieldOrderByWithRelationInputSchema: z.ZodType<Prisma.CustomF
   name: z.lazy(() => SortOrderSchema).optional(),
   fieldType: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   tickets: z.lazy(() => TicketCustomFieldOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => CustomFieldOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -3608,6 +4512,11 @@ export const CustomFieldWhereUniqueInputSchema: z.ZodType<Prisma.CustomFieldWher
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   fieldType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   tickets: z.lazy(() => TicketCustomFieldListRelationFilterSchema).optional()
 }).strict());
 
@@ -3616,6 +4525,11 @@ export const CustomFieldOrderByWithAggregationInputSchema: z.ZodType<Prisma.Cust
   name: z.lazy(() => SortOrderSchema).optional(),
   fieldType: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => CustomFieldCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => CustomFieldAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => CustomFieldMaxOrderByAggregateInputSchema).optional(),
@@ -3631,6 +4545,11 @@ export const CustomFieldScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.C
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   fieldType: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldWhereInputSchema: z.ZodType<Prisma.TicketCustomFieldWhereInput> = z.object({
@@ -3641,6 +4560,12 @@ export const TicketCustomFieldWhereInputSchema: z.ZodType<Prisma.TicketCustomFie
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   fieldId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   field: z.union([ z.lazy(() => CustomFieldScalarRelationFilterSchema),z.lazy(() => CustomFieldWhereInputSchema) ]).optional(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
 }).strict();
@@ -3650,6 +4575,12 @@ export const TicketCustomFieldOrderByWithRelationInputSchema: z.ZodType<Prisma.T
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   fieldId: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   field: z.lazy(() => CustomFieldOrderByWithRelationInputSchema).optional(),
   ticket: z.lazy(() => TicketOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => TicketCustomFieldOrderByRelevanceInputSchema).optional()
@@ -3666,6 +4597,12 @@ export const TicketCustomFieldWhereUniqueInputSchema: z.ZodType<Prisma.TicketCus
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   fieldId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   field: z.union([ z.lazy(() => CustomFieldScalarRelationFilterSchema),z.lazy(() => CustomFieldWhereInputSchema) ]).optional(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
 }).strict());
@@ -3675,6 +4612,12 @@ export const TicketCustomFieldOrderByWithAggregationInputSchema: z.ZodType<Prism
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   fieldId: z.lazy(() => SortOrderSchema).optional(),
   value: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketCustomFieldCountOrderByAggregateInputSchema).optional(),
   _avg: z.lazy(() => TicketCustomFieldAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketCustomFieldMaxOrderByAggregateInputSchema).optional(),
@@ -3690,6 +4633,12 @@ export const TicketCustomFieldScalarWhereWithAggregatesInputSchema: z.ZodType<Pr
   ticketId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   fieldId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   value: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TaskUserWhereInputSchema: z.ZodType<Prisma.TaskUserWhereInput> = z.object({
@@ -3699,6 +4648,12 @@ export const TaskUserWhereInputSchema: z.ZodType<Prisma.TaskUserWhereInput> = z.
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   taskId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   task: z.union([ z.lazy(() => TaskScalarRelationFilterSchema),z.lazy(() => TaskWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -3707,6 +4662,12 @@ export const TaskUserOrderByWithRelationInputSchema: z.ZodType<Prisma.TaskUserOr
   id: z.lazy(() => SortOrderSchema).optional(),
   taskId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   task: z.lazy(() => TaskOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => TaskUserOrderByRelevanceInputSchema).optional()
@@ -3722,6 +4683,12 @@ export const TaskUserWhereUniqueInputSchema: z.ZodType<Prisma.TaskUserWhereUniqu
   NOT: z.union([ z.lazy(() => TaskUserWhereInputSchema),z.lazy(() => TaskUserWhereInputSchema).array() ]).optional(),
   taskId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   task: z.union([ z.lazy(() => TaskScalarRelationFilterSchema),z.lazy(() => TaskWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
@@ -3730,6 +4697,12 @@ export const TaskUserOrderByWithAggregationInputSchema: z.ZodType<Prisma.TaskUse
   id: z.lazy(() => SortOrderSchema).optional(),
   taskId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TaskUserCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TaskUserMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => TaskUserMinOrderByAggregateInputSchema).optional()
@@ -3742,6 +4715,12 @@ export const TaskUserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Task
   id: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   taskId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketUserWhereInputSchema: z.ZodType<Prisma.TicketUserWhereInput> = z.object({
@@ -3751,6 +4730,12 @@ export const TicketUserWhereInputSchema: z.ZodType<Prisma.TicketUserWhereInput> 
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict();
@@ -3759,6 +4744,12 @@ export const TicketUserOrderByWithRelationInputSchema: z.ZodType<Prisma.TicketUs
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   ticket: z.lazy(() => TicketOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => TicketUserOrderByRelevanceInputSchema).optional()
@@ -3774,6 +4765,12 @@ export const TicketUserWhereUniqueInputSchema: z.ZodType<Prisma.TicketUserWhereU
   NOT: z.union([ z.lazy(() => TicketUserWhereInputSchema),z.lazy(() => TicketUserWhereInputSchema).array() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
 }).strict());
@@ -3782,6 +4779,12 @@ export const TicketUserOrderByWithAggregationInputSchema: z.ZodType<Prisma.Ticke
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => TicketUserCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => TicketUserMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => TicketUserMinOrderByAggregateInputSchema).optional()
@@ -3794,6 +4797,12 @@ export const TicketUserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Ti
   id: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const AddressWhereInputSchema: z.ZodType<Prisma.AddressWhereInput> = z.object({
@@ -3808,6 +4817,10 @@ export const AddressWhereInputSchema: z.ZodType<Prisma.AddressWhereInput> = z.ob
   postalCode: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   users: z.lazy(() => UserListRelationFilterSchema).optional()
 }).strict();
 
@@ -3820,6 +4833,10 @@ export const AddressOrderByWithRelationInputSchema: z.ZodType<Prisma.AddressOrde
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   users: z.lazy(() => UserOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => AddressOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -3839,6 +4856,10 @@ export const AddressWhereUniqueInputSchema: z.ZodType<Prisma.AddressWhereUniqueI
   postalCode: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   users: z.lazy(() => UserListRelationFilterSchema).optional()
 }).strict());
 
@@ -3851,6 +4872,10 @@ export const AddressOrderByWithAggregationInputSchema: z.ZodType<Prisma.AddressO
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   _count: z.lazy(() => AddressCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => AddressMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => AddressMinOrderByAggregateInputSchema).optional()
@@ -3868,6 +4893,10 @@ export const AddressScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Addre
   postalCode: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object({
@@ -3882,6 +4911,10 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3916,6 +4949,10 @@ export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreat
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -3948,6 +4985,10 @@ export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -3982,6 +5023,10 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdat
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -4014,7 +5059,11 @@ export const UserCreateManyInputSchema: z.ZodType<Prisma.UserCreateManyInput> = 
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
-  addressId: z.string().optional().nullable()
+  addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserUpdateManyMutationInputSchema: z.ZodType<Prisma.UserUpdateManyMutationInput> = z.object({
@@ -4029,6 +5078,10 @@ export const UserUpdateManyMutationInputSchema: z.ZodType<Prisma.UserUpdateManyM
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedUpdateManyInput> = z.object({
@@ -4044,6 +5097,10 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedU
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentCreateInputSchema: z.ZodType<Prisma.DocumentCreateInput> = z.object({
@@ -4058,6 +5115,11 @@ export const DocumentCreateInputSchema: z.ZodType<Prisma.DocumentCreateInput> = 
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -4079,6 +5141,11 @@ export const DocumentUncheckedCreateInputSchema: z.ZodType<Prisma.DocumentUnchec
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -4100,6 +5167,11 @@ export const DocumentUpdateInputSchema: z.ZodType<Prisma.DocumentUpdateInput> = 
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -4121,6 +5193,11 @@ export const DocumentUncheckedUpdateInputSchema: z.ZodType<Prisma.DocumentUnchec
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -4141,7 +5218,12 @@ export const DocumentCreateManyInputSchema: z.ZodType<Prisma.DocumentCreateManyI
   signed: z.boolean().optional(),
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentUpdateManyMutationInputSchema: z.ZodType<Prisma.DocumentUpdateManyMutationInput> = z.object({
@@ -4156,6 +5238,11 @@ export const DocumentUpdateManyMutationInputSchema: z.ZodType<Prisma.DocumentUpd
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DocumentUncheckedUpdateManyInput> = z.object({
@@ -4170,12 +5257,22 @@ export const DocumentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DocumentUn
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsCreateInputSchema: z.ZodType<Prisma.UserOnDocumentsCreateInput> = z.object({
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutUserOnDocumentsInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutUserOnDocumentsInputSchema)
 }).strict();
@@ -4185,13 +5282,23 @@ export const UserOnDocumentsUncheckedCreateInputSchema: z.ZodType<Prisma.UserOnD
   documentId: z.string(),
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserOnDocumentsUpdateInputSchema: z.ZodType<Prisma.UserOnDocumentsUpdateInput> = z.object({
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutUserOnDocumentsNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutUserOnDocumentsNestedInputSchema).optional()
 }).strict();
@@ -4202,6 +5309,11 @@ export const UserOnDocumentsUncheckedUpdateInputSchema: z.ZodType<Prisma.UserOnD
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsCreateManyInputSchema: z.ZodType<Prisma.UserOnDocumentsCreateManyInput> = z.object({
@@ -4209,13 +5321,23 @@ export const UserOnDocumentsCreateManyInputSchema: z.ZodType<Prisma.UserOnDocume
   documentId: z.string(),
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserOnDocumentsUpdateManyMutationInputSchema: z.ZodType<Prisma.UserOnDocumentsUpdateManyMutationInput> = z.object({
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserOnDocumentsUncheckedUpdateManyInput> = z.object({
@@ -4224,11 +5346,21 @@ export const UserOnDocumentsUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Use
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserCreateInputSchema: z.ZodType<Prisma.DocumentUserCreateInput> = z.object({
   id: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutDocumentUsersInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutDocumentUsersInputSchema)
 }).strict();
@@ -4237,12 +5369,22 @@ export const DocumentUserUncheckedCreateInputSchema: z.ZodType<Prisma.DocumentUs
   id: z.string().optional(),
   userId: z.string(),
   documentId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentUserUpdateInputSchema: z.ZodType<Prisma.DocumentUserUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutDocumentUsersNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutDocumentUsersNestedInputSchema).optional()
 }).strict();
@@ -4252,18 +5394,33 @@ export const DocumentUserUncheckedUpdateInputSchema: z.ZodType<Prisma.DocumentUs
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   documentId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserCreateManyInputSchema: z.ZodType<Prisma.DocumentUserCreateManyInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
   documentId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentUserUpdateManyMutationInputSchema: z.ZodType<Prisma.DocumentUserUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DocumentUserUncheckedUpdateManyInput> = z.object({
@@ -4271,6 +5428,11 @@ export const DocumentUserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Docume
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   documentId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreateInputSchema: z.ZodType<Prisma.DocumentVersionCreateInput> = z.object({
@@ -4280,6 +5442,11 @@ export const DocumentVersionCreateInputSchema: z.ZodType<Prisma.DocumentVersionC
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutVersionsInputSchema),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorCreateNestedManyWithoutVersionInputSchema).optional()
 }).strict();
@@ -4292,6 +5459,11 @@ export const DocumentVersionUncheckedCreateInputSchema: z.ZodType<Prisma.Documen
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedCreateNestedManyWithoutVersionInputSchema).optional()
 }).strict();
 
@@ -4302,6 +5474,11 @@ export const DocumentVersionUpdateInputSchema: z.ZodType<Prisma.DocumentVersionU
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutVersionsNestedInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUpdateManyWithoutVersionNestedInputSchema).optional()
 }).strict();
@@ -4314,6 +5491,11 @@ export const DocumentVersionUncheckedUpdateInputSchema: z.ZodType<Prisma.Documen
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedUpdateManyWithoutVersionNestedInputSchema).optional()
 }).strict();
 
@@ -4324,7 +5506,12 @@ export const DocumentVersionCreateManyInputSchema: z.ZodType<Prisma.DocumentVers
   filePath: z.string(),
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionUpdateManyMutationInputSchema: z.ZodType<Prisma.DocumentVersionUpdateManyMutationInput> = z.object({
@@ -4334,6 +5521,11 @@ export const DocumentVersionUpdateManyMutationInputSchema: z.ZodType<Prisma.Docu
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DocumentVersionUncheckedUpdateManyInput> = z.object({
@@ -4344,11 +5536,21 @@ export const DocumentVersionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Doc
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorCreateInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateInput> = z.object({
   id: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutDocumentVersionCreatorsInputSchema),
   version: z.lazy(() => DocumentVersionCreateNestedOneWithoutDocumentVersionCreatorsInputSchema)
 }).strict();
@@ -4357,12 +5559,22 @@ export const DocumentVersionCreatorUncheckedCreateInputSchema: z.ZodType<Prisma.
   id: z.string().optional(),
   userId: z.string(),
   versionId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreatorUpdateInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutDocumentVersionCreatorsNestedInputSchema).optional(),
   version: z.lazy(() => DocumentVersionUpdateOneRequiredWithoutDocumentVersionCreatorsNestedInputSchema).optional()
 }).strict();
@@ -4372,18 +5584,33 @@ export const DocumentVersionCreatorUncheckedUpdateInputSchema: z.ZodType<Prisma.
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   versionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorCreateManyInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateManyInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
   versionId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreatorUpdateManyMutationInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUncheckedUpdateManyInput> = z.object({
@@ -4391,6 +5618,11 @@ export const DocumentVersionCreatorUncheckedUpdateManyInputSchema: z.ZodType<Pri
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   versionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentCreateInputSchema: z.ZodType<Prisma.SharedDocumentCreateInput> = z.object({
@@ -4398,6 +5630,11 @@ export const SharedDocumentCreateInputSchema: z.ZodType<Prisma.SharedDocumentCre
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutSharedDocumentsInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutSharedDocumentsInputSchema)
 }).strict();
@@ -4408,7 +5645,12 @@ export const SharedDocumentUncheckedCreateInputSchema: z.ZodType<Prisma.SharedDo
   userId: z.string(),
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SharedDocumentUpdateInputSchema: z.ZodType<Prisma.SharedDocumentUpdateInput> = z.object({
@@ -4416,6 +5658,11 @@ export const SharedDocumentUpdateInputSchema: z.ZodType<Prisma.SharedDocumentUpd
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutSharedDocumentsNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutSharedDocumentsNestedInputSchema).optional()
 }).strict();
@@ -4427,6 +5674,11 @@ export const SharedDocumentUncheckedUpdateInputSchema: z.ZodType<Prisma.SharedDo
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentCreateManyInputSchema: z.ZodType<Prisma.SharedDocumentCreateManyInput> = z.object({
@@ -4435,7 +5687,12 @@ export const SharedDocumentCreateManyInputSchema: z.ZodType<Prisma.SharedDocumen
   userId: z.string(),
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SharedDocumentUpdateManyMutationInputSchema: z.ZodType<Prisma.SharedDocumentUpdateManyMutationInput> = z.object({
@@ -4443,6 +5700,11 @@ export const SharedDocumentUpdateManyMutationInputSchema: z.ZodType<Prisma.Share
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SharedDocumentUncheckedUpdateManyInput> = z.object({
@@ -4452,6 +5714,11 @@ export const SharedDocumentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Shar
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const WorkflowCreateInputSchema: z.ZodType<Prisma.WorkflowCreateInput> = z.object({
@@ -4462,6 +5729,10 @@ export const WorkflowCreateInputSchema: z.ZodType<Prisma.WorkflowCreateInput> = 
   status: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutWorkflowInputSchema).optional(),
   tasks: z.lazy(() => TaskCreateNestedManyWithoutWorkflowInputSchema).optional()
 }).strict();
@@ -4474,6 +5745,10 @@ export const WorkflowUncheckedCreateInputSchema: z.ZodType<Prisma.WorkflowUnchec
   status: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutWorkflowInputSchema).optional(),
   tasks: z.lazy(() => TaskUncheckedCreateNestedManyWithoutWorkflowInputSchema).optional()
 }).strict();
@@ -4486,6 +5761,10 @@ export const WorkflowUpdateInputSchema: z.ZodType<Prisma.WorkflowUpdateInput> = 
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutWorkflowNestedInputSchema).optional(),
   tasks: z.lazy(() => TaskUpdateManyWithoutWorkflowNestedInputSchema).optional()
 }).strict();
@@ -4498,6 +5777,10 @@ export const WorkflowUncheckedUpdateInputSchema: z.ZodType<Prisma.WorkflowUnchec
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutWorkflowNestedInputSchema).optional(),
   tasks: z.lazy(() => TaskUncheckedUpdateManyWithoutWorkflowNestedInputSchema).optional()
 }).strict();
@@ -4509,7 +5792,11 @@ export const WorkflowCreateManyInputSchema: z.ZodType<Prisma.WorkflowCreateManyI
   type: z.string().optional(),
   status: z.string(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const WorkflowUpdateManyMutationInputSchema: z.ZodType<Prisma.WorkflowUpdateManyMutationInput> = z.object({
@@ -4520,6 +5807,10 @@ export const WorkflowUpdateManyMutationInputSchema: z.ZodType<Prisma.WorkflowUpd
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const WorkflowUncheckedUpdateManyInputSchema: z.ZodType<Prisma.WorkflowUncheckedUpdateManyInput> = z.object({
@@ -4530,6 +5821,10 @@ export const WorkflowUncheckedUpdateManyInputSchema: z.ZodType<Prisma.WorkflowUn
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskCreateInputSchema: z.ZodType<Prisma.TaskCreateInput> = z.object({
@@ -4540,6 +5835,10 @@ export const TaskCreateInputSchema: z.ZodType<Prisma.TaskCreateInput> = z.object
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutTaskInputSchema).optional(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTasksAssignedInputSchema).optional(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutTasksInputSchema).optional(),
@@ -4558,6 +5857,10 @@ export const TaskUncheckedCreateInputSchema: z.ZodType<Prisma.TaskUncheckedCreat
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutTaskInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedCreateNestedManyWithoutTaskInputSchema).optional()
 }).strict();
@@ -4570,6 +5873,10 @@ export const TaskUpdateInputSchema: z.ZodType<Prisma.TaskUpdateInput> = z.object
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutTaskNestedInputSchema).optional(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTasksAssignedNestedInputSchema).optional(),
   document: z.lazy(() => DocumentUpdateOneWithoutTasksNestedInputSchema).optional(),
@@ -4588,6 +5895,10 @@ export const TaskUncheckedUpdateInputSchema: z.ZodType<Prisma.TaskUncheckedUpdat
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutTaskNestedInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedUpdateManyWithoutTaskNestedInputSchema).optional()
 }).strict();
@@ -4602,7 +5913,11 @@ export const TaskCreateManyInputSchema: z.ZodType<Prisma.TaskCreateManyInput> = 
   status: z.string(),
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskUpdateManyMutationInputSchema: z.ZodType<Prisma.TaskUpdateManyMutationInput> = z.object({
@@ -4613,6 +5928,10 @@ export const TaskUpdateManyMutationInputSchema: z.ZodType<Prisma.TaskUpdateManyM
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TaskUncheckedUpdateManyInput> = z.object({
@@ -4626,6 +5945,10 @@ export const TaskUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TaskUncheckedU
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogCreateInputSchema: z.ZodType<Prisma.AuditLogCreateInput> = z.object({
@@ -4633,6 +5956,12 @@ export const AuditLogCreateInputSchema: z.ZodType<Prisma.AuditLogCreateInput> = 
   action: z.string(),
   timestamp: z.coerce.date().optional(),
   description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   performedBy: z.lazy(() => UserCreateNestedOneWithoutAuditLogsInputSchema),
   task: z.lazy(() => TaskCreateNestedOneWithoutAuditLogsInputSchema).optional(),
   workflow: z.lazy(() => WorkflowCreateNestedOneWithoutAuditLogsInputSchema).optional()
@@ -4645,7 +5974,13 @@ export const AuditLogUncheckedCreateInputSchema: z.ZodType<Prisma.AuditLogUnchec
   action: z.string(),
   performedById: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogUpdateInputSchema: z.ZodType<Prisma.AuditLogUpdateInput> = z.object({
@@ -4653,6 +5988,12 @@ export const AuditLogUpdateInputSchema: z.ZodType<Prisma.AuditLogUpdateInput> = 
   action: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   performedBy: z.lazy(() => UserUpdateOneRequiredWithoutAuditLogsNestedInputSchema).optional(),
   task: z.lazy(() => TaskUpdateOneWithoutAuditLogsNestedInputSchema).optional(),
   workflow: z.lazy(() => WorkflowUpdateOneWithoutAuditLogsNestedInputSchema).optional()
@@ -4666,6 +6007,12 @@ export const AuditLogUncheckedUpdateInputSchema: z.ZodType<Prisma.AuditLogUnchec
   performedById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogCreateManyInputSchema: z.ZodType<Prisma.AuditLogCreateManyInput> = z.object({
@@ -4675,7 +6022,13 @@ export const AuditLogCreateManyInputSchema: z.ZodType<Prisma.AuditLogCreateManyI
   action: z.string(),
   performedById: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogUpdateManyMutationInputSchema: z.ZodType<Prisma.AuditLogUpdateManyMutationInput> = z.object({
@@ -4683,6 +6036,12 @@ export const AuditLogUpdateManyMutationInputSchema: z.ZodType<Prisma.AuditLogUpd
   action: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogUncheckedUpdateManyInputSchema: z.ZodType<Prisma.AuditLogUncheckedUpdateManyInput> = z.object({
@@ -4693,6 +6052,12 @@ export const AuditLogUncheckedUpdateManyInputSchema: z.ZodType<Prisma.AuditLogUn
   performedById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const NotificationCreateInputSchema: z.ZodType<Prisma.NotificationCreateInput> = z.object({
@@ -4700,6 +6065,11 @@ export const NotificationCreateInputSchema: z.ZodType<Prisma.NotificationCreateI
   message: z.string(),
   read: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutNotificationsInputSchema)
 }).strict();
 
@@ -4708,7 +6078,12 @@ export const NotificationUncheckedCreateInputSchema: z.ZodType<Prisma.Notificati
   userId: z.string(),
   message: z.string(),
   read: z.boolean().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const NotificationUpdateInputSchema: z.ZodType<Prisma.NotificationUpdateInput> = z.object({
@@ -4716,6 +6091,11 @@ export const NotificationUpdateInputSchema: z.ZodType<Prisma.NotificationUpdateI
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   read: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutNotificationsNestedInputSchema).optional()
 }).strict();
 
@@ -4725,6 +6105,11 @@ export const NotificationUncheckedUpdateInputSchema: z.ZodType<Prisma.Notificati
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   read: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const NotificationCreateManyInputSchema: z.ZodType<Prisma.NotificationCreateManyInput> = z.object({
@@ -4732,7 +6117,12 @@ export const NotificationCreateManyInputSchema: z.ZodType<Prisma.NotificationCre
   userId: z.string(),
   message: z.string(),
   read: z.boolean().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const NotificationUpdateManyMutationInputSchema: z.ZodType<Prisma.NotificationUpdateManyMutationInput> = z.object({
@@ -4740,6 +6130,11 @@ export const NotificationUpdateManyMutationInputSchema: z.ZodType<Prisma.Notific
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   read: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const NotificationUncheckedUpdateManyInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateManyInput> = z.object({
@@ -4748,6 +6143,11 @@ export const NotificationUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Notifi
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   read: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AttachmentCreateInputSchema: z.ZodType<Prisma.AttachmentCreateInput> = z.object({
@@ -4756,6 +6156,11 @@ export const AttachmentCreateInputSchema: z.ZodType<Prisma.AttachmentCreateInput
   fileName: z.string(),
   mimeType: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutAttachmentsInputSchema)
 }).strict();
 
@@ -4765,7 +6170,12 @@ export const AttachmentUncheckedCreateInputSchema: z.ZodType<Prisma.AttachmentUn
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AttachmentUpdateInputSchema: z.ZodType<Prisma.AttachmentUpdateInput> = z.object({
@@ -4774,6 +6184,11 @@ export const AttachmentUpdateInputSchema: z.ZodType<Prisma.AttachmentUpdateInput
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
 }).strict();
 
@@ -4784,6 +6199,11 @@ export const AttachmentUncheckedUpdateInputSchema: z.ZodType<Prisma.AttachmentUn
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AttachmentCreateManyInputSchema: z.ZodType<Prisma.AttachmentCreateManyInput> = z.object({
@@ -4792,7 +6212,12 @@ export const AttachmentCreateManyInputSchema: z.ZodType<Prisma.AttachmentCreateM
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AttachmentUpdateManyMutationInputSchema: z.ZodType<Prisma.AttachmentUpdateManyMutationInput> = z.object({
@@ -4801,6 +6226,11 @@ export const AttachmentUpdateManyMutationInputSchema: z.ZodType<Prisma.Attachmen
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AttachmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.AttachmentUncheckedUpdateManyInput> = z.object({
@@ -4810,6 +6240,11 @@ export const AttachmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Attachme
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateCreateInputSchema: z.ZodType<Prisma.DigitalCertificateCreateInput> = z.object({
@@ -4819,6 +6254,11 @@ export const DigitalCertificateCreateInputSchema: z.ZodType<Prisma.DigitalCertif
   password: z.string(),
   createdAt: z.coerce.date().optional(),
   expiration: z.coerce.date(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutDigitalCertificatesInputSchema)
 }).strict();
 
@@ -4829,7 +6269,12 @@ export const DigitalCertificateUncheckedCreateInputSchema: z.ZodType<Prisma.Digi
   filePath: z.string(),
   password: z.string(),
   createdAt: z.coerce.date().optional(),
-  expiration: z.coerce.date()
+  expiration: z.coerce.date(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DigitalCertificateUpdateInputSchema: z.ZodType<Prisma.DigitalCertificateUpdateInput> = z.object({
@@ -4839,6 +6284,11 @@ export const DigitalCertificateUpdateInputSchema: z.ZodType<Prisma.DigitalCertif
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   expiration: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutDigitalCertificatesNestedInputSchema).optional()
 }).strict();
 
@@ -4850,6 +6300,11 @@ export const DigitalCertificateUncheckedUpdateInputSchema: z.ZodType<Prisma.Digi
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   expiration: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateCreateManyInputSchema: z.ZodType<Prisma.DigitalCertificateCreateManyInput> = z.object({
@@ -4859,7 +6314,12 @@ export const DigitalCertificateCreateManyInputSchema: z.ZodType<Prisma.DigitalCe
   filePath: z.string(),
   password: z.string(),
   createdAt: z.coerce.date().optional(),
-  expiration: z.coerce.date()
+  expiration: z.coerce.date(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DigitalCertificateUpdateManyMutationInputSchema: z.ZodType<Prisma.DigitalCertificateUpdateManyMutationInput> = z.object({
@@ -4869,6 +6329,11 @@ export const DigitalCertificateUpdateManyMutationInputSchema: z.ZodType<Prisma.D
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   expiration: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DigitalCertificateUncheckedUpdateManyInput> = z.object({
@@ -4879,6 +6344,11 @@ export const DigitalCertificateUncheckedUpdateManyInputSchema: z.ZodType<Prisma.
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   expiration: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const FileMetadataCreateInputSchema: z.ZodType<Prisma.FileMetadataCreateInput> = z.object({
@@ -4887,6 +6357,11 @@ export const FileMetadataCreateInputSchema: z.ZodType<Prisma.FileMetadataCreateI
   mimeType: z.string(),
   checksum: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutFileMetadataInputSchema)
 }).strict();
 
@@ -4896,7 +6371,12 @@ export const FileMetadataUncheckedCreateInputSchema: z.ZodType<Prisma.FileMetada
   fileSize: z.number().int(),
   mimeType: z.string(),
   checksum: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const FileMetadataUpdateInputSchema: z.ZodType<Prisma.FileMetadataUpdateInput> = z.object({
@@ -4905,6 +6385,11 @@ export const FileMetadataUpdateInputSchema: z.ZodType<Prisma.FileMetadataUpdateI
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   checksum: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutFileMetadataNestedInputSchema).optional()
 }).strict();
 
@@ -4915,6 +6400,11 @@ export const FileMetadataUncheckedUpdateInputSchema: z.ZodType<Prisma.FileMetada
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   checksum: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const FileMetadataCreateManyInputSchema: z.ZodType<Prisma.FileMetadataCreateManyInput> = z.object({
@@ -4923,7 +6413,12 @@ export const FileMetadataCreateManyInputSchema: z.ZodType<Prisma.FileMetadataCre
   fileSize: z.number().int(),
   mimeType: z.string(),
   checksum: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const FileMetadataUpdateManyMutationInputSchema: z.ZodType<Prisma.FileMetadataUpdateManyMutationInput> = z.object({
@@ -4932,6 +6427,11 @@ export const FileMetadataUpdateManyMutationInputSchema: z.ZodType<Prisma.FileMet
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   checksum: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const FileMetadataUncheckedUpdateManyInputSchema: z.ZodType<Prisma.FileMetadataUncheckedUpdateManyInput> = z.object({
@@ -4941,6 +6441,11 @@ export const FileMetadataUncheckedUpdateManyInputSchema: z.ZodType<Prisma.FileMe
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   checksum: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const InstitutionCreateInputSchema: z.ZodType<Prisma.InstitutionCreateInput> = z.object({
@@ -4956,6 +6461,10 @@ export const InstitutionCreateInputSchema: z.ZodType<Prisma.InstitutionCreateInp
   emblem: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   mayor: z.lazy(() => UserCreateNestedOneWithoutMayorInstitutionsInputSchema).optional(),
   viceMayor: z.lazy(() => UserCreateNestedOneWithoutViceMayorInstitutionsInputSchema).optional(),
   departments: z.lazy(() => DepartmentCreateNestedManyWithoutInstitutionInputSchema).optional()
@@ -4976,6 +6485,10 @@ export const InstitutionUncheckedCreateInputSchema: z.ZodType<Prisma.Institution
   viceMayorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   departments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutInstitutionInputSchema).optional()
 }).strict();
 
@@ -4992,6 +6505,10 @@ export const InstitutionUpdateInputSchema: z.ZodType<Prisma.InstitutionUpdateInp
   emblem: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   mayor: z.lazy(() => UserUpdateOneWithoutMayorInstitutionsNestedInputSchema).optional(),
   viceMayor: z.lazy(() => UserUpdateOneWithoutViceMayorInstitutionsNestedInputSchema).optional(),
   departments: z.lazy(() => DepartmentUpdateManyWithoutInstitutionNestedInputSchema).optional()
@@ -5012,6 +6529,10 @@ export const InstitutionUncheckedUpdateInputSchema: z.ZodType<Prisma.Institution
   viceMayorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   departments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutInstitutionNestedInputSchema).optional()
 }).strict();
 
@@ -5029,7 +6550,11 @@ export const InstitutionCreateManyInputSchema: z.ZodType<Prisma.InstitutionCreat
   mayorId: z.string().optional().nullable(),
   viceMayorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const InstitutionUpdateManyMutationInputSchema: z.ZodType<Prisma.InstitutionUpdateManyMutationInput> = z.object({
@@ -5045,6 +6570,10 @@ export const InstitutionUpdateManyMutationInputSchema: z.ZodType<Prisma.Institut
   emblem: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const InstitutionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.InstitutionUncheckedUpdateManyInput> = z.object({
@@ -5062,6 +6591,10 @@ export const InstitutionUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Institu
   viceMayorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DepartmentCreateInputSchema: z.ZodType<Prisma.DepartmentCreateInput> = z.object({
@@ -5070,6 +6603,10 @@ export const DepartmentCreateInputSchema: z.ZodType<Prisma.DepartmentCreateInput
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
@@ -5089,6 +6626,10 @@ export const DepartmentUncheckedCreateInputSchema: z.ZodType<Prisma.DepartmentUn
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -5101,6 +6642,10 @@ export const DepartmentUpdateInputSchema: z.ZodType<Prisma.DepartmentUpdateInput
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
@@ -5120,6 +6665,10 @@ export const DepartmentUncheckedUpdateInputSchema: z.ZodType<Prisma.DepartmentUn
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -5135,7 +6684,11 @@ export const DepartmentCreateManyInputSchema: z.ZodType<Prisma.DepartmentCreateM
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DepartmentUpdateManyMutationInputSchema: z.ZodType<Prisma.DepartmentUpdateManyMutationInput> = z.object({
@@ -5144,6 +6697,10 @@ export const DepartmentUpdateManyMutationInputSchema: z.ZodType<Prisma.Departmen
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DepartmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyInput> = z.object({
@@ -5156,12 +6713,21 @@ export const DepartmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Departme
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentCreateInputSchema: z.ZodType<Prisma.UserDepartmentCreateInput> = z.object({
   id: z.string().optional(),
   role: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutUserDepartmentsInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutUserDepartmentsInputSchema)
 }).strict();
@@ -5171,13 +6737,23 @@ export const UserDepartmentUncheckedCreateInputSchema: z.ZodType<Prisma.UserDepa
   userId: z.string(),
   departmentId: z.number().int(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserDepartmentUpdateInputSchema: z.ZodType<Prisma.UserDepartmentUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutUserDepartmentsNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutUserDepartmentsNestedInputSchema).optional()
 }).strict();
@@ -5188,6 +6764,11 @@ export const UserDepartmentUncheckedUpdateInputSchema: z.ZodType<Prisma.UserDepa
   departmentId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentCreateManyInputSchema: z.ZodType<Prisma.UserDepartmentCreateManyInput> = z.object({
@@ -5195,13 +6776,23 @@ export const UserDepartmentCreateManyInputSchema: z.ZodType<Prisma.UserDepartmen
   userId: z.string(),
   departmentId: z.number().int(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserDepartmentUpdateManyMutationInputSchema: z.ZodType<Prisma.UserDepartmentUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserDepartmentUncheckedUpdateManyInput> = z.object({
@@ -5210,6 +6801,11 @@ export const UserDepartmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.User
   departmentId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCreateInputSchema: z.ZodType<Prisma.TicketCreateInput> = z.object({
@@ -5221,6 +6817,9 @@ export const TicketCreateInputSchema: z.ZodType<Prisma.TicketCreateInput> = z.ob
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -5251,6 +6850,9 @@ export const TicketUncheckedCreateInputSchema: z.ZodType<Prisma.TicketUncheckedC
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -5267,6 +6869,9 @@ export const TicketUpdateInputSchema: z.ZodType<Prisma.TicketUpdateInput> = z.ob
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -5297,6 +6902,9 @@ export const TicketUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketUncheckedU
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -5319,7 +6927,10 @@ export const TicketCreateManyInputSchema: z.ZodType<Prisma.TicketCreateManyInput
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketUpdateManyMutationInput> = z.object({
@@ -5331,6 +6942,9 @@ export const TicketUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketUpdateM
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketUncheckedUpdateManyInput> = z.object({
@@ -5349,11 +6963,19 @@ export const TicketUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketUnchec
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketStatusCreateInputSchema: z.ZodType<Prisma.TicketStatusCreateInput> = z.object({
   name: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutStatusInputSchema).optional()
 }).strict();
 
@@ -5361,12 +6983,22 @@ export const TicketStatusUncheckedCreateInputSchema: z.ZodType<Prisma.TicketStat
   id: z.number().int().optional(),
   name: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutStatusInputSchema).optional()
 }).strict();
 
 export const TicketStatusUpdateInputSchema: z.ZodType<Prisma.TicketStatusUpdateInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUpdateManyWithoutStatusNestedInputSchema).optional()
 }).strict();
 
@@ -5374,29 +7006,54 @@ export const TicketStatusUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketStat
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutStatusNestedInputSchema).optional()
 }).strict();
 
 export const TicketStatusCreateManyInputSchema: z.ZodType<Prisma.TicketStatusCreateManyInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketStatusUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketStatusUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketStatusUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketStatusUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketPriorityCreateInputSchema: z.ZodType<Prisma.TicketPriorityCreateInput> = z.object({
   name: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutPriorityInputSchema).optional()
 }).strict();
 
@@ -5404,12 +7061,22 @@ export const TicketPriorityUncheckedCreateInputSchema: z.ZodType<Prisma.TicketPr
   id: z.number().int().optional(),
   name: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutPriorityInputSchema).optional()
 }).strict();
 
 export const TicketPriorityUpdateInputSchema: z.ZodType<Prisma.TicketPriorityUpdateInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUpdateManyWithoutPriorityNestedInputSchema).optional()
 }).strict();
 
@@ -5417,30 +7084,55 @@ export const TicketPriorityUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketPr
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutPriorityNestedInputSchema).optional()
 }).strict();
 
 export const TicketPriorityCreateManyInputSchema: z.ZodType<Prisma.TicketPriorityCreateManyInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketPriorityUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketPriorityUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketPriorityUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketPriorityUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const HelpTopicCreateInputSchema: z.ZodType<Prisma.HelpTopicCreateInput> = z.object({
   topic: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutHelpTopicsInputSchema),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutHelpTopicInputSchema).optional()
 }).strict();
@@ -5451,6 +7143,11 @@ export const HelpTopicUncheckedCreateInputSchema: z.ZodType<Prisma.HelpTopicUnch
   description: z.string().optional().nullable(),
   departmentId: z.number().int(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutHelpTopicInputSchema).optional()
 }).strict();
 
@@ -5458,6 +7155,11 @@ export const HelpTopicUpdateInputSchema: z.ZodType<Prisma.HelpTopicUpdateInput> 
   topic: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutHelpTopicsNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutHelpTopicNestedInputSchema).optional()
 }).strict();
@@ -5468,6 +7170,11 @@ export const HelpTopicUncheckedUpdateInputSchema: z.ZodType<Prisma.HelpTopicUnch
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   departmentId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutHelpTopicNestedInputSchema).optional()
 }).strict();
 
@@ -5476,13 +7183,23 @@ export const HelpTopicCreateManyInputSchema: z.ZodType<Prisma.HelpTopicCreateMan
   topic: z.string(),
   description: z.string().optional().nullable(),
   departmentId: z.number().int(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const HelpTopicUpdateManyMutationInputSchema: z.ZodType<Prisma.HelpTopicUpdateManyMutationInput> = z.object({
   topic: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const HelpTopicUncheckedUpdateManyInputSchema: z.ZodType<Prisma.HelpTopicUncheckedUpdateManyInput> = z.object({
@@ -5491,12 +7208,22 @@ export const HelpTopicUncheckedUpdateManyInputSchema: z.ZodType<Prisma.HelpTopic
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   departmentId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SLAPlanCreateInputSchema: z.ZodType<Prisma.SLAPlanCreateInput> = z.object({
   name: z.string(),
   gracePeriod: z.number().int(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutSlaPlanInputSchema).optional()
 }).strict();
 
@@ -5505,6 +7232,11 @@ export const SLAPlanUncheckedCreateInputSchema: z.ZodType<Prisma.SLAPlanUnchecke
   name: z.string(),
   gracePeriod: z.number().int(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutSlaPlanInputSchema).optional()
 }).strict();
 
@@ -5512,6 +7244,11 @@ export const SLAPlanUpdateInputSchema: z.ZodType<Prisma.SLAPlanUpdateInput> = z.
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   gracePeriod: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUpdateManyWithoutSlaPlanNestedInputSchema).optional()
 }).strict();
 
@@ -5520,6 +7257,11 @@ export const SLAPlanUncheckedUpdateInputSchema: z.ZodType<Prisma.SLAPlanUnchecke
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   gracePeriod: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutSlaPlanNestedInputSchema).optional()
 }).strict();
 
@@ -5527,13 +7269,23 @@ export const SLAPlanCreateManyInputSchema: z.ZodType<Prisma.SLAPlanCreateManyInp
   id: z.number().int().optional(),
   name: z.string(),
   gracePeriod: z.number().int(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SLAPlanUpdateManyMutationInputSchema: z.ZodType<Prisma.SLAPlanUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   gracePeriod: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SLAPlanUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SLAPlanUncheckedUpdateManyInput> = z.object({
@@ -5541,12 +7293,22 @@ export const SLAPlanUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SLAPlanUnch
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   gracePeriod: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketThreadCreateInputSchema: z.ZodType<Prisma.TicketThreadCreateInput> = z.object({
   id: z.string().optional(),
   message: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketThreadInputSchema).optional(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutThreadsInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutTicketThreadsInputSchema)
@@ -5558,6 +7320,11 @@ export const TicketThreadUncheckedCreateInputSchema: z.ZodType<Prisma.TicketThre
   userId: z.string(),
   message: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInputSchema).optional()
 }).strict();
 
@@ -5565,6 +7332,11 @@ export const TicketThreadUpdateInputSchema: z.ZodType<Prisma.TicketThreadUpdateI
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketThreadNestedInputSchema).optional(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutThreadsNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema).optional()
@@ -5576,6 +7348,11 @@ export const TicketThreadUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketThre
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInputSchema).optional()
 }).strict();
 
@@ -5584,13 +7361,23 @@ export const TicketThreadCreateManyInputSchema: z.ZodType<Prisma.TicketThreadCre
   ticketId: z.string(),
   userId: z.string(),
   message: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketThreadUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketThreadUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketThreadUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateManyInput> = z.object({
@@ -5599,6 +7386,11 @@ export const TicketThreadUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Ticket
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentCreateInputSchema: z.ZodType<Prisma.TicketAttachmentCreateInput> = z.object({
@@ -5607,6 +7399,11 @@ export const TicketAttachmentCreateInputSchema: z.ZodType<Prisma.TicketAttachmen
   fileName: z.string(),
   mimeType: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutAttachmentsInputSchema),
   ticketThread: z.lazy(() => TicketThreadCreateNestedOneWithoutAttachmentsInputSchema)
 }).strict();
@@ -5618,7 +7415,12 @@ export const TicketAttachmentUncheckedCreateInputSchema: z.ZodType<Prisma.Ticket
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketAttachmentUpdateInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateInput> = z.object({
@@ -5627,6 +7429,11 @@ export const TicketAttachmentUpdateInputSchema: z.ZodType<Prisma.TicketAttachmen
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional(),
   ticketThread: z.lazy(() => TicketThreadUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
 }).strict();
@@ -5639,6 +7446,11 @@ export const TicketAttachmentUncheckedUpdateInputSchema: z.ZodType<Prisma.Ticket
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentCreateManyInputSchema: z.ZodType<Prisma.TicketAttachmentCreateManyInput> = z.object({
@@ -5648,7 +7460,12 @@ export const TicketAttachmentCreateManyInputSchema: z.ZodType<Prisma.TicketAttac
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketAttachmentUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateManyMutationInput> = z.object({
@@ -5657,6 +7474,11 @@ export const TicketAttachmentUpdateManyMutationInputSchema: z.ZodType<Prisma.Tic
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyInput> = z.object({
@@ -5667,10 +7489,21 @@ export const TicketAttachmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Ti
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorCreateInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutCollaboratorsInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutTicketCollaboratorsInputSchema)
 }).strict();
@@ -5678,11 +7511,23 @@ export const TicketCollaboratorCreateInputSchema: z.ZodType<Prisma.TicketCollabo
 export const TicketCollaboratorUncheckedCreateInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedCreateInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCollaboratorUpdateInputSchema: z.ZodType<Prisma.TicketCollaboratorUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutCollaboratorsNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTicketCollaboratorsNestedInputSchema).optional()
 }).strict();
@@ -5691,28 +7536,57 @@ export const TicketCollaboratorUncheckedUpdateInputSchema: z.ZodType<Prisma.Tick
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorCreateManyInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateManyInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCollaboratorUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketCollaboratorUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const CustomFieldCreateInputSchema: z.ZodType<Prisma.CustomFieldCreateInput> = z.object({
   name: z.string(),
   fieldType: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutFieldInputSchema).optional()
 }).strict();
 
@@ -5721,6 +7595,11 @@ export const CustomFieldUncheckedCreateInputSchema: z.ZodType<Prisma.CustomField
   name: z.string(),
   fieldType: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutFieldInputSchema).optional()
 }).strict();
 
@@ -5728,6 +7607,11 @@ export const CustomFieldUpdateInputSchema: z.ZodType<Prisma.CustomFieldUpdateInp
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketCustomFieldUpdateManyWithoutFieldNestedInputSchema).optional()
 }).strict();
 
@@ -5736,6 +7620,11 @@ export const CustomFieldUncheckedUpdateInputSchema: z.ZodType<Prisma.CustomField
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutFieldNestedInputSchema).optional()
 }).strict();
 
@@ -5743,13 +7632,23 @@ export const CustomFieldCreateManyInputSchema: z.ZodType<Prisma.CustomFieldCreat
   id: z.number().int().optional(),
   name: z.string(),
   fieldType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const CustomFieldUpdateManyMutationInputSchema: z.ZodType<Prisma.CustomFieldUpdateManyMutationInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const CustomFieldUncheckedUpdateManyInputSchema: z.ZodType<Prisma.CustomFieldUncheckedUpdateManyInput> = z.object({
@@ -5757,11 +7656,22 @@ export const CustomFieldUncheckedUpdateManyInputSchema: z.ZodType<Prisma.CustomF
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldCreateInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateInput> = z.object({
   id: z.string().optional(),
   value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   field: z.lazy(() => CustomFieldCreateNestedOneWithoutTicketsInputSchema),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutCustomFieldsInputSchema)
 }).strict();
@@ -5770,12 +7680,24 @@ export const TicketCustomFieldUncheckedCreateInputSchema: z.ZodType<Prisma.Ticke
   id: z.string().optional(),
   ticketId: z.string(),
   fieldId: z.number().int(),
-  value: z.string()
+  value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCustomFieldUpdateInputSchema: z.ZodType<Prisma.TicketCustomFieldUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   field: z.lazy(() => CustomFieldUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutCustomFieldsNestedInputSchema).optional()
 }).strict();
@@ -5785,18 +7707,36 @@ export const TicketCustomFieldUncheckedUpdateInputSchema: z.ZodType<Prisma.Ticke
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldCreateManyInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateManyInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
   fieldId: z.number().int(),
-  value: z.string()
+  value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCustomFieldUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketCustomFieldUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketCustomFieldUncheckedUpdateManyInput> = z.object({
@@ -5804,10 +7744,22 @@ export const TicketCustomFieldUncheckedUpdateManyInputSchema: z.ZodType<Prisma.T
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUserCreateInputSchema: z.ZodType<Prisma.TaskUserCreateInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   task: z.lazy(() => TaskCreateNestedOneWithoutTaskUsersInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutTaskUsersInputSchema)
 }).strict();
@@ -5815,11 +7767,23 @@ export const TaskUserCreateInputSchema: z.ZodType<Prisma.TaskUserCreateInput> = 
 export const TaskUserUncheckedCreateInputSchema: z.ZodType<Prisma.TaskUserUncheckedCreateInput> = z.object({
   id: z.string().optional(),
   taskId: z.string(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskUserUpdateInputSchema: z.ZodType<Prisma.TaskUserUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   task: z.lazy(() => TaskUpdateOneRequiredWithoutTaskUsersNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTaskUsersNestedInputSchema).optional()
 }).strict();
@@ -5828,26 +7792,56 @@ export const TaskUserUncheckedUpdateInputSchema: z.ZodType<Prisma.TaskUserUnchec
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   taskId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUserCreateManyInputSchema: z.ZodType<Prisma.TaskUserCreateManyInput> = z.object({
   id: z.string().optional(),
   taskId: z.string(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskUserUpdateManyMutationInputSchema: z.ZodType<Prisma.TaskUserUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TaskUserUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   taskId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUserCreateInputSchema: z.ZodType<Prisma.TicketUserCreateInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutTicketUsersInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutTicketUsersInputSchema)
 }).strict();
@@ -5855,11 +7849,23 @@ export const TicketUserCreateInputSchema: z.ZodType<Prisma.TicketUserCreateInput
 export const TicketUserUncheckedCreateInputSchema: z.ZodType<Prisma.TicketUserUncheckedCreateInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUserUpdateInputSchema: z.ZodType<Prisma.TicketUserUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutTicketUsersNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTicketUsersNestedInputSchema).optional()
 }).strict();
@@ -5868,22 +7874,46 @@ export const TicketUserUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketUserUn
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUserCreateManyInputSchema: z.ZodType<Prisma.TicketUserCreateManyInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUserUpdateManyMutationInputSchema: z.ZodType<Prisma.TicketUserUpdateManyMutationInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketUserUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AddressCreateInputSchema: z.ZodType<Prisma.AddressCreateInput> = z.object({
@@ -5895,6 +7925,10 @@ export const AddressCreateInputSchema: z.ZodType<Prisma.AddressCreateInput> = z.
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   users: z.lazy(() => UserCreateNestedManyWithoutAddressInputSchema).optional()
 }).strict();
 
@@ -5907,6 +7941,10 @@ export const AddressUncheckedCreateInputSchema: z.ZodType<Prisma.AddressUnchecke
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   users: z.lazy(() => UserUncheckedCreateNestedManyWithoutAddressInputSchema).optional()
 }).strict();
 
@@ -5919,6 +7957,10 @@ export const AddressUpdateInputSchema: z.ZodType<Prisma.AddressUpdateInput> = z.
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   users: z.lazy(() => UserUpdateManyWithoutAddressNestedInputSchema).optional()
 }).strict();
 
@@ -5931,6 +7973,10 @@ export const AddressUncheckedUpdateInputSchema: z.ZodType<Prisma.AddressUnchecke
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   users: z.lazy(() => UserUncheckedUpdateManyWithoutAddressNestedInputSchema).optional()
 }).strict();
 
@@ -5942,7 +7988,11 @@ export const AddressCreateManyInputSchema: z.ZodType<Prisma.AddressCreateManyInp
   country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AddressUpdateManyMutationInputSchema: z.ZodType<Prisma.AddressUpdateManyMutationInput> = z.object({
@@ -5954,6 +8004,10 @@ export const AddressUpdateManyMutationInputSchema: z.ZodType<Prisma.AddressUpdat
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AddressUncheckedUpdateManyInputSchema: z.ZodType<Prisma.AddressUncheckedUpdateManyInput> = z.object({
@@ -5965,6 +8019,10 @@ export const AddressUncheckedUpdateManyInputSchema: z.ZodType<Prisma.AddressUnch
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UuidFilterSchema: z.ZodType<Prisma.UuidFilter> = z.object({
@@ -6235,7 +8293,11 @@ export const UserCountOrderByAggregateInputSchema: z.ZodType<Prisma.UserCountOrd
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   dateOfBirth: z.lazy(() => SortOrderSchema).optional(),
-  addressId: z.lazy(() => SortOrderSchema).optional()
+  addressId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserMaxOrderByAggregateInput> = z.object({
@@ -6250,7 +8312,11 @@ export const UserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserMaxOrderBy
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   dateOfBirth: z.lazy(() => SortOrderSchema).optional(),
-  addressId: z.lazy(() => SortOrderSchema).optional()
+  addressId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserMinOrderByAggregateInput> = z.object({
@@ -6265,7 +8331,11 @@ export const UserMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserMinOrderBy
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   dateOfBirth: z.lazy(() => SortOrderSchema).optional(),
-  addressId: z.lazy(() => SortOrderSchema).optional()
+  addressId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UuidWithAggregatesFilterSchema: z.ZodType<Prisma.UuidWithAggregatesFilter> = z.object({
@@ -6421,7 +8491,12 @@ export const DocumentCountOrderByAggregateInputSchema: z.ZodType<Prisma.Document
   signed: z.lazy(() => SortOrderSchema).optional(),
   signedAt: z.lazy(() => SortOrderSchema).optional(),
   signature: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentMaxOrderByAggregateInput> = z.object({
@@ -6434,7 +8509,12 @@ export const DocumentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentMa
   signed: z.lazy(() => SortOrderSchema).optional(),
   signedAt: z.lazy(() => SortOrderSchema).optional(),
   signature: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentMinOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentMinOrderByAggregateInput> = z.object({
@@ -6447,7 +8527,12 @@ export const DocumentMinOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentMi
   signed: z.lazy(() => SortOrderSchema).optional(),
   signedAt: z.lazy(() => SortOrderSchema).optional(),
   signature: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const BoolWithAggregatesFilterSchema: z.ZodType<Prisma.BoolWithAggregatesFilter> = z.object({
@@ -6484,7 +8569,12 @@ export const UserOnDocumentsCountOrderByAggregateInputSchema: z.ZodType<Prisma.U
   documentId: z.lazy(() => SortOrderSchema).optional(),
   assignedAt: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserOnDocumentsMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserOnDocumentsMaxOrderByAggregateInput> = z.object({
@@ -6492,7 +8582,12 @@ export const UserOnDocumentsMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Use
   documentId: z.lazy(() => SortOrderSchema).optional(),
   assignedAt: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserOnDocumentsMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserOnDocumentsMinOrderByAggregateInput> = z.object({
@@ -6500,7 +8595,12 @@ export const UserOnDocumentsMinOrderByAggregateInputSchema: z.ZodType<Prisma.Use
   documentId: z.lazy(() => SortOrderSchema).optional(),
   assignedAt: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentUserOrderByRelevanceInputSchema: z.ZodType<Prisma.DocumentUserOrderByRelevanceInput> = z.object({
@@ -6513,21 +8613,36 @@ export const DocumentUserCountOrderByAggregateInputSchema: z.ZodType<Prisma.Docu
   id: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   documentId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentUserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentUserMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   documentId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentUserMinOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentUserMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   documentId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const IntFilterSchema: z.ZodType<Prisma.IntFilter> = z.object({
@@ -6554,7 +8669,12 @@ export const DocumentVersionCountOrderByAggregateInputSchema: z.ZodType<Prisma.D
   filePath: z.lazy(() => SortOrderSchema).optional(),
   changesDescription: z.lazy(() => SortOrderSchema).optional(),
   createdById: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentVersionAvgOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentVersionAvgOrderByAggregateInput> = z.object({
@@ -6568,7 +8688,12 @@ export const DocumentVersionMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Doc
   filePath: z.lazy(() => SortOrderSchema).optional(),
   changesDescription: z.lazy(() => SortOrderSchema).optional(),
   createdById: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentVersionMinOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentVersionMinOrderByAggregateInput> = z.object({
@@ -6578,7 +8703,12 @@ export const DocumentVersionMinOrderByAggregateInputSchema: z.ZodType<Prisma.Doc
   filePath: z.lazy(() => SortOrderSchema).optional(),
   changesDescription: z.lazy(() => SortOrderSchema).optional(),
   createdById: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentVersionSumOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentVersionSumOrderByAggregateInput> = z.object({
@@ -6616,21 +8746,36 @@ export const DocumentVersionCreatorCountOrderByAggregateInputSchema: z.ZodType<P
   id: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   versionId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentVersionCreatorMaxOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentVersionCreatorMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   versionId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DocumentVersionCreatorMinOrderByAggregateInputSchema: z.ZodType<Prisma.DocumentVersionCreatorMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   versionId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const SharedDocumentOrderByRelevanceInputSchema: z.ZodType<Prisma.SharedDocumentOrderByRelevanceInput> = z.object({
@@ -6645,7 +8790,12 @@ export const SharedDocumentCountOrderByAggregateInputSchema: z.ZodType<Prisma.Sh
   userId: z.lazy(() => SortOrderSchema).optional(),
   sharedAt: z.lazy(() => SortOrderSchema).optional(),
   permission: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const SharedDocumentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.SharedDocumentMaxOrderByAggregateInput> = z.object({
@@ -6654,7 +8804,12 @@ export const SharedDocumentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Shar
   userId: z.lazy(() => SortOrderSchema).optional(),
   sharedAt: z.lazy(() => SortOrderSchema).optional(),
   permission: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const SharedDocumentMinOrderByAggregateInputSchema: z.ZodType<Prisma.SharedDocumentMinOrderByAggregateInput> = z.object({
@@ -6663,7 +8818,12 @@ export const SharedDocumentMinOrderByAggregateInputSchema: z.ZodType<Prisma.Shar
   userId: z.lazy(() => SortOrderSchema).optional(),
   sharedAt: z.lazy(() => SortOrderSchema).optional(),
   permission: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const WorkflowOrderByRelevanceInputSchema: z.ZodType<Prisma.WorkflowOrderByRelevanceInput> = z.object({
@@ -6679,7 +8839,11 @@ export const WorkflowCountOrderByAggregateInputSchema: z.ZodType<Prisma.Workflow
   type: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const WorkflowMaxOrderByAggregateInputSchema: z.ZodType<Prisma.WorkflowMaxOrderByAggregateInput> = z.object({
@@ -6689,7 +8853,11 @@ export const WorkflowMaxOrderByAggregateInputSchema: z.ZodType<Prisma.WorkflowMa
   type: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const WorkflowMinOrderByAggregateInputSchema: z.ZodType<Prisma.WorkflowMinOrderByAggregateInput> = z.object({
@@ -6699,7 +8867,11 @@ export const WorkflowMinOrderByAggregateInputSchema: z.ZodType<Prisma.WorkflowMi
   type: z.lazy(() => SortOrderSchema).optional(),
   status: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserNullableScalarRelationFilterSchema: z.ZodType<Prisma.UserNullableScalarRelationFilter> = z.object({
@@ -6733,7 +8905,11 @@ export const TaskCountOrderByAggregateInputSchema: z.ZodType<Prisma.TaskCountOrd
   status: z.lazy(() => SortOrderSchema).optional(),
   dueDate: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TaskMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TaskMaxOrderByAggregateInput> = z.object({
@@ -6746,7 +8922,11 @@ export const TaskMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TaskMaxOrderBy
   status: z.lazy(() => SortOrderSchema).optional(),
   dueDate: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TaskMinOrderByAggregateInputSchema: z.ZodType<Prisma.TaskMinOrderByAggregateInput> = z.object({
@@ -6759,7 +8939,11 @@ export const TaskMinOrderByAggregateInputSchema: z.ZodType<Prisma.TaskMinOrderBy
   status: z.lazy(() => SortOrderSchema).optional(),
   dueDate: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TaskNullableScalarRelationFilterSchema: z.ZodType<Prisma.TaskNullableScalarRelationFilter> = z.object({
@@ -6785,7 +8969,13 @@ export const AuditLogCountOrderByAggregateInputSchema: z.ZodType<Prisma.AuditLog
   action: z.lazy(() => SortOrderSchema).optional(),
   performedById: z.lazy(() => SortOrderSchema).optional(),
   timestamp: z.lazy(() => SortOrderSchema).optional(),
-  description: z.lazy(() => SortOrderSchema).optional()
+  description: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AuditLogMaxOrderByAggregateInputSchema: z.ZodType<Prisma.AuditLogMaxOrderByAggregateInput> = z.object({
@@ -6795,7 +8985,13 @@ export const AuditLogMaxOrderByAggregateInputSchema: z.ZodType<Prisma.AuditLogMa
   action: z.lazy(() => SortOrderSchema).optional(),
   performedById: z.lazy(() => SortOrderSchema).optional(),
   timestamp: z.lazy(() => SortOrderSchema).optional(),
-  description: z.lazy(() => SortOrderSchema).optional()
+  description: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AuditLogMinOrderByAggregateInputSchema: z.ZodType<Prisma.AuditLogMinOrderByAggregateInput> = z.object({
@@ -6805,7 +9001,13 @@ export const AuditLogMinOrderByAggregateInputSchema: z.ZodType<Prisma.AuditLogMi
   action: z.lazy(() => SortOrderSchema).optional(),
   performedById: z.lazy(() => SortOrderSchema).optional(),
   timestamp: z.lazy(() => SortOrderSchema).optional(),
-  description: z.lazy(() => SortOrderSchema).optional()
+  description: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const NotificationOrderByRelevanceInputSchema: z.ZodType<Prisma.NotificationOrderByRelevanceInput> = z.object({
@@ -6819,7 +9021,12 @@ export const NotificationCountOrderByAggregateInputSchema: z.ZodType<Prisma.Noti
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
   read: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const NotificationMaxOrderByAggregateInputSchema: z.ZodType<Prisma.NotificationMaxOrderByAggregateInput> = z.object({
@@ -6827,7 +9034,12 @@ export const NotificationMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Notifi
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
   read: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const NotificationMinOrderByAggregateInputSchema: z.ZodType<Prisma.NotificationMinOrderByAggregateInput> = z.object({
@@ -6835,7 +9047,12 @@ export const NotificationMinOrderByAggregateInputSchema: z.ZodType<Prisma.Notifi
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
   read: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AttachmentOrderByRelevanceInputSchema: z.ZodType<Prisma.AttachmentOrderByRelevanceInput> = z.object({
@@ -6850,7 +9067,12 @@ export const AttachmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.Attach
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AttachmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.AttachmentMaxOrderByAggregateInput> = z.object({
@@ -6859,7 +9081,12 @@ export const AttachmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Attachme
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AttachmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.AttachmentMinOrderByAggregateInput> = z.object({
@@ -6868,7 +9095,12 @@ export const AttachmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.Attachme
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DigitalCertificateOrderByRelevanceInputSchema: z.ZodType<Prisma.DigitalCertificateOrderByRelevanceInput> = z.object({
@@ -6884,7 +9116,12 @@ export const DigitalCertificateCountOrderByAggregateInputSchema: z.ZodType<Prism
   filePath: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  expiration: z.lazy(() => SortOrderSchema).optional()
+  expiration: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DigitalCertificateMaxOrderByAggregateInputSchema: z.ZodType<Prisma.DigitalCertificateMaxOrderByAggregateInput> = z.object({
@@ -6894,7 +9131,12 @@ export const DigitalCertificateMaxOrderByAggregateInputSchema: z.ZodType<Prisma.
   filePath: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  expiration: z.lazy(() => SortOrderSchema).optional()
+  expiration: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DigitalCertificateMinOrderByAggregateInputSchema: z.ZodType<Prisma.DigitalCertificateMinOrderByAggregateInput> = z.object({
@@ -6904,7 +9146,12 @@ export const DigitalCertificateMinOrderByAggregateInputSchema: z.ZodType<Prisma.
   filePath: z.lazy(() => SortOrderSchema).optional(),
   password: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  expiration: z.lazy(() => SortOrderSchema).optional()
+  expiration: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const FileMetadataOrderByRelevanceInputSchema: z.ZodType<Prisma.FileMetadataOrderByRelevanceInput> = z.object({
@@ -6919,7 +9166,12 @@ export const FileMetadataCountOrderByAggregateInputSchema: z.ZodType<Prisma.File
   fileSize: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   checksum: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const FileMetadataAvgOrderByAggregateInputSchema: z.ZodType<Prisma.FileMetadataAvgOrderByAggregateInput> = z.object({
@@ -6932,7 +9184,12 @@ export const FileMetadataMaxOrderByAggregateInputSchema: z.ZodType<Prisma.FileMe
   fileSize: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   checksum: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const FileMetadataMinOrderByAggregateInputSchema: z.ZodType<Prisma.FileMetadataMinOrderByAggregateInput> = z.object({
@@ -6941,7 +9198,12 @@ export const FileMetadataMinOrderByAggregateInputSchema: z.ZodType<Prisma.FileMe
   fileSize: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
   checksum: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const FileMetadataSumOrderByAggregateInputSchema: z.ZodType<Prisma.FileMetadataSumOrderByAggregateInput> = z.object({
@@ -6968,7 +9230,11 @@ export const InstitutionCountOrderByAggregateInputSchema: z.ZodType<Prisma.Insti
   mayorId: z.lazy(() => SortOrderSchema).optional(),
   viceMayorId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const InstitutionMaxOrderByAggregateInputSchema: z.ZodType<Prisma.InstitutionMaxOrderByAggregateInput> = z.object({
@@ -6985,7 +9251,11 @@ export const InstitutionMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Institu
   mayorId: z.lazy(() => SortOrderSchema).optional(),
   viceMayorId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const InstitutionMinOrderByAggregateInputSchema: z.ZodType<Prisma.InstitutionMinOrderByAggregateInput> = z.object({
@@ -7002,7 +9272,11 @@ export const InstitutionMinOrderByAggregateInputSchema: z.ZodType<Prisma.Institu
   mayorId: z.lazy(() => SortOrderSchema).optional(),
   viceMayorId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const IntNullableFilterSchema: z.ZodType<Prisma.IntNullableFilter> = z.object({
@@ -7051,7 +9325,11 @@ export const DepartmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.Depart
   parentDepartmentId: z.lazy(() => SortOrderSchema).optional(),
   headId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DepartmentAvgOrderByAggregateInputSchema: z.ZodType<Prisma.DepartmentAvgOrderByAggregateInput> = z.object({
@@ -7068,7 +9346,11 @@ export const DepartmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Departme
   parentDepartmentId: z.lazy(() => SortOrderSchema).optional(),
   headId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DepartmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.DepartmentMinOrderByAggregateInput> = z.object({
@@ -7080,7 +9362,11 @@ export const DepartmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.Departme
   parentDepartmentId: z.lazy(() => SortOrderSchema).optional(),
   headId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const DepartmentSumOrderByAggregateInputSchema: z.ZodType<Prisma.DepartmentSumOrderByAggregateInput> = z.object({
@@ -7120,7 +9406,12 @@ export const UserDepartmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.Us
   userId: z.lazy(() => SortOrderSchema).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserDepartmentAvgOrderByAggregateInputSchema: z.ZodType<Prisma.UserDepartmentAvgOrderByAggregateInput> = z.object({
@@ -7132,7 +9423,12 @@ export const UserDepartmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.User
   userId: z.lazy(() => SortOrderSchema).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserDepartmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserDepartmentMinOrderByAggregateInput> = z.object({
@@ -7140,7 +9436,12 @@ export const UserDepartmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.User
   userId: z.lazy(() => SortOrderSchema).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserDepartmentSumOrderByAggregateInputSchema: z.ZodType<Prisma.UserDepartmentSumOrderByAggregateInput> = z.object({
@@ -7213,7 +9514,10 @@ export const TicketCountOrderByAggregateInputSchema: z.ZodType<Prisma.TicketCoun
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   closedAt: z.lazy(() => SortOrderSchema).optional(),
-  lastResponseAt: z.lazy(() => SortOrderSchema).optional()
+  lastResponseAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketAvgOrderByAggregateInputSchema: z.ZodType<Prisma.TicketAvgOrderByAggregateInput> = z.object({
@@ -7239,7 +9543,10 @@ export const TicketMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketMaxOrd
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   closedAt: z.lazy(() => SortOrderSchema).optional(),
-  lastResponseAt: z.lazy(() => SortOrderSchema).optional()
+  lastResponseAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketMinOrderByAggregateInput> = z.object({
@@ -7257,7 +9564,10 @@ export const TicketMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketMinOrd
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   closedAt: z.lazy(() => SortOrderSchema).optional(),
-  lastResponseAt: z.lazy(() => SortOrderSchema).optional()
+  lastResponseAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketSumOrderByAggregateInputSchema: z.ZodType<Prisma.TicketSumOrderByAggregateInput> = z.object({
@@ -7277,7 +9587,12 @@ export const TicketStatusOrderByRelevanceInputSchema: z.ZodType<Prisma.TicketSta
 export const TicketStatusCountOrderByAggregateInputSchema: z.ZodType<Prisma.TicketStatusCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketStatusAvgOrderByAggregateInputSchema: z.ZodType<Prisma.TicketStatusAvgOrderByAggregateInput> = z.object({
@@ -7287,13 +9602,23 @@ export const TicketStatusAvgOrderByAggregateInputSchema: z.ZodType<Prisma.Ticket
 export const TicketStatusMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketStatusMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketStatusMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketStatusMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketStatusSumOrderByAggregateInputSchema: z.ZodType<Prisma.TicketStatusSumOrderByAggregateInput> = z.object({
@@ -7309,7 +9634,12 @@ export const TicketPriorityOrderByRelevanceInputSchema: z.ZodType<Prisma.TicketP
 export const TicketPriorityCountOrderByAggregateInputSchema: z.ZodType<Prisma.TicketPriorityCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketPriorityAvgOrderByAggregateInputSchema: z.ZodType<Prisma.TicketPriorityAvgOrderByAggregateInput> = z.object({
@@ -7319,13 +9649,23 @@ export const TicketPriorityAvgOrderByAggregateInputSchema: z.ZodType<Prisma.Tick
 export const TicketPriorityMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketPriorityMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketPriorityMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketPriorityMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketPrioritySumOrderByAggregateInputSchema: z.ZodType<Prisma.TicketPrioritySumOrderByAggregateInput> = z.object({
@@ -7343,7 +9683,12 @@ export const HelpTopicCountOrderByAggregateInputSchema: z.ZodType<Prisma.HelpTop
   topic: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const HelpTopicAvgOrderByAggregateInputSchema: z.ZodType<Prisma.HelpTopicAvgOrderByAggregateInput> = z.object({
@@ -7356,7 +9701,12 @@ export const HelpTopicMaxOrderByAggregateInputSchema: z.ZodType<Prisma.HelpTopic
   topic: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const HelpTopicMinOrderByAggregateInputSchema: z.ZodType<Prisma.HelpTopicMinOrderByAggregateInput> = z.object({
@@ -7364,7 +9714,12 @@ export const HelpTopicMinOrderByAggregateInputSchema: z.ZodType<Prisma.HelpTopic
   topic: z.lazy(() => SortOrderSchema).optional(),
   description: z.lazy(() => SortOrderSchema).optional(),
   departmentId: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const HelpTopicSumOrderByAggregateInputSchema: z.ZodType<Prisma.HelpTopicSumOrderByAggregateInput> = z.object({
@@ -7382,7 +9737,12 @@ export const SLAPlanCountOrderByAggregateInputSchema: z.ZodType<Prisma.SLAPlanCo
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   gracePeriod: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const SLAPlanAvgOrderByAggregateInputSchema: z.ZodType<Prisma.SLAPlanAvgOrderByAggregateInput> = z.object({
@@ -7394,14 +9754,24 @@ export const SLAPlanMaxOrderByAggregateInputSchema: z.ZodType<Prisma.SLAPlanMaxO
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   gracePeriod: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const SLAPlanMinOrderByAggregateInputSchema: z.ZodType<Prisma.SLAPlanMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   gracePeriod: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const SLAPlanSumOrderByAggregateInputSchema: z.ZodType<Prisma.SLAPlanSumOrderByAggregateInput> = z.object({
@@ -7425,7 +9795,12 @@ export const TicketThreadCountOrderByAggregateInputSchema: z.ZodType<Prisma.Tick
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketThreadMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketThreadMaxOrderByAggregateInput> = z.object({
@@ -7433,7 +9808,12 @@ export const TicketThreadMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Ticket
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketThreadMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketThreadMinOrderByAggregateInput> = z.object({
@@ -7441,7 +9821,12 @@ export const TicketThreadMinOrderByAggregateInputSchema: z.ZodType<Prisma.Ticket
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   userId: z.lazy(() => SortOrderSchema).optional(),
   message: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketThreadScalarRelationFilterSchema: z.ZodType<Prisma.TicketThreadScalarRelationFilter> = z.object({
@@ -7462,7 +9847,12 @@ export const TicketAttachmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketAttachmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketAttachmentMaxOrderByAggregateInput> = z.object({
@@ -7472,7 +9862,12 @@ export const TicketAttachmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Ti
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketAttachmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketAttachmentMinOrderByAggregateInput> = z.object({
@@ -7482,7 +9877,12 @@ export const TicketAttachmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.Ti
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketCollaboratorOrderByRelevanceInputSchema: z.ZodType<Prisma.TicketCollaboratorOrderByRelevanceInput> = z.object({
@@ -7494,19 +9894,37 @@ export const TicketCollaboratorOrderByRelevanceInputSchema: z.ZodType<Prisma.Tic
 export const TicketCollaboratorCountOrderByAggregateInputSchema: z.ZodType<Prisma.TicketCollaboratorCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketCollaboratorMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketCollaboratorMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketCollaboratorMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketCollaboratorMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const CustomFieldOrderByRelevanceInputSchema: z.ZodType<Prisma.CustomFieldOrderByRelevanceInput> = z.object({
@@ -7519,7 +9937,12 @@ export const CustomFieldCountOrderByAggregateInputSchema: z.ZodType<Prisma.Custo
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   fieldType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const CustomFieldAvgOrderByAggregateInputSchema: z.ZodType<Prisma.CustomFieldAvgOrderByAggregateInput> = z.object({
@@ -7530,14 +9953,24 @@ export const CustomFieldMaxOrderByAggregateInputSchema: z.ZodType<Prisma.CustomF
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   fieldType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const CustomFieldMinOrderByAggregateInputSchema: z.ZodType<Prisma.CustomFieldMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
   fieldType: z.lazy(() => SortOrderSchema).optional(),
-  createdAt: z.lazy(() => SortOrderSchema).optional()
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const CustomFieldSumOrderByAggregateInputSchema: z.ZodType<Prisma.CustomFieldSumOrderByAggregateInput> = z.object({
@@ -7559,7 +9992,13 @@ export const TicketCustomFieldCountOrderByAggregateInputSchema: z.ZodType<Prisma
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   fieldId: z.lazy(() => SortOrderSchema).optional(),
-  value: z.lazy(() => SortOrderSchema).optional()
+  value: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketCustomFieldAvgOrderByAggregateInputSchema: z.ZodType<Prisma.TicketCustomFieldAvgOrderByAggregateInput> = z.object({
@@ -7570,14 +10009,26 @@ export const TicketCustomFieldMaxOrderByAggregateInputSchema: z.ZodType<Prisma.T
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   fieldId: z.lazy(() => SortOrderSchema).optional(),
-  value: z.lazy(() => SortOrderSchema).optional()
+  value: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketCustomFieldMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketCustomFieldMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
   fieldId: z.lazy(() => SortOrderSchema).optional(),
-  value: z.lazy(() => SortOrderSchema).optional()
+  value: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketCustomFieldSumOrderByAggregateInputSchema: z.ZodType<Prisma.TicketCustomFieldSumOrderByAggregateInput> = z.object({
@@ -7598,19 +10049,37 @@ export const TaskUserOrderByRelevanceInputSchema: z.ZodType<Prisma.TaskUserOrder
 export const TaskUserCountOrderByAggregateInputSchema: z.ZodType<Prisma.TaskUserCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   taskId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TaskUserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TaskUserMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   taskId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TaskUserMinOrderByAggregateInputSchema: z.ZodType<Prisma.TaskUserMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   taskId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketUserOrderByRelevanceInputSchema: z.ZodType<Prisma.TicketUserOrderByRelevanceInput> = z.object({
@@ -7622,19 +10091,37 @@ export const TicketUserOrderByRelevanceInputSchema: z.ZodType<Prisma.TicketUserO
 export const TicketUserCountOrderByAggregateInputSchema: z.ZodType<Prisma.TicketUserCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketUserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketUserMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const TicketUserMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketUserMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  userId: z.lazy(() => SortOrderSchema).optional()
+  userId: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserListRelationFilterSchema: z.ZodType<Prisma.UserListRelationFilter> = z.object({
@@ -7661,7 +10148,11 @@ export const AddressCountOrderByAggregateInputSchema: z.ZodType<Prisma.AddressCo
   country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AddressMaxOrderByAggregateInputSchema: z.ZodType<Prisma.AddressMaxOrderByAggregateInput> = z.object({
@@ -7672,7 +10163,11 @@ export const AddressMaxOrderByAggregateInputSchema: z.ZodType<Prisma.AddressMaxO
   country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AddressMinOrderByAggregateInputSchema: z.ZodType<Prisma.AddressMinOrderByAggregateInput> = z.object({
@@ -7683,7 +10178,11 @@ export const AddressMinOrderByAggregateInputSchema: z.ZodType<Prisma.AddressMinO
   country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  tenantId: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AddressCreateNestedOneWithoutUsersInputSchema: z.ZodType<Prisma.AddressCreateNestedOneWithoutUsersInput> = z.object({
@@ -10632,7 +13131,11 @@ export const AddressCreateWithoutUsersInputSchema: z.ZodType<Prisma.AddressCreat
   country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AddressUncheckedCreateWithoutUsersInputSchema: z.ZodType<Prisma.AddressUncheckedCreateWithoutUsersInput> = z.object({
@@ -10643,7 +13146,11 @@ export const AddressUncheckedCreateWithoutUsersInputSchema: z.ZodType<Prisma.Add
   country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AddressCreateOrConnectWithoutUsersInputSchema: z.ZodType<Prisma.AddressCreateOrConnectWithoutUsersInput> = z.object({
@@ -10656,6 +13163,12 @@ export const AuditLogCreateWithoutPerformedByInputSchema: z.ZodType<Prisma.Audit
   action: z.string(),
   timestamp: z.coerce.date().optional(),
   description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   task: z.lazy(() => TaskCreateNestedOneWithoutAuditLogsInputSchema).optional(),
   workflow: z.lazy(() => WorkflowCreateNestedOneWithoutAuditLogsInputSchema).optional()
 }).strict();
@@ -10666,7 +13179,13 @@ export const AuditLogUncheckedCreateWithoutPerformedByInputSchema: z.ZodType<Pri
   workflowId: z.string().optional().nullable(),
   action: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogCreateOrConnectWithoutPerformedByInputSchema: z.ZodType<Prisma.AuditLogCreateOrConnectWithoutPerformedByInput> = z.object({
@@ -10685,7 +13204,12 @@ export const DigitalCertificateCreateWithoutUserInputSchema: z.ZodType<Prisma.Di
   filePath: z.string(),
   password: z.string(),
   createdAt: z.coerce.date().optional(),
-  expiration: z.coerce.date()
+  expiration: z.coerce.date(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DigitalCertificateUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.DigitalCertificateUncheckedCreateWithoutUserInput> = z.object({
@@ -10694,7 +13218,12 @@ export const DigitalCertificateUncheckedCreateWithoutUserInputSchema: z.ZodType<
   filePath: z.string(),
   password: z.string(),
   createdAt: z.coerce.date().optional(),
-  expiration: z.coerce.date()
+  expiration: z.coerce.date(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DigitalCertificateCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.DigitalCertificateCreateOrConnectWithoutUserInput> = z.object({
@@ -10710,13 +13239,23 @@ export const DigitalCertificateCreateManyUserInputEnvelopeSchema: z.ZodType<Pris
 export const DocumentUserCreateWithoutUserInputSchema: z.ZodType<Prisma.DocumentUserCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutDocumentUsersInputSchema)
 }).strict();
 
 export const DocumentUserUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.DocumentUserUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
   documentId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentUserCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.DocumentUserCreateOrConnectWithoutUserInput> = z.object({
@@ -10732,13 +13271,23 @@ export const DocumentUserCreateManyUserInputEnvelopeSchema: z.ZodType<Prisma.Doc
 export const DocumentVersionCreatorCreateWithoutUserInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   version: z.lazy(() => DocumentVersionCreateNestedOneWithoutDocumentVersionCreatorsInputSchema)
 }).strict();
 
 export const DocumentVersionCreatorUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
   versionId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreatorCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateOrConnectWithoutUserInput> = z.object({
@@ -10755,14 +13304,24 @@ export const NotificationCreateWithoutUserInputSchema: z.ZodType<Prisma.Notifica
   id: z.string().optional(),
   message: z.string(),
   read: z.boolean().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const NotificationUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.NotificationUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
   message: z.string(),
   read: z.boolean().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const NotificationCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.NotificationCreateOrConnectWithoutUserInput> = z.object({
@@ -10780,6 +13339,11 @@ export const SharedDocumentCreateWithoutUserInputSchema: z.ZodType<Prisma.Shared
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutSharedDocumentsInputSchema)
 }).strict();
 
@@ -10788,7 +13352,12 @@ export const SharedDocumentUncheckedCreateWithoutUserInputSchema: z.ZodType<Pris
   documentId: z.string(),
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SharedDocumentCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.SharedDocumentCreateOrConnectWithoutUserInput> = z.object({
@@ -10809,6 +13378,10 @@ export const TaskCreateWithoutAssignedToInputSchema: z.ZodType<Prisma.TaskCreate
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutTaskInputSchema).optional(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutTasksInputSchema).optional(),
   workflow: z.lazy(() => WorkflowCreateNestedOneWithoutTasksInputSchema),
@@ -10825,6 +13398,10 @@ export const TaskUncheckedCreateWithoutAssignedToInputSchema: z.ZodType<Prisma.T
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutTaskInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedCreateNestedManyWithoutTaskInputSchema).optional()
 }).strict();
@@ -10841,12 +13418,24 @@ export const TaskCreateManyAssignedToInputEnvelopeSchema: z.ZodType<Prisma.TaskC
 
 export const TaskUserCreateWithoutUserInputSchema: z.ZodType<Prisma.TaskUserCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   task: z.lazy(() => TaskCreateNestedOneWithoutTaskUsersInputSchema)
 }).strict();
 
 export const TaskUserUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.TaskUserUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
-  taskId: z.string()
+  taskId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskUserCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.TaskUserCreateOrConnectWithoutUserInput> = z.object({
@@ -10868,6 +13457,9 @@ export const TicketCreateWithoutAssignedToInputSchema: z.ZodType<Prisma.TicketCr
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
   helpTopic: z.lazy(() => HelpTopicCreateNestedOneWithoutTicketsInputSchema),
@@ -10896,6 +13488,9 @@ export const TicketUncheckedCreateWithoutAssignedToInputSchema: z.ZodType<Prisma
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -10922,6 +13517,9 @@ export const TicketCreateWithoutCreatedByInputSchema: z.ZodType<Prisma.TicketCre
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
   helpTopic: z.lazy(() => HelpTopicCreateNestedOneWithoutTicketsInputSchema),
@@ -10950,6 +13548,9 @@ export const TicketUncheckedCreateWithoutCreatedByInputSchema: z.ZodType<Prisma.
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -10969,12 +13570,24 @@ export const TicketCreateManyCreatedByInputEnvelopeSchema: z.ZodType<Prisma.Tick
 
 export const TicketCollaboratorCreateWithoutUserInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutCollaboratorsInputSchema)
 }).strict();
 
 export const TicketCollaboratorUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
-  ticketId: z.string()
+  ticketId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCollaboratorCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateOrConnectWithoutUserInput> = z.object({
@@ -10991,6 +13604,11 @@ export const TicketThreadCreateWithoutUserInputSchema: z.ZodType<Prisma.TicketTh
   id: z.string().optional(),
   message: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketThreadInputSchema).optional(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutThreadsInputSchema)
 }).strict();
@@ -11000,6 +13618,11 @@ export const TicketThreadUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma
   ticketId: z.string(),
   message: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInputSchema).optional()
 }).strict();
 
@@ -11015,12 +13638,24 @@ export const TicketThreadCreateManyUserInputEnvelopeSchema: z.ZodType<Prisma.Tic
 
 export const TicketUserCreateWithoutUserInputSchema: z.ZodType<Prisma.TicketUserCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutTicketUsersInputSchema)
 }).strict();
 
 export const TicketUserUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.TicketUserUncheckedCreateWithoutUserInput> = z.object({
   id: z.string().optional(),
-  ticketId: z.string()
+  ticketId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUserCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.TicketUserCreateOrConnectWithoutUserInput> = z.object({
@@ -11037,6 +13672,11 @@ export const UserDepartmentCreateWithoutUserInputSchema: z.ZodType<Prisma.UserDe
   id: z.string().optional(),
   role: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutUserDepartmentsInputSchema)
 }).strict();
 
@@ -11044,7 +13684,12 @@ export const UserDepartmentUncheckedCreateWithoutUserInputSchema: z.ZodType<Pris
   id: z.string().optional(),
   departmentId: z.number().int(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserDepartmentCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.UserDepartmentCreateOrConnectWithoutUserInput> = z.object({
@@ -11063,6 +13708,10 @@ export const DepartmentCreateWithoutHeadInputSchema: z.ZodType<Prisma.Department
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
@@ -11080,6 +13729,10 @@ export const DepartmentUncheckedCreateWithoutHeadInputSchema: z.ZodType<Prisma.D
   parentDepartmentId: z.number().int().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -11109,6 +13762,10 @@ export const InstitutionCreateWithoutMayorInputSchema: z.ZodType<Prisma.Institut
   emblem: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   viceMayor: z.lazy(() => UserCreateNestedOneWithoutViceMayorInstitutionsInputSchema).optional(),
   departments: z.lazy(() => DepartmentCreateNestedManyWithoutInstitutionInputSchema).optional()
 }).strict();
@@ -11127,6 +13784,10 @@ export const InstitutionUncheckedCreateWithoutMayorInputSchema: z.ZodType<Prisma
   viceMayorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   departments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutInstitutionInputSchema).optional()
 }).strict();
 
@@ -11153,6 +13814,10 @@ export const InstitutionCreateWithoutViceMayorInputSchema: z.ZodType<Prisma.Inst
   emblem: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   mayor: z.lazy(() => UserCreateNestedOneWithoutMayorInstitutionsInputSchema).optional(),
   departments: z.lazy(() => DepartmentCreateNestedManyWithoutInstitutionInputSchema).optional()
 }).strict();
@@ -11171,6 +13836,10 @@ export const InstitutionUncheckedCreateWithoutViceMayorInputSchema: z.ZodType<Pr
   mayorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   departments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutInstitutionInputSchema).optional()
 }).strict();
 
@@ -11188,6 +13857,11 @@ export const UserOnDocumentsCreateWithoutUserInputSchema: z.ZodType<Prisma.UserO
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutUserOnDocumentsInputSchema)
 }).strict();
 
@@ -11195,7 +13869,12 @@ export const UserOnDocumentsUncheckedCreateWithoutUserInputSchema: z.ZodType<Pri
   documentId: z.string(),
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserOnDocumentsCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.UserOnDocumentsCreateOrConnectWithoutUserInput> = z.object({
@@ -11228,6 +13907,10 @@ export const AddressUpdateWithoutUsersInputSchema: z.ZodType<Prisma.AddressUpdat
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AddressUncheckedUpdateWithoutUsersInputSchema: z.ZodType<Prisma.AddressUncheckedUpdateWithoutUsersInput> = z.object({
@@ -11239,6 +13922,10 @@ export const AddressUncheckedUpdateWithoutUsersInputSchema: z.ZodType<Prisma.Add
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogUpsertWithWhereUniqueWithoutPerformedByInputSchema: z.ZodType<Prisma.AuditLogUpsertWithWhereUniqueWithoutPerformedByInput> = z.object({
@@ -11268,6 +13955,12 @@ export const AuditLogScalarWhereInputSchema: z.ZodType<Prisma.AuditLogScalarWher
   performedById: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   timestamp: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.DigitalCertificateUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11297,6 +13990,11 @@ export const DigitalCertificateScalarWhereInputSchema: z.ZodType<Prisma.DigitalC
   password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   expiration: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.DocumentUserUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11323,6 +14021,11 @@ export const DocumentUserScalarWhereInputSchema: z.ZodType<Prisma.DocumentUserSc
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   documentId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11349,6 +14052,11 @@ export const DocumentVersionCreatorScalarWhereInputSchema: z.ZodType<Prisma.Docu
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   versionId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const NotificationUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.NotificationUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11376,6 +14084,11 @@ export const NotificationScalarWhereInputSchema: z.ZodType<Prisma.NotificationSc
   message: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   read: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.SharedDocumentUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11404,6 +14117,11 @@ export const SharedDocumentScalarWhereInputSchema: z.ZodType<Prisma.SharedDocume
   sharedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   permission: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TaskUpsertWithWhereUniqueWithoutAssignedToInputSchema: z.ZodType<Prisma.TaskUpsertWithWhereUniqueWithoutAssignedToInput> = z.object({
@@ -11436,6 +14154,10 @@ export const TaskScalarWhereInputSchema: z.ZodType<Prisma.TaskScalarWhereInput> 
   dueDate: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TaskUserUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.TaskUserUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11461,6 +14183,12 @@ export const TaskUserScalarWhereInputSchema: z.ZodType<Prisma.TaskUserScalarWher
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   taskId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketUpsertWithWhereUniqueWithoutAssignedToInputSchema: z.ZodType<Prisma.TicketUpsertWithWhereUniqueWithoutAssignedToInput> = z.object({
@@ -11498,6 +14226,9 @@ export const TicketScalarWhereInputSchema: z.ZodType<Prisma.TicketScalarWhereInp
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   closedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   lastResponseAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketUpsertWithWhereUniqueWithoutCreatedByInputSchema: z.ZodType<Prisma.TicketUpsertWithWhereUniqueWithoutCreatedByInput> = z.object({
@@ -11539,6 +14270,12 @@ export const TicketCollaboratorScalarWhereInputSchema: z.ZodType<Prisma.TicketCo
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketThreadUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.TicketThreadUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11566,6 +14303,11 @@ export const TicketThreadScalarWhereInputSchema: z.ZodType<Prisma.TicketThreadSc
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   message: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketUserUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.TicketUserUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11591,6 +14333,12 @@ export const TicketUserScalarWhereInputSchema: z.ZodType<Prisma.TicketUserScalar
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.UserDepartmentUpsertWithWhereUniqueWithoutUserInput> = z.object({
@@ -11618,6 +14366,11 @@ export const UserDepartmentScalarWhereInputSchema: z.ZodType<Prisma.UserDepartme
   departmentId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   role: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DepartmentUpsertWithWhereUniqueWithoutHeadInputSchema: z.ZodType<Prisma.DepartmentUpsertWithWhereUniqueWithoutHeadInput> = z.object({
@@ -11649,6 +14402,10 @@ export const DepartmentScalarWhereInputSchema: z.ZodType<Prisma.DepartmentScalar
   headId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const InstitutionUpsertWithWhereUniqueWithoutMayorInputSchema: z.ZodType<Prisma.InstitutionUpsertWithWhereUniqueWithoutMayorInput> = z.object({
@@ -11685,6 +14442,10 @@ export const InstitutionScalarWhereInputSchema: z.ZodType<Prisma.InstitutionScal
   viceMayorId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const InstitutionUpsertWithWhereUniqueWithoutViceMayorInputSchema: z.ZodType<Prisma.InstitutionUpsertWithWhereUniqueWithoutViceMayorInput> = z.object({
@@ -11728,6 +14489,11 @@ export const UserOnDocumentsScalarWhereInputSchema: z.ZodType<Prisma.UserOnDocum
   assignedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   role: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const AttachmentCreateWithoutDocumentInputSchema: z.ZodType<Prisma.AttachmentCreateWithoutDocumentInput> = z.object({
@@ -11735,7 +14501,12 @@ export const AttachmentCreateWithoutDocumentInputSchema: z.ZodType<Prisma.Attach
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AttachmentUncheckedCreateWithoutDocumentInputSchema: z.ZodType<Prisma.AttachmentUncheckedCreateWithoutDocumentInput> = z.object({
@@ -11743,7 +14514,12 @@ export const AttachmentUncheckedCreateWithoutDocumentInputSchema: z.ZodType<Pris
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AttachmentCreateOrConnectWithoutDocumentInputSchema: z.ZodType<Prisma.AttachmentCreateOrConnectWithoutDocumentInput> = z.object({
@@ -11759,13 +14535,23 @@ export const AttachmentCreateManyDocumentInputEnvelopeSchema: z.ZodType<Prisma.A
 export const DocumentUserCreateWithoutDocumentInputSchema: z.ZodType<Prisma.DocumentUserCreateWithoutDocumentInput> = z.object({
   id: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutDocumentUsersInputSchema)
 }).strict();
 
 export const DocumentUserUncheckedCreateWithoutDocumentInputSchema: z.ZodType<Prisma.DocumentUserUncheckedCreateWithoutDocumentInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentUserCreateOrConnectWithoutDocumentInputSchema: z.ZodType<Prisma.DocumentUserCreateOrConnectWithoutDocumentInput> = z.object({
@@ -11785,6 +14571,11 @@ export const DocumentVersionCreateWithoutDocumentInputSchema: z.ZodType<Prisma.D
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorCreateNestedManyWithoutVersionInputSchema).optional()
 }).strict();
 
@@ -11795,6 +14586,11 @@ export const DocumentVersionUncheckedCreateWithoutDocumentInputSchema: z.ZodType
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedCreateNestedManyWithoutVersionInputSchema).optional()
 }).strict();
 
@@ -11813,7 +14609,12 @@ export const FileMetadataCreateWithoutDocumentInputSchema: z.ZodType<Prisma.File
   fileSize: z.number().int(),
   mimeType: z.string(),
   checksum: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const FileMetadataUncheckedCreateWithoutDocumentInputSchema: z.ZodType<Prisma.FileMetadataUncheckedCreateWithoutDocumentInput> = z.object({
@@ -11821,7 +14622,12 @@ export const FileMetadataUncheckedCreateWithoutDocumentInputSchema: z.ZodType<Pr
   fileSize: z.number().int(),
   mimeType: z.string(),
   checksum: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const FileMetadataCreateOrConnectWithoutDocumentInputSchema: z.ZodType<Prisma.FileMetadataCreateOrConnectWithoutDocumentInput> = z.object({
@@ -11834,6 +14640,11 @@ export const SharedDocumentCreateWithoutDocumentInputSchema: z.ZodType<Prisma.Sh
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutSharedDocumentsInputSchema)
 }).strict();
 
@@ -11842,7 +14653,12 @@ export const SharedDocumentUncheckedCreateWithoutDocumentInputSchema: z.ZodType<
   userId: z.string(),
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SharedDocumentCreateOrConnectWithoutDocumentInputSchema: z.ZodType<Prisma.SharedDocumentCreateOrConnectWithoutDocumentInput> = z.object({
@@ -11863,6 +14679,10 @@ export const TaskCreateWithoutDocumentInputSchema: z.ZodType<Prisma.TaskCreateWi
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutTaskInputSchema).optional(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTasksAssignedInputSchema).optional(),
   workflow: z.lazy(() => WorkflowCreateNestedOneWithoutTasksInputSchema),
@@ -11879,6 +14699,10 @@ export const TaskUncheckedCreateWithoutDocumentInputSchema: z.ZodType<Prisma.Tas
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutTaskInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedCreateNestedManyWithoutTaskInputSchema).optional()
 }).strict();
@@ -11897,6 +14721,11 @@ export const UserOnDocumentsCreateWithoutDocumentInputSchema: z.ZodType<Prisma.U
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutUserOnDocumentsInputSchema)
 }).strict();
 
@@ -11904,7 +14733,12 @@ export const UserOnDocumentsUncheckedCreateWithoutDocumentInputSchema: z.ZodType
   userId: z.string(),
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserOnDocumentsCreateOrConnectWithoutDocumentInputSchema: z.ZodType<Prisma.UserOnDocumentsCreateOrConnectWithoutDocumentInput> = z.object({
@@ -11943,6 +14777,11 @@ export const AttachmentScalarWhereInputSchema: z.ZodType<Prisma.AttachmentScalar
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserUpsertWithWhereUniqueWithoutDocumentInputSchema: z.ZodType<Prisma.DocumentUserUpsertWithWhereUniqueWithoutDocumentInput> = z.object({
@@ -11988,6 +14827,11 @@ export const DocumentVersionScalarWhereInputSchema: z.ZodType<Prisma.DocumentVer
   changesDescription: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdById: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const FileMetadataUpsertWithoutDocumentInputSchema: z.ZodType<Prisma.FileMetadataUpsertWithoutDocumentInput> = z.object({
@@ -12007,6 +14851,11 @@ export const FileMetadataUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.File
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   checksum: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const FileMetadataUncheckedUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.FileMetadataUncheckedUpdateWithoutDocumentInput> = z.object({
@@ -12015,6 +14864,11 @@ export const FileMetadataUncheckedUpdateWithoutDocumentInputSchema: z.ZodType<Pr
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   checksum: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentUpsertWithWhereUniqueWithoutDocumentInputSchema: z.ZodType<Prisma.SharedDocumentUpsertWithWhereUniqueWithoutDocumentInput> = z.object({
@@ -12077,6 +14931,11 @@ export const DocumentCreateWithoutUserOnDocumentsInputSchema: z.ZodType<Prisma.D
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -12097,6 +14956,11 @@ export const DocumentUncheckedCreateWithoutUserOnDocumentsInputSchema: z.ZodType
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -12122,6 +14986,10 @@ export const UserCreateWithoutUserOnDocumentsInputSchema: z.ZodType<Prisma.UserC
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -12155,6 +15023,10 @@ export const UserUncheckedCreateWithoutUserOnDocumentsInputSchema: z.ZodType<Pri
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -12202,6 +15074,11 @@ export const DocumentUpdateWithoutUserOnDocumentsInputSchema: z.ZodType<Prisma.D
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -12222,6 +15099,11 @@ export const DocumentUncheckedUpdateWithoutUserOnDocumentsInputSchema: z.ZodType
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -12253,6 +15135,10 @@ export const UserUpdateWithoutUserOnDocumentsInputSchema: z.ZodType<Prisma.UserU
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -12286,6 +15172,10 @@ export const UserUncheckedUpdateWithoutUserOnDocumentsInputSchema: z.ZodType<Pri
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -12317,6 +15207,11 @@ export const DocumentCreateWithoutDocumentUsersInputSchema: z.ZodType<Prisma.Doc
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionCreateNestedManyWithoutDocumentInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataCreateNestedOneWithoutDocumentInputSchema).optional(),
@@ -12337,6 +15232,11 @@ export const DocumentUncheckedCreateWithoutDocumentUsersInputSchema: z.ZodType<P
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUncheckedCreateNestedOneWithoutDocumentInputSchema).optional(),
@@ -12362,6 +15262,10 @@ export const UserCreateWithoutDocumentUsersInputSchema: z.ZodType<Prisma.UserCre
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -12395,6 +15299,10 @@ export const UserUncheckedCreateWithoutDocumentUsersInputSchema: z.ZodType<Prism
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -12442,6 +15350,11 @@ export const DocumentUpdateWithoutDocumentUsersInputSchema: z.ZodType<Prisma.Doc
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUpdateManyWithoutDocumentNestedInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUpdateOneWithoutDocumentNestedInputSchema).optional(),
@@ -12462,6 +15375,11 @@ export const DocumentUncheckedUpdateWithoutDocumentUsersInputSchema: z.ZodType<P
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUncheckedUpdateOneWithoutDocumentNestedInputSchema).optional(),
@@ -12493,6 +15411,10 @@ export const UserUpdateWithoutDocumentUsersInputSchema: z.ZodType<Prisma.UserUpd
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -12526,6 +15448,10 @@ export const UserUncheckedUpdateWithoutDocumentUsersInputSchema: z.ZodType<Prism
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -12557,6 +15483,11 @@ export const DocumentCreateWithoutVersionsInputSchema: z.ZodType<Prisma.Document
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutDocumentInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataCreateNestedOneWithoutDocumentInputSchema).optional(),
@@ -12577,6 +15508,11 @@ export const DocumentUncheckedCreateWithoutVersionsInputSchema: z.ZodType<Prisma
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUncheckedCreateNestedOneWithoutDocumentInputSchema).optional(),
@@ -12593,13 +15529,23 @@ export const DocumentCreateOrConnectWithoutVersionsInputSchema: z.ZodType<Prisma
 export const DocumentVersionCreatorCreateWithoutVersionInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateWithoutVersionInput> = z.object({
   id: z.string().optional(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutDocumentVersionCreatorsInputSchema)
 }).strict();
 
 export const DocumentVersionCreatorUncheckedCreateWithoutVersionInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUncheckedCreateWithoutVersionInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreatorCreateOrConnectWithoutVersionInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateOrConnectWithoutVersionInput> = z.object({
@@ -12635,6 +15581,11 @@ export const DocumentUpdateWithoutVersionsInputSchema: z.ZodType<Prisma.Document
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutDocumentNestedInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUpdateOneWithoutDocumentNestedInputSchema).optional(),
@@ -12655,6 +15606,11 @@ export const DocumentUncheckedUpdateWithoutVersionsInputSchema: z.ZodType<Prisma
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUncheckedUpdateOneWithoutDocumentNestedInputSchema).optional(),
@@ -12691,6 +15647,10 @@ export const UserCreateWithoutDocumentVersionCreatorsInputSchema: z.ZodType<Pris
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -12724,6 +15684,10 @@ export const UserUncheckedCreateWithoutDocumentVersionCreatorsInputSchema: z.Zod
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -12755,6 +15719,11 @@ export const DocumentVersionCreateWithoutDocumentVersionCreatorsInputSchema: z.Z
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutVersionsInputSchema)
 }).strict();
 
@@ -12765,7 +15734,12 @@ export const DocumentVersionUncheckedCreateWithoutDocumentVersionCreatorsInputSc
   filePath: z.string(),
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreateOrConnectWithoutDocumentVersionCreatorsInputSchema: z.ZodType<Prisma.DocumentVersionCreateOrConnectWithoutDocumentVersionCreatorsInput> = z.object({
@@ -12796,6 +15770,10 @@ export const UserUpdateWithoutDocumentVersionCreatorsInputSchema: z.ZodType<Pris
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -12829,6 +15807,10 @@ export const UserUncheckedUpdateWithoutDocumentVersionCreatorsInputSchema: z.Zod
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -12866,6 +15848,11 @@ export const DocumentVersionUpdateWithoutDocumentVersionCreatorsInputSchema: z.Z
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutVersionsNestedInputSchema).optional()
 }).strict();
 
@@ -12877,6 +15864,11 @@ export const DocumentVersionUncheckedUpdateWithoutDocumentVersionCreatorsInputSc
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentCreateWithoutSharedDocumentsInputSchema: z.ZodType<Prisma.DocumentCreateWithoutSharedDocumentsInput> = z.object({
@@ -12891,6 +15883,11 @@ export const DocumentCreateWithoutSharedDocumentsInputSchema: z.ZodType<Prisma.D
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -12911,6 +15908,11 @@ export const DocumentUncheckedCreateWithoutSharedDocumentsInputSchema: z.ZodType
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -12936,6 +15938,10 @@ export const UserCreateWithoutSharedDocumentsInputSchema: z.ZodType<Prisma.UserC
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -12969,6 +15975,10 @@ export const UserUncheckedCreateWithoutSharedDocumentsInputSchema: z.ZodType<Pri
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -13016,6 +16026,11 @@ export const DocumentUpdateWithoutSharedDocumentsInputSchema: z.ZodType<Prisma.D
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -13036,6 +16051,11 @@ export const DocumentUncheckedUpdateWithoutSharedDocumentsInputSchema: z.ZodType
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -13067,6 +16087,10 @@ export const UserUpdateWithoutSharedDocumentsInputSchema: z.ZodType<Prisma.UserU
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -13100,6 +16124,10 @@ export const UserUncheckedUpdateWithoutSharedDocumentsInputSchema: z.ZodType<Pri
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -13124,6 +16152,12 @@ export const AuditLogCreateWithoutWorkflowInputSchema: z.ZodType<Prisma.AuditLog
   action: z.string(),
   timestamp: z.coerce.date().optional(),
   description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   performedBy: z.lazy(() => UserCreateNestedOneWithoutAuditLogsInputSchema),
   task: z.lazy(() => TaskCreateNestedOneWithoutAuditLogsInputSchema).optional()
 }).strict();
@@ -13134,7 +16168,13 @@ export const AuditLogUncheckedCreateWithoutWorkflowInputSchema: z.ZodType<Prisma
   action: z.string(),
   performedById: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogCreateOrConnectWithoutWorkflowInputSchema: z.ZodType<Prisma.AuditLogCreateOrConnectWithoutWorkflowInput> = z.object({
@@ -13155,6 +16195,10 @@ export const TaskCreateWithoutWorkflowInputSchema: z.ZodType<Prisma.TaskCreateWi
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutTaskInputSchema).optional(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTasksAssignedInputSchema).optional(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutTasksInputSchema).optional(),
@@ -13171,6 +16215,10 @@ export const TaskUncheckedCreateWithoutWorkflowInputSchema: z.ZodType<Prisma.Tas
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutTaskInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedCreateNestedManyWithoutTaskInputSchema).optional()
 }).strict();
@@ -13222,6 +16270,12 @@ export const AuditLogCreateWithoutTaskInputSchema: z.ZodType<Prisma.AuditLogCrea
   action: z.string(),
   timestamp: z.coerce.date().optional(),
   description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   performedBy: z.lazy(() => UserCreateNestedOneWithoutAuditLogsInputSchema),
   workflow: z.lazy(() => WorkflowCreateNestedOneWithoutAuditLogsInputSchema).optional()
 }).strict();
@@ -13232,7 +16286,13 @@ export const AuditLogUncheckedCreateWithoutTaskInputSchema: z.ZodType<Prisma.Aud
   action: z.string(),
   performedById: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogCreateOrConnectWithoutTaskInputSchema: z.ZodType<Prisma.AuditLogCreateOrConnectWithoutTaskInput> = z.object({
@@ -13257,6 +16317,10 @@ export const UserCreateWithoutTasksAssignedInputSchema: z.ZodType<Prisma.UserCre
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -13290,6 +16354,10 @@ export const UserUncheckedCreateWithoutTasksAssignedInputSchema: z.ZodType<Prism
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -13326,6 +16394,11 @@ export const DocumentCreateWithoutTasksInputSchema: z.ZodType<Prisma.DocumentCre
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -13346,6 +16419,11 @@ export const DocumentUncheckedCreateWithoutTasksInputSchema: z.ZodType<Prisma.Do
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -13367,6 +16445,10 @@ export const WorkflowCreateWithoutTasksInputSchema: z.ZodType<Prisma.WorkflowCre
   status: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutWorkflowInputSchema).optional()
 }).strict();
 
@@ -13378,6 +16460,10 @@ export const WorkflowUncheckedCreateWithoutTasksInputSchema: z.ZodType<Prisma.Wo
   status: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutWorkflowInputSchema).optional()
 }).strict();
 
@@ -13388,12 +16474,24 @@ export const WorkflowCreateOrConnectWithoutTasksInputSchema: z.ZodType<Prisma.Wo
 
 export const TaskUserCreateWithoutTaskInputSchema: z.ZodType<Prisma.TaskUserCreateWithoutTaskInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutTaskUsersInputSchema)
 }).strict();
 
 export const TaskUserUncheckedCreateWithoutTaskInputSchema: z.ZodType<Prisma.TaskUserUncheckedCreateWithoutTaskInput> = z.object({
   id: z.string().optional(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskUserCreateOrConnectWithoutTaskInputSchema: z.ZodType<Prisma.TaskUserCreateOrConnectWithoutTaskInput> = z.object({
@@ -13445,6 +16543,10 @@ export const UserUpdateWithoutTasksAssignedInputSchema: z.ZodType<Prisma.UserUpd
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -13478,6 +16580,10 @@ export const UserUncheckedUpdateWithoutTasksAssignedInputSchema: z.ZodType<Prism
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -13520,6 +16626,11 @@ export const DocumentUpdateWithoutTasksInputSchema: z.ZodType<Prisma.DocumentUpd
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -13540,6 +16651,11 @@ export const DocumentUncheckedUpdateWithoutTasksInputSchema: z.ZodType<Prisma.Do
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -13567,6 +16683,10 @@ export const WorkflowUpdateWithoutTasksInputSchema: z.ZodType<Prisma.WorkflowUpd
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutWorkflowNestedInputSchema).optional()
 }).strict();
 
@@ -13578,6 +16698,10 @@ export const WorkflowUncheckedUpdateWithoutTasksInputSchema: z.ZodType<Prisma.Wo
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutWorkflowNestedInputSchema).optional()
 }).strict();
 
@@ -13609,6 +16733,10 @@ export const UserCreateWithoutAuditLogsInputSchema: z.ZodType<Prisma.UserCreateW
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutUserInputSchema).optional(),
@@ -13642,6 +16770,10 @@ export const UserUncheckedCreateWithoutAuditLogsInputSchema: z.ZodType<Prisma.Us
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -13674,6 +16806,10 @@ export const TaskCreateWithoutAuditLogsInputSchema: z.ZodType<Prisma.TaskCreateW
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTasksAssignedInputSchema).optional(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutTasksInputSchema).optional(),
   workflow: z.lazy(() => WorkflowCreateNestedOneWithoutTasksInputSchema),
@@ -13691,6 +16827,10 @@ export const TaskUncheckedCreateWithoutAuditLogsInputSchema: z.ZodType<Prisma.Ta
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   taskUsers: z.lazy(() => TaskUserUncheckedCreateNestedManyWithoutTaskInputSchema).optional()
 }).strict();
 
@@ -13707,6 +16847,10 @@ export const WorkflowCreateWithoutAuditLogsInputSchema: z.ZodType<Prisma.Workflo
   status: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   tasks: z.lazy(() => TaskCreateNestedManyWithoutWorkflowInputSchema).optional()
 }).strict();
 
@@ -13718,6 +16862,10 @@ export const WorkflowUncheckedCreateWithoutAuditLogsInputSchema: z.ZodType<Prism
   status: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   tasks: z.lazy(() => TaskUncheckedCreateNestedManyWithoutWorkflowInputSchema).optional()
 }).strict();
 
@@ -13749,6 +16897,10 @@ export const UserUpdateWithoutAuditLogsInputSchema: z.ZodType<Prisma.UserUpdateW
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -13782,6 +16934,10 @@ export const UserUncheckedUpdateWithoutAuditLogsInputSchema: z.ZodType<Prisma.Us
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -13820,6 +16976,10 @@ export const TaskUpdateWithoutAuditLogsInputSchema: z.ZodType<Prisma.TaskUpdateW
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTasksAssignedNestedInputSchema).optional(),
   document: z.lazy(() => DocumentUpdateOneWithoutTasksNestedInputSchema).optional(),
   workflow: z.lazy(() => WorkflowUpdateOneRequiredWithoutTasksNestedInputSchema).optional(),
@@ -13837,6 +16997,10 @@ export const TaskUncheckedUpdateWithoutAuditLogsInputSchema: z.ZodType<Prisma.Ta
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   taskUsers: z.lazy(() => TaskUserUncheckedUpdateManyWithoutTaskNestedInputSchema).optional()
 }).strict();
 
@@ -13859,6 +17023,10 @@ export const WorkflowUpdateWithoutAuditLogsInputSchema: z.ZodType<Prisma.Workflo
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tasks: z.lazy(() => TaskUpdateManyWithoutWorkflowNestedInputSchema).optional()
 }).strict();
 
@@ -13870,6 +17038,10 @@ export const WorkflowUncheckedUpdateWithoutAuditLogsInputSchema: z.ZodType<Prism
   status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tasks: z.lazy(() => TaskUncheckedUpdateManyWithoutWorkflowNestedInputSchema).optional()
 }).strict();
 
@@ -13885,6 +17057,10 @@ export const UserCreateWithoutNotificationsInputSchema: z.ZodType<Prisma.UserCre
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -13918,6 +17094,10 @@ export const UserUncheckedCreateWithoutNotificationsInputSchema: z.ZodType<Prism
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -13965,6 +17145,10 @@ export const UserUpdateWithoutNotificationsInputSchema: z.ZodType<Prisma.UserUpd
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -13998,6 +17182,10 @@ export const UserUncheckedUpdateWithoutNotificationsInputSchema: z.ZodType<Prism
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -14029,6 +17217,11 @@ export const DocumentCreateWithoutAttachmentsInputSchema: z.ZodType<Prisma.Docum
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionCreateNestedManyWithoutDocumentInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataCreateNestedOneWithoutDocumentInputSchema).optional(),
@@ -14049,6 +17242,11 @@ export const DocumentUncheckedCreateWithoutAttachmentsInputSchema: z.ZodType<Pri
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUncheckedCreateNestedOneWithoutDocumentInputSchema).optional(),
@@ -14085,6 +17283,11 @@ export const DocumentUpdateWithoutAttachmentsInputSchema: z.ZodType<Prisma.Docum
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUpdateManyWithoutDocumentNestedInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUpdateOneWithoutDocumentNestedInputSchema).optional(),
@@ -14105,6 +17308,11 @@ export const DocumentUncheckedUpdateWithoutAttachmentsInputSchema: z.ZodType<Pri
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   fileMetadata: z.lazy(() => FileMetadataUncheckedUpdateOneWithoutDocumentNestedInputSchema).optional(),
@@ -14125,6 +17333,10 @@ export const UserCreateWithoutDigitalCertificatesInputSchema: z.ZodType<Prisma.U
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14158,6 +17370,10 @@ export const UserUncheckedCreateWithoutDigitalCertificatesInputSchema: z.ZodType
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14205,6 +17421,10 @@ export const UserUpdateWithoutDigitalCertificatesInputSchema: z.ZodType<Prisma.U
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -14238,6 +17458,10 @@ export const UserUncheckedUpdateWithoutDigitalCertificatesInputSchema: z.ZodType
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -14269,6 +17493,11 @@ export const DocumentCreateWithoutFileMetadataInputSchema: z.ZodType<Prisma.Docu
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -14289,6 +17518,11 @@ export const DocumentUncheckedCreateWithoutFileMetadataInputSchema: z.ZodType<Pr
   signedAt: z.coerce.date().optional().nullable(),
   signature: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedCreateNestedManyWithoutDocumentInputSchema).optional(),
@@ -14325,6 +17559,11 @@ export const DocumentUpdateWithoutFileMetadataInputSchema: z.ZodType<Prisma.Docu
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -14345,6 +17584,11 @@ export const DocumentUncheckedUpdateWithoutFileMetadataInputSchema: z.ZodType<Pr
   signedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   signature: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => AttachmentUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
   versions: z.lazy(() => DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInputSchema).optional(),
@@ -14365,6 +17609,10 @@ export const UserCreateWithoutMayorInstitutionsInputSchema: z.ZodType<Prisma.Use
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14398,6 +17646,10 @@ export const UserUncheckedCreateWithoutMayorInstitutionsInputSchema: z.ZodType<P
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14434,6 +17686,10 @@ export const UserCreateWithoutViceMayorInstitutionsInputSchema: z.ZodType<Prisma
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14467,6 +17723,10 @@ export const UserUncheckedCreateWithoutViceMayorInstitutionsInputSchema: z.ZodTy
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14497,6 +17757,10 @@ export const DepartmentCreateWithoutInstitutionInputSchema: z.ZodType<Prisma.Dep
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
@@ -14514,6 +17778,10 @@ export const DepartmentUncheckedCreateWithoutInstitutionInputSchema: z.ZodType<P
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -14553,6 +17821,10 @@ export const UserUpdateWithoutMayorInstitutionsInputSchema: z.ZodType<Prisma.Use
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -14586,6 +17858,10 @@ export const UserUncheckedUpdateWithoutMayorInstitutionsInputSchema: z.ZodType<P
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -14628,6 +17904,10 @@ export const UserUpdateWithoutViceMayorInstitutionsInputSchema: z.ZodType<Prisma
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -14661,6 +17941,10 @@ export const UserUncheckedUpdateWithoutViceMayorInstitutionsInputSchema: z.ZodTy
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -14709,6 +17993,10 @@ export const InstitutionCreateWithoutDepartmentsInputSchema: z.ZodType<Prisma.In
   emblem: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   mayor: z.lazy(() => UserCreateNestedOneWithoutMayorInstitutionsInputSchema).optional(),
   viceMayor: z.lazy(() => UserCreateNestedOneWithoutViceMayorInstitutionsInputSchema).optional()
 }).strict();
@@ -14727,7 +18015,11 @@ export const InstitutionUncheckedCreateWithoutDepartmentsInputSchema: z.ZodType<
   mayorId: z.string().optional().nullable(),
   viceMayorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const InstitutionCreateOrConnectWithoutDepartmentsInputSchema: z.ZodType<Prisma.InstitutionCreateOrConnectWithoutDepartmentsInput> = z.object({
@@ -14741,6 +18033,10 @@ export const DepartmentCreateWithoutChildDepartmentsInputSchema: z.ZodType<Prism
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
@@ -14759,6 +18055,10 @@ export const DepartmentUncheckedCreateWithoutChildDepartmentsInputSchema: z.ZodT
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -14775,6 +18075,10 @@ export const DepartmentCreateWithoutParentDepartmentInputSchema: z.ZodType<Prism
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
@@ -14792,6 +18096,10 @@ export const DepartmentUncheckedCreateWithoutParentDepartmentInputSchema: z.ZodT
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -14820,6 +18128,10 @@ export const UserCreateWithoutHeadOfDepartmentsInputSchema: z.ZodType<Prisma.Use
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14853,6 +18165,10 @@ export const UserUncheckedCreateWithoutHeadOfDepartmentsInputSchema: z.ZodType<P
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -14881,6 +18197,11 @@ export const UserDepartmentCreateWithoutDepartmentInputSchema: z.ZodType<Prisma.
   id: z.string().optional(),
   role: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutUserDepartmentsInputSchema)
 }).strict();
 
@@ -14888,7 +18209,12 @@ export const UserDepartmentUncheckedCreateWithoutDepartmentInputSchema: z.ZodTyp
   id: z.string().optional(),
   userId: z.string(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserDepartmentCreateOrConnectWithoutDepartmentInputSchema: z.ZodType<Prisma.UserDepartmentCreateOrConnectWithoutDepartmentInput> = z.object({
@@ -14910,6 +18236,9 @@ export const TicketCreateWithoutDepartmentInputSchema: z.ZodType<Prisma.TicketCr
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   helpTopic: z.lazy(() => HelpTopicCreateNestedOneWithoutTicketsInputSchema),
@@ -14938,6 +18267,9 @@ export const TicketUncheckedCreateWithoutDepartmentInputSchema: z.ZodType<Prisma
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -14959,6 +18291,11 @@ export const HelpTopicCreateWithoutDepartmentInputSchema: z.ZodType<Prisma.HelpT
   topic: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutHelpTopicInputSchema).optional()
 }).strict();
 
@@ -14967,6 +18304,11 @@ export const HelpTopicUncheckedCreateWithoutDepartmentInputSchema: z.ZodType<Pri
   topic: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutHelpTopicInputSchema).optional()
 }).strict();
 
@@ -15004,6 +18346,10 @@ export const InstitutionUpdateWithoutDepartmentsInputSchema: z.ZodType<Prisma.In
   emblem: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   mayor: z.lazy(() => UserUpdateOneWithoutMayorInstitutionsNestedInputSchema).optional(),
   viceMayor: z.lazy(() => UserUpdateOneWithoutViceMayorInstitutionsNestedInputSchema).optional()
 }).strict();
@@ -15023,6 +18369,10 @@ export const InstitutionUncheckedUpdateWithoutDepartmentsInputSchema: z.ZodType<
   viceMayorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DepartmentUpsertWithoutChildDepartmentsInputSchema: z.ZodType<Prisma.DepartmentUpsertWithoutChildDepartmentsInput> = z.object({
@@ -15042,6 +18392,10 @@ export const DepartmentUpdateWithoutChildDepartmentsInputSchema: z.ZodType<Prism
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
@@ -15060,6 +18414,10 @@ export const DepartmentUncheckedUpdateWithoutChildDepartmentsInputSchema: z.ZodT
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -15104,6 +18462,10 @@ export const UserUpdateWithoutHeadOfDepartmentsInputSchema: z.ZodType<Prisma.Use
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15137,6 +18499,10 @@ export const UserUncheckedUpdateWithoutHeadOfDepartmentsInputSchema: z.ZodType<P
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15213,6 +18579,11 @@ export const HelpTopicScalarWhereInputSchema: z.ZodType<Prisma.HelpTopicScalarWh
   description: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   departmentId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const DepartmentCreateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.DepartmentCreateWithoutUserDepartmentsInput> = z.object({
@@ -15221,6 +18592,10 @@ export const DepartmentCreateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
@@ -15239,6 +18614,10 @@ export const DepartmentUncheckedCreateWithoutUserDepartmentsInputSchema: z.ZodTy
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -15261,6 +18640,10 @@ export const UserCreateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.UserC
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -15294,6 +18677,10 @@ export const UserUncheckedCreateWithoutUserDepartmentsInputSchema: z.ZodType<Pri
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -15335,6 +18722,10 @@ export const DepartmentUpdateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
@@ -15353,6 +18744,10 @@ export const DepartmentUncheckedUpdateWithoutUserDepartmentsInputSchema: z.ZodTy
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -15381,6 +18776,10 @@ export const UserUpdateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.UserU
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15414,6 +18813,10 @@ export const UserUncheckedUpdateWithoutUserDepartmentsInputSchema: z.ZodType<Pri
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15445,6 +18848,10 @@ export const UserCreateWithoutTicketsAssignedInputSchema: z.ZodType<Prisma.UserC
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -15478,6 +18885,10 @@ export const UserUncheckedCreateWithoutTicketsAssignedInputSchema: z.ZodType<Pri
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -15514,6 +18925,10 @@ export const UserCreateWithoutTicketsCreatedInputSchema: z.ZodType<Prisma.UserCr
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -15547,6 +18962,10 @@ export const UserUncheckedCreateWithoutTicketsCreatedInputSchema: z.ZodType<Pris
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -15577,6 +18996,10 @@ export const DepartmentCreateWithoutTicketsInputSchema: z.ZodType<Prisma.Departm
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
@@ -15595,6 +19018,10 @@ export const DepartmentUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prism
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -15609,6 +19036,11 @@ export const HelpTopicCreateWithoutTicketsInputSchema: z.ZodType<Prisma.HelpTopi
   topic: z.string(),
   description: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutHelpTopicsInputSchema)
 }).strict();
 
@@ -15617,7 +19049,12 @@ export const HelpTopicUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prisma
   topic: z.string(),
   description: z.string().optional().nullable(),
   departmentId: z.number().int(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const HelpTopicCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma.HelpTopicCreateOrConnectWithoutTicketsInput> = z.object({
@@ -15627,13 +19064,23 @@ export const HelpTopicCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma
 
 export const TicketPriorityCreateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketPriorityCreateWithoutTicketsInput> = z.object({
   name: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketPriorityUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketPriorityUncheckedCreateWithoutTicketsInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketPriorityCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma.TicketPriorityCreateOrConnectWithoutTicketsInput> = z.object({
@@ -15644,14 +19091,24 @@ export const TicketPriorityCreateOrConnectWithoutTicketsInputSchema: z.ZodType<P
 export const SLAPlanCreateWithoutTicketsInputSchema: z.ZodType<Prisma.SLAPlanCreateWithoutTicketsInput> = z.object({
   name: z.string(),
   gracePeriod: z.number().int(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SLAPlanUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prisma.SLAPlanUncheckedCreateWithoutTicketsInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
   gracePeriod: z.number().int(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SLAPlanCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma.SLAPlanCreateOrConnectWithoutTicketsInput> = z.object({
@@ -15661,13 +19118,23 @@ export const SLAPlanCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma.S
 
 export const TicketStatusCreateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketStatusCreateWithoutTicketsInput> = z.object({
   name: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketStatusUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketStatusUncheckedCreateWithoutTicketsInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketStatusCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma.TicketStatusCreateOrConnectWithoutTicketsInput> = z.object({
@@ -15681,6 +19148,11 @@ export const TicketAttachmentCreateWithoutTicketInputSchema: z.ZodType<Prisma.Ti
   fileName: z.string(),
   mimeType: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticketThread: z.lazy(() => TicketThreadCreateNestedOneWithoutAttachmentsInputSchema)
 }).strict();
 
@@ -15690,7 +19162,12 @@ export const TicketAttachmentUncheckedCreateWithoutTicketInputSchema: z.ZodType<
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketAttachmentCreateOrConnectWithoutTicketInputSchema: z.ZodType<Prisma.TicketAttachmentCreateOrConnectWithoutTicketInput> = z.object({
@@ -15705,12 +19182,24 @@ export const TicketAttachmentCreateManyTicketInputEnvelopeSchema: z.ZodType<Pris
 
 export const TicketCollaboratorCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateWithoutTicketInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutTicketCollaboratorsInputSchema)
 }).strict();
 
 export const TicketCollaboratorUncheckedCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedCreateWithoutTicketInput> = z.object({
   id: z.string().optional(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCollaboratorCreateOrConnectWithoutTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateOrConnectWithoutTicketInput> = z.object({
@@ -15726,13 +19215,25 @@ export const TicketCollaboratorCreateManyTicketInputEnvelopeSchema: z.ZodType<Pr
 export const TicketCustomFieldCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateWithoutTicketInput> = z.object({
   id: z.string().optional(),
   value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   field: z.lazy(() => CustomFieldCreateNestedOneWithoutTicketsInputSchema)
 }).strict();
 
 export const TicketCustomFieldUncheckedCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketCustomFieldUncheckedCreateWithoutTicketInput> = z.object({
   id: z.string().optional(),
   fieldId: z.number().int(),
-  value: z.string()
+  value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCustomFieldCreateOrConnectWithoutTicketInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateOrConnectWithoutTicketInput> = z.object({
@@ -15749,6 +19250,11 @@ export const TicketThreadCreateWithoutTicketInputSchema: z.ZodType<Prisma.Ticket
   id: z.string().optional(),
   message: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketThreadInputSchema).optional(),
   user: z.lazy(() => UserCreateNestedOneWithoutTicketThreadsInputSchema)
 }).strict();
@@ -15758,6 +19264,11 @@ export const TicketThreadUncheckedCreateWithoutTicketInputSchema: z.ZodType<Pris
   userId: z.string(),
   message: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInputSchema).optional()
 }).strict();
 
@@ -15768,12 +19279,24 @@ export const TicketThreadCreateOrConnectWithoutTicketInputSchema: z.ZodType<Pris
 
 export const TicketUserCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserCreateWithoutTicketInput> = z.object({
   id: z.string().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutTicketUsersInputSchema)
 }).strict();
 
 export const TicketUserUncheckedCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserUncheckedCreateWithoutTicketInput> = z.object({
   id: z.string().optional(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUserCreateOrConnectWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserCreateOrConnectWithoutTicketInput> = z.object({
@@ -15809,6 +19332,10 @@ export const UserUpdateWithoutTicketsAssignedInputSchema: z.ZodType<Prisma.UserU
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15842,6 +19369,10 @@ export const UserUncheckedUpdateWithoutTicketsAssignedInputSchema: z.ZodType<Pri
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15884,6 +19415,10 @@ export const UserUpdateWithoutTicketsCreatedInputSchema: z.ZodType<Prisma.UserUp
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15917,6 +19452,10 @@ export const UserUncheckedUpdateWithoutTicketsCreatedInputSchema: z.ZodType<Pris
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -15953,6 +19492,10 @@ export const DepartmentUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.Departm
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
@@ -15971,6 +19514,10 @@ export const DepartmentUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prism
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -15991,6 +19538,11 @@ export const HelpTopicUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.HelpTopi
   topic: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutHelpTopicsNestedInputSchema).optional()
 }).strict();
 
@@ -16000,6 +19552,11 @@ export const HelpTopicUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prisma
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   departmentId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketPriorityUpsertWithoutTicketsInputSchema: z.ZodType<Prisma.TicketPriorityUpsertWithoutTicketsInput> = z.object({
@@ -16016,12 +19573,22 @@ export const TicketPriorityUpdateToOneWithWhereWithoutTicketsInputSchema: z.ZodT
 export const TicketPriorityUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketPriorityUpdateWithoutTicketsInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketPriorityUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketPriorityUncheckedUpdateWithoutTicketsInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SLAPlanUpsertWithoutTicketsInputSchema: z.ZodType<Prisma.SLAPlanUpsertWithoutTicketsInput> = z.object({
@@ -16039,6 +19606,11 @@ export const SLAPlanUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.SLAPlanUpd
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   gracePeriod: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SLAPlanUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.SLAPlanUncheckedUpdateWithoutTicketsInput> = z.object({
@@ -16046,6 +19618,11 @@ export const SLAPlanUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.S
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   gracePeriod: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketStatusUpsertWithoutTicketsInputSchema: z.ZodType<Prisma.TicketStatusUpsertWithoutTicketsInput> = z.object({
@@ -16062,12 +19639,22 @@ export const TicketStatusUpdateToOneWithWhereWithoutTicketsInputSchema: z.ZodTyp
 export const TicketStatusUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketStatusUpdateWithoutTicketsInput> = z.object({
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketStatusUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.TicketStatusUncheckedUpdateWithoutTicketsInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentUpsertWithWhereUniqueWithoutTicketInputSchema: z.ZodType<Prisma.TicketAttachmentUpsertWithWhereUniqueWithoutTicketInput> = z.object({
@@ -16097,6 +19684,11 @@ export const TicketAttachmentScalarWhereInputSchema: z.ZodType<Prisma.TicketAtta
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorUpsertWithWhereUniqueWithoutTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorUpsertWithWhereUniqueWithoutTicketInput> = z.object({
@@ -16139,6 +19731,12 @@ export const TicketCustomFieldScalarWhereInputSchema: z.ZodType<Prisma.TicketCus
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   fieldId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
   value: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const TicketThreadUpsertWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpsertWithoutTicketInput> = z.object({
@@ -16156,6 +19754,11 @@ export const TicketThreadUpdateWithoutTicketInputSchema: z.ZodType<Prisma.Ticket
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketThreadNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema).optional()
 }).strict();
@@ -16165,6 +19768,11 @@ export const TicketThreadUncheckedUpdateWithoutTicketInputSchema: z.ZodType<Pris
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInputSchema).optional()
 }).strict();
 
@@ -16193,6 +19801,9 @@ export const TicketCreateWithoutStatusInputSchema: z.ZodType<Prisma.TicketCreate
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -16221,6 +19832,9 @@ export const TicketUncheckedCreateWithoutStatusInputSchema: z.ZodType<Prisma.Tic
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -16263,6 +19877,9 @@ export const TicketCreateWithoutPriorityInputSchema: z.ZodType<Prisma.TicketCrea
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -16291,6 +19908,9 @@ export const TicketUncheckedCreateWithoutPriorityInputSchema: z.ZodType<Prisma.T
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -16330,6 +19950,10 @@ export const DepartmentCreateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.Depa
   isSecretariat: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
@@ -16348,6 +19972,10 @@ export const DepartmentUncheckedCreateWithoutHelpTopicsInputSchema: z.ZodType<Pr
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -16367,6 +19995,9 @@ export const TicketCreateWithoutHelpTopicInputSchema: z.ZodType<Prisma.TicketCre
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -16395,6 +20026,9 @@ export const TicketUncheckedCreateWithoutHelpTopicInputSchema: z.ZodType<Prisma.
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -16429,6 +20063,10 @@ export const DepartmentUpdateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.Depa
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
@@ -16447,6 +20085,10 @@ export const DepartmentUncheckedUpdateWithoutHelpTopicsInputSchema: z.ZodType<Pr
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -16477,6 +20119,9 @@ export const TicketCreateWithoutSlaPlanInputSchema: z.ZodType<Prisma.TicketCreat
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -16505,6 +20150,9 @@ export const TicketUncheckedCreateWithoutSlaPlanInputSchema: z.ZodType<Prisma.Ti
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -16544,6 +20192,11 @@ export const TicketAttachmentCreateWithoutTicketThreadInputSchema: z.ZodType<Pri
   fileName: z.string(),
   mimeType: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutAttachmentsInputSchema)
 }).strict();
 
@@ -16553,7 +20206,12 @@ export const TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema: z.Zo
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateOrConnectWithoutTicketThreadInput> = z.object({
@@ -16575,6 +20233,9 @@ export const TicketCreateWithoutThreadsInputSchema: z.ZodType<Prisma.TicketCreat
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -16604,6 +20265,9 @@ export const TicketUncheckedCreateWithoutThreadsInputSchema: z.ZodType<Prisma.Ti
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -16627,6 +20291,10 @@ export const UserCreateWithoutTicketThreadsInputSchema: z.ZodType<Prisma.UserCre
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -16660,6 +20328,10 @@ export const UserUncheckedCreateWithoutTicketThreadsInputSchema: z.ZodType<Prism
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -16720,6 +20392,9 @@ export const TicketUpdateWithoutThreadsInputSchema: z.ZodType<Prisma.TicketUpdat
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -16749,6 +20424,9 @@ export const TicketUncheckedUpdateWithoutThreadsInputSchema: z.ZodType<Prisma.Ti
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -16778,6 +20456,10 @@ export const UserUpdateWithoutTicketThreadsInputSchema: z.ZodType<Prisma.UserUpd
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -16811,6 +20493,10 @@ export const UserUncheckedUpdateWithoutTicketThreadsInputSchema: z.ZodType<Prism
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -16839,6 +20525,9 @@ export const TicketCreateWithoutAttachmentsInputSchema: z.ZodType<Prisma.TicketC
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -16868,6 +20557,9 @@ export const TicketUncheckedCreateWithoutAttachmentsInputSchema: z.ZodType<Prism
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
@@ -16883,6 +20575,11 @@ export const TicketThreadCreateWithoutAttachmentsInputSchema: z.ZodType<Prisma.T
   id: z.string().optional(),
   message: z.string(),
   createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutThreadsInputSchema),
   user: z.lazy(() => UserCreateNestedOneWithoutTicketThreadsInputSchema)
 }).strict();
@@ -16892,7 +20589,12 @@ export const TicketThreadUncheckedCreateWithoutAttachmentsInputSchema: z.ZodType
   ticketId: z.string(),
   userId: z.string(),
   message: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketThreadCreateOrConnectWithoutAttachmentsInputSchema: z.ZodType<Prisma.TicketThreadCreateOrConnectWithoutAttachmentsInput> = z.object({
@@ -16920,6 +20622,9 @@ export const TicketUpdateWithoutAttachmentsInputSchema: z.ZodType<Prisma.TicketU
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -16949,6 +20654,9 @@ export const TicketUncheckedUpdateWithoutAttachmentsInputSchema: z.ZodType<Prism
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
@@ -16970,6 +20678,11 @@ export const TicketThreadUpdateWithoutAttachmentsInputSchema: z.ZodType<Prisma.T
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutThreadsNestedInputSchema).optional(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema).optional()
 }).strict();
@@ -16980,6 +20693,11 @@ export const TicketThreadUncheckedUpdateWithoutAttachmentsInputSchema: z.ZodType
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCreateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.TicketCreateWithoutCollaboratorsInput> = z.object({
@@ -16991,6 +20709,9 @@ export const TicketCreateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.Ticke
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -17020,6 +20741,9 @@ export const TicketUncheckedCreateWithoutCollaboratorsInputSchema: z.ZodType<Pri
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
@@ -17043,6 +20767,10 @@ export const UserCreateWithoutTicketCollaboratorsInputSchema: z.ZodType<Prisma.U
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17076,6 +20804,10 @@ export const UserUncheckedCreateWithoutTicketCollaboratorsInputSchema: z.ZodType
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17120,6 +20852,9 @@ export const TicketUpdateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.Ticke
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -17149,6 +20884,9 @@ export const TicketUncheckedUpdateWithoutCollaboratorsInputSchema: z.ZodType<Pri
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
@@ -17178,6 +20916,10 @@ export const UserUpdateWithoutTicketCollaboratorsInputSchema: z.ZodType<Prisma.U
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -17211,6 +20953,10 @@ export const UserUncheckedUpdateWithoutTicketCollaboratorsInputSchema: z.ZodType
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -17233,13 +20979,25 @@ export const UserUncheckedUpdateWithoutTicketCollaboratorsInputSchema: z.ZodType
 export const TicketCustomFieldCreateWithoutFieldInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateWithoutFieldInput> = z.object({
   id: z.string().optional(),
   value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutCustomFieldsInputSchema)
 }).strict();
 
 export const TicketCustomFieldUncheckedCreateWithoutFieldInputSchema: z.ZodType<Prisma.TicketCustomFieldUncheckedCreateWithoutFieldInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  value: z.string()
+  value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCustomFieldCreateOrConnectWithoutFieldInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateOrConnectWithoutFieldInput> = z.object({
@@ -17271,14 +21029,24 @@ export const TicketCustomFieldUpdateManyWithWhereWithoutFieldInputSchema: z.ZodT
 export const CustomFieldCreateWithoutTicketsInputSchema: z.ZodType<Prisma.CustomFieldCreateWithoutTicketsInput> = z.object({
   name: z.string(),
   fieldType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const CustomFieldUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prisma.CustomFieldUncheckedCreateWithoutTicketsInput> = z.object({
   id: z.number().int().optional(),
   name: z.string(),
   fieldType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const CustomFieldCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma.CustomFieldCreateOrConnectWithoutTicketsInput> = z.object({
@@ -17295,6 +21063,9 @@ export const TicketCreateWithoutCustomFieldsInputSchema: z.ZodType<Prisma.Ticket
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -17324,6 +21095,9 @@ export const TicketUncheckedCreateWithoutCustomFieldsInputSchema: z.ZodType<Pris
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
@@ -17350,6 +21124,11 @@ export const CustomFieldUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.Custom
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const CustomFieldUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.CustomFieldUncheckedUpdateWithoutTicketsInput> = z.object({
@@ -17357,6 +21136,11 @@ export const CustomFieldUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Pris
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUpsertWithoutCustomFieldsInputSchema: z.ZodType<Prisma.TicketUpsertWithoutCustomFieldsInput> = z.object({
@@ -17379,6 +21163,9 @@ export const TicketUpdateWithoutCustomFieldsInputSchema: z.ZodType<Prisma.Ticket
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -17408,6 +21195,9 @@ export const TicketUncheckedUpdateWithoutCustomFieldsInputSchema: z.ZodType<Pris
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
@@ -17422,6 +21212,10 @@ export const TaskCreateWithoutTaskUsersInputSchema: z.ZodType<Prisma.TaskCreateW
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutTaskInputSchema).optional(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTasksAssignedInputSchema).optional(),
   document: z.lazy(() => DocumentCreateNestedOneWithoutTasksInputSchema).optional(),
@@ -17439,6 +21233,10 @@ export const TaskUncheckedCreateWithoutTaskUsersInputSchema: z.ZodType<Prisma.Ta
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutTaskInputSchema).optional()
 }).strict();
 
@@ -17459,6 +21257,10 @@ export const UserCreateWithoutTaskUsersInputSchema: z.ZodType<Prisma.UserCreateW
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17492,6 +21294,10 @@ export const UserUncheckedCreateWithoutTaskUsersInputSchema: z.ZodType<Prisma.Us
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17535,6 +21341,10 @@ export const TaskUpdateWithoutTaskUsersInputSchema: z.ZodType<Prisma.TaskUpdateW
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutTaskNestedInputSchema).optional(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTasksAssignedNestedInputSchema).optional(),
   document: z.lazy(() => DocumentUpdateOneWithoutTasksNestedInputSchema).optional(),
@@ -17552,6 +21362,10 @@ export const TaskUncheckedUpdateWithoutTaskUsersInputSchema: z.ZodType<Prisma.Ta
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutTaskNestedInputSchema).optional()
 }).strict();
 
@@ -17578,6 +21392,10 @@ export const UserUpdateWithoutTaskUsersInputSchema: z.ZodType<Prisma.UserUpdateW
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -17611,6 +21429,10 @@ export const UserUncheckedUpdateWithoutTaskUsersInputSchema: z.ZodType<Prisma.Us
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -17639,6 +21461,9 @@ export const TicketCreateWithoutTicketUsersInputSchema: z.ZodType<Prisma.TicketC
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   assignedTo: z.lazy(() => UserCreateNestedOneWithoutTicketsAssignedInputSchema).optional(),
   createdBy: z.lazy(() => UserCreateNestedOneWithoutTicketsCreatedInputSchema),
   department: z.lazy(() => DepartmentCreateNestedOneWithoutTicketsInputSchema),
@@ -17668,6 +21493,9 @@ export const TicketUncheckedCreateWithoutTicketUsersInputSchema: z.ZodType<Prism
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
   lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
@@ -17691,6 +21519,10 @@ export const UserCreateWithoutTicketUsersInputSchema: z.ZodType<Prisma.UserCreat
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   address: z.lazy(() => AddressCreateNestedOneWithoutUsersInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17724,6 +21556,10 @@ export const UserUncheckedCreateWithoutTicketUsersInputSchema: z.ZodType<Prisma.
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
   addressId: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17768,6 +21604,9 @@ export const TicketUpdateWithoutTicketUsersInputSchema: z.ZodType<Prisma.TicketU
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -17797,6 +21636,9 @@ export const TicketUncheckedUpdateWithoutTicketUsersInputSchema: z.ZodType<Prism
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -17826,6 +21668,10 @@ export const UserUpdateWithoutTicketUsersInputSchema: z.ZodType<Prisma.UserUpdat
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   address: z.lazy(() => AddressUpdateOneWithoutUsersNestedInputSchema).optional(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -17859,6 +21705,10 @@ export const UserUncheckedUpdateWithoutTicketUsersInputSchema: z.ZodType<Prisma.
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -17890,6 +21740,10 @@ export const UserCreateWithoutAddressInputSchema: z.ZodType<Prisma.UserCreateWit
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17922,6 +21776,10 @@ export const UserUncheckedCreateWithoutAddressInputSchema: z.ZodType<Prisma.User
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedCreateNestedManyWithoutPerformedByInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
@@ -17984,6 +21842,10 @@ export const UserScalarWhereInputSchema: z.ZodType<Prisma.UserScalarWhereInput> 
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   dateOfBirth: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   addressId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
 export const AuditLogCreateManyPerformedByInputSchema: z.ZodType<Prisma.AuditLogCreateManyPerformedByInput> = z.object({
@@ -17992,7 +21854,13 @@ export const AuditLogCreateManyPerformedByInputSchema: z.ZodType<Prisma.AuditLog
   workflowId: z.string().optional().nullable(),
   action: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DigitalCertificateCreateManyUserInputSchema: z.ZodType<Prisma.DigitalCertificateCreateManyUserInput> = z.object({
@@ -18001,26 +21869,46 @@ export const DigitalCertificateCreateManyUserInputSchema: z.ZodType<Prisma.Digit
   filePath: z.string(),
   password: z.string(),
   createdAt: z.coerce.date().optional(),
-  expiration: z.coerce.date()
+  expiration: z.coerce.date(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentUserCreateManyUserInputSchema: z.ZodType<Prisma.DocumentUserCreateManyUserInput> = z.object({
   id: z.string().optional(),
   documentId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreatorCreateManyUserInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateManyUserInput> = z.object({
   id: z.string().optional(),
   versionId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const NotificationCreateManyUserInputSchema: z.ZodType<Prisma.NotificationCreateManyUserInput> = z.object({
   id: z.string().optional(),
   message: z.string(),
   read: z.boolean().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SharedDocumentCreateManyUserInputSchema: z.ZodType<Prisma.SharedDocumentCreateManyUserInput> = z.object({
@@ -18028,7 +21916,12 @@ export const SharedDocumentCreateManyUserInputSchema: z.ZodType<Prisma.SharedDoc
   documentId: z.string(),
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskCreateManyAssignedToInputSchema: z.ZodType<Prisma.TaskCreateManyAssignedToInput> = z.object({
@@ -18040,12 +21933,22 @@ export const TaskCreateManyAssignedToInputSchema: z.ZodType<Prisma.TaskCreateMan
   status: z.string(),
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskUserCreateManyUserInputSchema: z.ZodType<Prisma.TaskUserCreateManyUserInput> = z.object({
   id: z.string().optional(),
-  taskId: z.string()
+  taskId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCreateManyAssignedToInputSchema: z.ZodType<Prisma.TicketCreateManyAssignedToInput> = z.object({
@@ -18062,7 +21965,10 @@ export const TicketCreateManyAssignedToInputSchema: z.ZodType<Prisma.TicketCreat
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCreateManyCreatedByInputSchema: z.ZodType<Prisma.TicketCreateManyCreatedByInput> = z.object({
@@ -18079,31 +21985,56 @@ export const TicketCreateManyCreatedByInputSchema: z.ZodType<Prisma.TicketCreate
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCollaboratorCreateManyUserInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateManyUserInput> = z.object({
   id: z.string().optional(),
-  ticketId: z.string()
+  ticketId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketThreadCreateManyUserInputSchema: z.ZodType<Prisma.TicketThreadCreateManyUserInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
   message: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUserCreateManyUserInputSchema: z.ZodType<Prisma.TicketUserCreateManyUserInput> = z.object({
   id: z.string().optional(),
-  ticketId: z.string()
+  ticketId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserDepartmentCreateManyUserInputSchema: z.ZodType<Prisma.UserDepartmentCreateManyUserInput> = z.object({
   id: z.string().optional(),
   departmentId: z.number().int(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DepartmentCreateManyHeadInputSchema: z.ZodType<Prisma.DepartmentCreateManyHeadInput> = z.object({
@@ -18114,7 +22045,11 @@ export const DepartmentCreateManyHeadInputSchema: z.ZodType<Prisma.DepartmentCre
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const InstitutionCreateManyMayorInputSchema: z.ZodType<Prisma.InstitutionCreateManyMayorInput> = z.object({
@@ -18130,7 +22065,11 @@ export const InstitutionCreateManyMayorInputSchema: z.ZodType<Prisma.Institution
   emblem: z.string().optional().nullable(),
   viceMayorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const InstitutionCreateManyViceMayorInputSchema: z.ZodType<Prisma.InstitutionCreateManyViceMayorInput> = z.object({
@@ -18146,14 +22085,23 @@ export const InstitutionCreateManyViceMayorInputSchema: z.ZodType<Prisma.Institu
   emblem: z.string().optional().nullable(),
   mayorId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserOnDocumentsCreateManyUserInputSchema: z.ZodType<Prisma.UserOnDocumentsCreateManyUserInput> = z.object({
   documentId: z.string(),
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogUpdateWithoutPerformedByInputSchema: z.ZodType<Prisma.AuditLogUpdateWithoutPerformedByInput> = z.object({
@@ -18161,6 +22109,12 @@ export const AuditLogUpdateWithoutPerformedByInputSchema: z.ZodType<Prisma.Audit
   action: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   task: z.lazy(() => TaskUpdateOneWithoutAuditLogsNestedInputSchema).optional(),
   workflow: z.lazy(() => WorkflowUpdateOneWithoutAuditLogsNestedInputSchema).optional()
 }).strict();
@@ -18172,6 +22126,12 @@ export const AuditLogUncheckedUpdateWithoutPerformedByInputSchema: z.ZodType<Pri
   action: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogUncheckedUpdateManyWithoutPerformedByInputSchema: z.ZodType<Prisma.AuditLogUncheckedUpdateManyWithoutPerformedByInput> = z.object({
@@ -18181,6 +22141,12 @@ export const AuditLogUncheckedUpdateManyWithoutPerformedByInputSchema: z.ZodType
   action: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateUpdateWithoutUserInputSchema: z.ZodType<Prisma.DigitalCertificateUpdateWithoutUserInput> = z.object({
@@ -18190,6 +22156,11 @@ export const DigitalCertificateUpdateWithoutUserInputSchema: z.ZodType<Prisma.Di
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   expiration: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.DigitalCertificateUncheckedUpdateWithoutUserInput> = z.object({
@@ -18199,6 +22170,11 @@ export const DigitalCertificateUncheckedUpdateWithoutUserInputSchema: z.ZodType<
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   expiration: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DigitalCertificateUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.DigitalCertificateUncheckedUpdateManyWithoutUserInput> = z.object({
@@ -18208,11 +22184,21 @@ export const DigitalCertificateUncheckedUpdateManyWithoutUserInputSchema: z.ZodT
   password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   expiration: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserUpdateWithoutUserInputSchema: z.ZodType<Prisma.DocumentUserUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutDocumentUsersNestedInputSchema).optional()
 }).strict();
 
@@ -18220,17 +22206,32 @@ export const DocumentUserUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   documentId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.DocumentUserUncheckedUpdateManyWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   documentId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorUpdateWithoutUserInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   version: z.lazy(() => DocumentVersionUpdateOneRequiredWithoutDocumentVersionCreatorsNestedInputSchema).optional()
 }).strict();
 
@@ -18238,12 +22239,22 @@ export const DocumentVersionCreatorUncheckedUpdateWithoutUserInputSchema: z.ZodT
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   versionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUncheckedUpdateManyWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   versionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const NotificationUpdateWithoutUserInputSchema: z.ZodType<Prisma.NotificationUpdateWithoutUserInput> = z.object({
@@ -18251,6 +22262,11 @@ export const NotificationUpdateWithoutUserInputSchema: z.ZodType<Prisma.Notifica
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   read: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const NotificationUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateWithoutUserInput> = z.object({
@@ -18258,6 +22274,11 @@ export const NotificationUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   read: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const NotificationUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateManyWithoutUserInput> = z.object({
@@ -18265,6 +22286,11 @@ export const NotificationUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Pr
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   read: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentUpdateWithoutUserInputSchema: z.ZodType<Prisma.SharedDocumentUpdateWithoutUserInput> = z.object({
@@ -18272,6 +22298,11 @@ export const SharedDocumentUpdateWithoutUserInputSchema: z.ZodType<Prisma.Shared
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutSharedDocumentsNestedInputSchema).optional()
 }).strict();
 
@@ -18281,6 +22312,11 @@ export const SharedDocumentUncheckedUpdateWithoutUserInputSchema: z.ZodType<Pris
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.SharedDocumentUncheckedUpdateManyWithoutUserInput> = z.object({
@@ -18289,6 +22325,11 @@ export const SharedDocumentUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma.TaskUpdateWithoutAssignedToInput> = z.object({
@@ -18299,6 +22340,10 @@ export const TaskUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma.TaskUpdate
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutTaskNestedInputSchema).optional(),
   document: z.lazy(() => DocumentUpdateOneWithoutTasksNestedInputSchema).optional(),
   workflow: z.lazy(() => WorkflowUpdateOneRequiredWithoutTasksNestedInputSchema).optional(),
@@ -18315,6 +22360,10 @@ export const TaskUncheckedUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma.T
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutTaskNestedInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedUpdateManyWithoutTaskNestedInputSchema).optional()
 }).strict();
@@ -18329,21 +22378,43 @@ export const TaskUncheckedUpdateManyWithoutAssignedToInputSchema: z.ZodType<Pris
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUserUpdateWithoutUserInputSchema: z.ZodType<Prisma.TaskUserUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   task: z.lazy(() => TaskUpdateOneRequiredWithoutTaskUsersNestedInputSchema).optional()
 }).strict();
 
 export const TaskUserUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.TaskUserUncheckedUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   taskId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUserUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.TaskUserUncheckedUpdateManyWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   taskId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma.TicketUpdateWithoutAssignedToInput> = z.object({
@@ -18355,6 +22426,9 @@ export const TicketUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma.TicketUp
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
   helpTopic: z.lazy(() => HelpTopicUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -18383,6 +22457,9 @@ export const TicketUncheckedUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -18405,6 +22482,9 @@ export const TicketUncheckedUpdateManyWithoutAssignedToInputSchema: z.ZodType<Pr
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUpdateWithoutCreatedByInputSchema: z.ZodType<Prisma.TicketUpdateWithoutCreatedByInput> = z.object({
@@ -18416,6 +22496,9 @@ export const TicketUpdateWithoutCreatedByInputSchema: z.ZodType<Prisma.TicketUpd
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
   helpTopic: z.lazy(() => HelpTopicUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -18444,6 +22527,9 @@ export const TicketUncheckedUpdateWithoutCreatedByInputSchema: z.ZodType<Prisma.
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -18466,27 +22552,53 @@ export const TicketUncheckedUpdateManyWithoutCreatedByInputSchema: z.ZodType<Pri
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorUpdateWithoutUserInputSchema: z.ZodType<Prisma.TicketCollaboratorUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const TicketCollaboratorUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedUpdateManyWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketThreadUpdateWithoutUserInputSchema: z.ZodType<Prisma.TicketThreadUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketThreadNestedInputSchema).optional(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutThreadsNestedInputSchema).optional()
 }).strict();
@@ -18496,6 +22608,11 @@ export const TicketThreadUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInputSchema).optional()
 }).strict();
 
@@ -18504,27 +22621,55 @@ export const TicketThreadUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Pr
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUserUpdateWithoutUserInputSchema: z.ZodType<Prisma.TicketUserUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutTicketUsersNestedInputSchema).optional()
 }).strict();
 
 export const TicketUserUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.TicketUserUncheckedUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUserUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.TicketUserUncheckedUpdateManyWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentUpdateWithoutUserInputSchema: z.ZodType<Prisma.UserDepartmentUpdateWithoutUserInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutUserDepartmentsNestedInputSchema).optional()
 }).strict();
 
@@ -18533,6 +22678,11 @@ export const UserDepartmentUncheckedUpdateWithoutUserInputSchema: z.ZodType<Pris
   departmentId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.UserDepartmentUncheckedUpdateManyWithoutUserInput> = z.object({
@@ -18540,6 +22690,11 @@ export const UserDepartmentUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<
   departmentId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DepartmentUpdateWithoutHeadInputSchema: z.ZodType<Prisma.DepartmentUpdateWithoutHeadInput> = z.object({
@@ -18548,6 +22703,10 @@ export const DepartmentUpdateWithoutHeadInputSchema: z.ZodType<Prisma.Department
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
@@ -18565,6 +22724,10 @@ export const DepartmentUncheckedUpdateWithoutHeadInputSchema: z.ZodType<Prisma.D
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -18580,6 +22743,10 @@ export const DepartmentUncheckedUpdateManyWithoutHeadInputSchema: z.ZodType<Pris
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const InstitutionUpdateWithoutMayorInputSchema: z.ZodType<Prisma.InstitutionUpdateWithoutMayorInput> = z.object({
@@ -18595,6 +22762,10 @@ export const InstitutionUpdateWithoutMayorInputSchema: z.ZodType<Prisma.Institut
   emblem: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   viceMayor: z.lazy(() => UserUpdateOneWithoutViceMayorInstitutionsNestedInputSchema).optional(),
   departments: z.lazy(() => DepartmentUpdateManyWithoutInstitutionNestedInputSchema).optional()
 }).strict();
@@ -18613,6 +22784,10 @@ export const InstitutionUncheckedUpdateWithoutMayorInputSchema: z.ZodType<Prisma
   viceMayorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   departments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutInstitutionNestedInputSchema).optional()
 }).strict();
 
@@ -18630,6 +22805,10 @@ export const InstitutionUncheckedUpdateManyWithoutMayorInputSchema: z.ZodType<Pr
   viceMayorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const InstitutionUpdateWithoutViceMayorInputSchema: z.ZodType<Prisma.InstitutionUpdateWithoutViceMayorInput> = z.object({
@@ -18645,6 +22824,10 @@ export const InstitutionUpdateWithoutViceMayorInputSchema: z.ZodType<Prisma.Inst
   emblem: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   mayor: z.lazy(() => UserUpdateOneWithoutMayorInstitutionsNestedInputSchema).optional(),
   departments: z.lazy(() => DepartmentUpdateManyWithoutInstitutionNestedInputSchema).optional()
 }).strict();
@@ -18663,6 +22846,10 @@ export const InstitutionUncheckedUpdateWithoutViceMayorInputSchema: z.ZodType<Pr
   mayorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   departments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutInstitutionNestedInputSchema).optional()
 }).strict();
 
@@ -18680,12 +22867,21 @@ export const InstitutionUncheckedUpdateManyWithoutViceMayorInputSchema: z.ZodTyp
   mayorId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsUpdateWithoutUserInputSchema: z.ZodType<Prisma.UserOnDocumentsUpdateWithoutUserInput> = z.object({
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   document: z.lazy(() => DocumentUpdateOneRequiredWithoutUserOnDocumentsNestedInputSchema).optional()
 }).strict();
 
@@ -18694,6 +22890,11 @@ export const UserOnDocumentsUncheckedUpdateWithoutUserInputSchema: z.ZodType<Pri
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.UserOnDocumentsUncheckedUpdateManyWithoutUserInput> = z.object({
@@ -18701,6 +22902,11 @@ export const UserOnDocumentsUncheckedUpdateManyWithoutUserInputSchema: z.ZodType
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AttachmentCreateManyDocumentInputSchema: z.ZodType<Prisma.AttachmentCreateManyDocumentInput> = z.object({
@@ -18708,13 +22914,23 @@ export const AttachmentCreateManyDocumentInputSchema: z.ZodType<Prisma.Attachmen
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentUserCreateManyDocumentInputSchema: z.ZodType<Prisma.DocumentUserCreateManyDocumentInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreateManyDocumentInputSchema: z.ZodType<Prisma.DocumentVersionCreateManyDocumentInput> = z.object({
@@ -18723,7 +22939,12 @@ export const DocumentVersionCreateManyDocumentInputSchema: z.ZodType<Prisma.Docu
   filePath: z.string(),
   changesDescription: z.string().optional().nullable(),
   createdById: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const SharedDocumentCreateManyDocumentInputSchema: z.ZodType<Prisma.SharedDocumentCreateManyDocumentInput> = z.object({
@@ -18731,7 +22952,12 @@ export const SharedDocumentCreateManyDocumentInputSchema: z.ZodType<Prisma.Share
   userId: z.string(),
   sharedAt: z.coerce.date().optional(),
   permission: z.string().optional(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskCreateManyDocumentInputSchema: z.ZodType<Prisma.TaskCreateManyDocumentInput> = z.object({
@@ -18743,14 +22969,23 @@ export const TaskCreateManyDocumentInputSchema: z.ZodType<Prisma.TaskCreateManyD
   status: z.string(),
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserOnDocumentsCreateManyDocumentInputSchema: z.ZodType<Prisma.UserOnDocumentsCreateManyDocumentInput> = z.object({
   userId: z.string(),
   assignedAt: z.coerce.date().optional(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AttachmentUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.AttachmentUpdateWithoutDocumentInput> = z.object({
@@ -18759,6 +22994,11 @@ export const AttachmentUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.Attach
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AttachmentUncheckedUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.AttachmentUncheckedUpdateWithoutDocumentInput> = z.object({
@@ -18767,6 +23007,11 @@ export const AttachmentUncheckedUpdateWithoutDocumentInputSchema: z.ZodType<Pris
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AttachmentUncheckedUpdateManyWithoutDocumentInputSchema: z.ZodType<Prisma.AttachmentUncheckedUpdateManyWithoutDocumentInput> = z.object({
@@ -18775,11 +23020,21 @@ export const AttachmentUncheckedUpdateManyWithoutDocumentInputSchema: z.ZodType<
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.DocumentUserUpdateWithoutDocumentInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutDocumentUsersNestedInputSchema).optional()
 }).strict();
 
@@ -18787,12 +23042,22 @@ export const DocumentUserUncheckedUpdateWithoutDocumentInputSchema: z.ZodType<Pr
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentUserUncheckedUpdateManyWithoutDocumentInputSchema: z.ZodType<Prisma.DocumentUserUncheckedUpdateManyWithoutDocumentInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.DocumentVersionUpdateWithoutDocumentInput> = z.object({
@@ -18802,6 +23067,11 @@ export const DocumentVersionUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.D
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUpdateManyWithoutVersionNestedInputSchema).optional()
 }).strict();
 
@@ -18812,6 +23082,11 @@ export const DocumentVersionUncheckedUpdateWithoutDocumentInputSchema: z.ZodType
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   documentVersionCreators: z.lazy(() => DocumentVersionCreatorUncheckedUpdateManyWithoutVersionNestedInputSchema).optional()
 }).strict();
 
@@ -18822,6 +23097,11 @@ export const DocumentVersionUncheckedUpdateManyWithoutDocumentInputSchema: z.Zod
   changesDescription: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.SharedDocumentUpdateWithoutDocumentInput> = z.object({
@@ -18829,6 +23109,11 @@ export const SharedDocumentUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.Sh
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutSharedDocumentsNestedInputSchema).optional()
 }).strict();
 
@@ -18838,6 +23123,11 @@ export const SharedDocumentUncheckedUpdateWithoutDocumentInputSchema: z.ZodType<
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const SharedDocumentUncheckedUpdateManyWithoutDocumentInputSchema: z.ZodType<Prisma.SharedDocumentUncheckedUpdateManyWithoutDocumentInput> = z.object({
@@ -18846,6 +23136,11 @@ export const SharedDocumentUncheckedUpdateManyWithoutDocumentInputSchema: z.ZodT
   sharedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   permission: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.TaskUpdateWithoutDocumentInput> = z.object({
@@ -18856,6 +23151,10 @@ export const TaskUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.TaskUpdateWi
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutTaskNestedInputSchema).optional(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTasksAssignedNestedInputSchema).optional(),
   workflow: z.lazy(() => WorkflowUpdateOneRequiredWithoutTasksNestedInputSchema).optional(),
@@ -18872,6 +23171,10 @@ export const TaskUncheckedUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.Tas
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutTaskNestedInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedUpdateManyWithoutTaskNestedInputSchema).optional()
 }).strict();
@@ -18886,12 +23189,21 @@ export const TaskUncheckedUpdateManyWithoutDocumentInputSchema: z.ZodType<Prisma
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsUpdateWithoutDocumentInputSchema: z.ZodType<Prisma.UserOnDocumentsUpdateWithoutDocumentInput> = z.object({
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutUserOnDocumentsNestedInputSchema).optional()
 }).strict();
 
@@ -18900,6 +23212,11 @@ export const UserOnDocumentsUncheckedUpdateWithoutDocumentInputSchema: z.ZodType
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserOnDocumentsUncheckedUpdateManyWithoutDocumentInputSchema: z.ZodType<Prisma.UserOnDocumentsUncheckedUpdateManyWithoutDocumentInput> = z.object({
@@ -18907,17 +23224,32 @@ export const UserOnDocumentsUncheckedUpdateManyWithoutDocumentInputSchema: z.Zod
   assignedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorCreateManyVersionInputSchema: z.ZodType<Prisma.DocumentVersionCreatorCreateManyVersionInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DocumentVersionCreatorUpdateWithoutVersionInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUpdateWithoutVersionInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutDocumentVersionCreatorsNestedInputSchema).optional()
 }).strict();
 
@@ -18925,12 +23257,22 @@ export const DocumentVersionCreatorUncheckedUpdateWithoutVersionInputSchema: z.Z
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DocumentVersionCreatorUncheckedUpdateManyWithoutVersionInputSchema: z.ZodType<Prisma.DocumentVersionCreatorUncheckedUpdateManyWithoutVersionInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogCreateManyWorkflowInputSchema: z.ZodType<Prisma.AuditLogCreateManyWorkflowInput> = z.object({
@@ -18939,7 +23281,13 @@ export const AuditLogCreateManyWorkflowInputSchema: z.ZodType<Prisma.AuditLogCre
   action: z.string(),
   performedById: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskCreateManyWorkflowInputSchema: z.ZodType<Prisma.TaskCreateManyWorkflowInput> = z.object({
@@ -18951,7 +23299,11 @@ export const TaskCreateManyWorkflowInputSchema: z.ZodType<Prisma.TaskCreateManyW
   status: z.string(),
   dueDate: z.coerce.date().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogUpdateWithoutWorkflowInputSchema: z.ZodType<Prisma.AuditLogUpdateWithoutWorkflowInput> = z.object({
@@ -18959,6 +23311,12 @@ export const AuditLogUpdateWithoutWorkflowInputSchema: z.ZodType<Prisma.AuditLog
   action: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   performedBy: z.lazy(() => UserUpdateOneRequiredWithoutAuditLogsNestedInputSchema).optional(),
   task: z.lazy(() => TaskUpdateOneWithoutAuditLogsNestedInputSchema).optional()
 }).strict();
@@ -18970,6 +23328,12 @@ export const AuditLogUncheckedUpdateWithoutWorkflowInputSchema: z.ZodType<Prisma
   performedById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogUncheckedUpdateManyWithoutWorkflowInputSchema: z.ZodType<Prisma.AuditLogUncheckedUpdateManyWithoutWorkflowInput> = z.object({
@@ -18979,6 +23343,12 @@ export const AuditLogUncheckedUpdateManyWithoutWorkflowInputSchema: z.ZodType<Pr
   performedById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUpdateWithoutWorkflowInputSchema: z.ZodType<Prisma.TaskUpdateWithoutWorkflowInput> = z.object({
@@ -18989,6 +23359,10 @@ export const TaskUpdateWithoutWorkflowInputSchema: z.ZodType<Prisma.TaskUpdateWi
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutTaskNestedInputSchema).optional(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTasksAssignedNestedInputSchema).optional(),
   document: z.lazy(() => DocumentUpdateOneWithoutTasksNestedInputSchema).optional(),
@@ -19005,6 +23379,10 @@ export const TaskUncheckedUpdateWithoutWorkflowInputSchema: z.ZodType<Prisma.Tas
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutTaskNestedInputSchema).optional(),
   taskUsers: z.lazy(() => TaskUserUncheckedUpdateManyWithoutTaskNestedInputSchema).optional()
 }).strict();
@@ -19019,6 +23397,10 @@ export const TaskUncheckedUpdateManyWithoutWorkflowInputSchema: z.ZodType<Prisma
   dueDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogCreateManyTaskInputSchema: z.ZodType<Prisma.AuditLogCreateManyTaskInput> = z.object({
@@ -19027,12 +23409,24 @@ export const AuditLogCreateManyTaskInputSchema: z.ZodType<Prisma.AuditLogCreateM
   action: z.string(),
   performedById: z.string(),
   timestamp: z.coerce.date().optional(),
-  description: z.string().optional().nullable()
+  description: z.string().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TaskUserCreateManyTaskInputSchema: z.ZodType<Prisma.TaskUserCreateManyTaskInput> = z.object({
   id: z.string().optional(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const AuditLogUpdateWithoutTaskInputSchema: z.ZodType<Prisma.AuditLogUpdateWithoutTaskInput> = z.object({
@@ -19040,6 +23434,12 @@ export const AuditLogUpdateWithoutTaskInputSchema: z.ZodType<Prisma.AuditLogUpda
   action: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   performedBy: z.lazy(() => UserUpdateOneRequiredWithoutAuditLogsNestedInputSchema).optional(),
   workflow: z.lazy(() => WorkflowUpdateOneWithoutAuditLogsNestedInputSchema).optional()
 }).strict();
@@ -19051,6 +23451,12 @@ export const AuditLogUncheckedUpdateWithoutTaskInputSchema: z.ZodType<Prisma.Aud
   performedById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const AuditLogUncheckedUpdateManyWithoutTaskInputSchema: z.ZodType<Prisma.AuditLogUncheckedUpdateManyWithoutTaskInput> = z.object({
@@ -19060,21 +23466,45 @@ export const AuditLogUncheckedUpdateManyWithoutTaskInputSchema: z.ZodType<Prisma
   performedById: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   timestamp: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUserUpdateWithoutTaskInputSchema: z.ZodType<Prisma.TaskUserUpdateWithoutTaskInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTaskUsersNestedInputSchema).optional()
 }).strict();
 
 export const TaskUserUncheckedUpdateWithoutTaskInputSchema: z.ZodType<Prisma.TaskUserUncheckedUpdateWithoutTaskInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TaskUserUncheckedUpdateManyWithoutTaskInputSchema: z.ZodType<Prisma.TaskUserUncheckedUpdateManyWithoutTaskInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DepartmentCreateManyInstitutionInputSchema: z.ZodType<Prisma.DepartmentCreateManyInstitutionInput> = z.object({
@@ -19085,7 +23515,11 @@ export const DepartmentCreateManyInstitutionInputSchema: z.ZodType<Prisma.Depart
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DepartmentUpdateWithoutInstitutionInputSchema: z.ZodType<Prisma.DepartmentUpdateWithoutInstitutionInput> = z.object({
@@ -19094,6 +23528,10 @@ export const DepartmentUpdateWithoutInstitutionInputSchema: z.ZodType<Prisma.Dep
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
@@ -19111,6 +23549,10 @@ export const DepartmentUncheckedUpdateWithoutInstitutionInputSchema: z.ZodType<P
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -19126,6 +23568,10 @@ export const DepartmentUncheckedUpdateManyWithoutInstitutionInputSchema: z.ZodTy
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const DepartmentCreateManyParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentCreateManyParentDepartmentInput> = z.object({
@@ -19136,14 +23582,23 @@ export const DepartmentCreateManyParentDepartmentInputSchema: z.ZodType<Prisma.D
   institutionId: z.string(),
   headId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
-  updatedAt: z.coerce.date().optional()
+  updatedAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserDepartmentCreateManyDepartmentInputSchema: z.ZodType<Prisma.UserDepartmentCreateManyDepartmentInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
   role: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCreateManyDepartmentInputSchema: z.ZodType<Prisma.TicketCreateManyDepartmentInput> = z.object({
@@ -19160,14 +23615,22 @@ export const TicketCreateManyDepartmentInputSchema: z.ZodType<Prisma.TicketCreat
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const HelpTopicCreateManyDepartmentInputSchema: z.ZodType<Prisma.HelpTopicCreateManyDepartmentInput> = z.object({
   id: z.number().int().optional(),
   topic: z.string(),
   description: z.string().optional().nullable(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const DepartmentUpdateWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentUpdateWithoutParentDepartmentInput> = z.object({
@@ -19176,6 +23639,10 @@ export const DepartmentUpdateWithoutParentDepartmentInputSchema: z.ZodType<Prism
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
@@ -19193,6 +23660,10 @@ export const DepartmentUncheckedUpdateWithoutParentDepartmentInputSchema: z.ZodT
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -19208,12 +23679,21 @@ export const DepartmentUncheckedUpdateManyWithoutParentDepartmentInputSchema: z.
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma.UserDepartmentUpdateWithoutDepartmentInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutUserDepartmentsNestedInputSchema).optional()
 }).strict();
 
@@ -19222,6 +23702,11 @@ export const UserDepartmentUncheckedUpdateWithoutDepartmentInputSchema: z.ZodTyp
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserDepartmentUncheckedUpdateManyWithoutDepartmentInputSchema: z.ZodType<Prisma.UserDepartmentUncheckedUpdateManyWithoutDepartmentInput> = z.object({
@@ -19229,6 +23714,11 @@ export const UserDepartmentUncheckedUpdateManyWithoutDepartmentInputSchema: z.Zo
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma.TicketUpdateWithoutDepartmentInput> = z.object({
@@ -19240,6 +23730,9 @@ export const TicketUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma.TicketUp
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   helpTopic: z.lazy(() => HelpTopicUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -19268,6 +23761,9 @@ export const TicketUncheckedUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -19290,12 +23786,20 @@ export const TicketUncheckedUpdateManyWithoutDepartmentInputSchema: z.ZodType<Pr
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const HelpTopicUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma.HelpTopicUpdateWithoutDepartmentInput> = z.object({
   topic: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUpdateManyWithoutHelpTopicNestedInputSchema).optional()
 }).strict();
 
@@ -19304,6 +23808,11 @@ export const HelpTopicUncheckedUpdateWithoutDepartmentInputSchema: z.ZodType<Pri
   topic: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutHelpTopicNestedInputSchema).optional()
 }).strict();
 
@@ -19312,6 +23821,11 @@ export const HelpTopicUncheckedUpdateManyWithoutDepartmentInputSchema: z.ZodType
   topic: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentCreateManyTicketInputSchema: z.ZodType<Prisma.TicketAttachmentCreateManyTicketInput> = z.object({
@@ -19320,23 +23834,46 @@ export const TicketAttachmentCreateManyTicketInputSchema: z.ZodType<Prisma.Ticke
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCollaboratorCreateManyTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorCreateManyTicketInput> = z.object({
   id: z.string().optional(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCustomFieldCreateManyTicketInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateManyTicketInput> = z.object({
   id: z.string().optional(),
   fieldId: z.number().int(),
-  value: z.string()
+  value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUserCreateManyTicketInputSchema: z.ZodType<Prisma.TicketUserCreateManyTicketInput> = z.object({
   id: z.string().optional(),
-  userId: z.string()
+  userId: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketAttachmentUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateWithoutTicketInput> = z.object({
@@ -19345,6 +23882,11 @@ export const TicketAttachmentUpdateWithoutTicketInputSchema: z.ZodType<Prisma.Ti
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticketThread: z.lazy(() => TicketThreadUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
 }).strict();
 
@@ -19355,6 +23897,11 @@ export const TicketAttachmentUncheckedUpdateWithoutTicketInputSchema: z.ZodType<
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentUncheckedUpdateManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyWithoutTicketInput> = z.object({
@@ -19364,26 +23911,55 @@ export const TicketAttachmentUncheckedUpdateManyWithoutTicketInputSchema: z.ZodT
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorUpdateWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTicketCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const TicketCollaboratorUncheckedUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedUpdateWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCollaboratorUncheckedUpdateManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketCollaboratorUncheckedUpdateManyWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketCustomFieldUpdateWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   field: z.lazy(() => CustomFieldUpdateOneRequiredWithoutTicketsNestedInputSchema).optional()
 }).strict();
 
@@ -19391,27 +23967,57 @@ export const TicketCustomFieldUncheckedUpdateWithoutTicketInputSchema: z.ZodType
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldUncheckedUpdateManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketCustomFieldUncheckedUpdateManyWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fieldId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUserUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserUpdateWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   user: z.lazy(() => UserUpdateOneRequiredWithoutTicketUsersNestedInputSchema).optional()
 }).strict();
 
 export const TicketUserUncheckedUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserUncheckedUpdateWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketUserUncheckedUpdateManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserUncheckedUpdateManyWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCreateManyStatusInputSchema: z.ZodType<Prisma.TicketCreateManyStatusInput> = z.object({
@@ -19428,7 +24034,10 @@ export const TicketCreateManyStatusInputSchema: z.ZodType<Prisma.TicketCreateMan
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUpdateWithoutStatusInputSchema: z.ZodType<Prisma.TicketUpdateWithoutStatusInput> = z.object({
@@ -19440,6 +24049,9 @@ export const TicketUpdateWithoutStatusInputSchema: z.ZodType<Prisma.TicketUpdate
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -19468,6 +24080,9 @@ export const TicketUncheckedUpdateWithoutStatusInputSchema: z.ZodType<Prisma.Tic
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -19490,6 +24105,9 @@ export const TicketUncheckedUpdateManyWithoutStatusInputSchema: z.ZodType<Prisma
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCreateManyPriorityInputSchema: z.ZodType<Prisma.TicketCreateManyPriorityInput> = z.object({
@@ -19506,7 +24124,10 @@ export const TicketCreateManyPriorityInputSchema: z.ZodType<Prisma.TicketCreateM
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUpdateWithoutPriorityInputSchema: z.ZodType<Prisma.TicketUpdateWithoutPriorityInput> = z.object({
@@ -19518,6 +24139,9 @@ export const TicketUpdateWithoutPriorityInputSchema: z.ZodType<Prisma.TicketUpda
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -19546,6 +24170,9 @@ export const TicketUncheckedUpdateWithoutPriorityInputSchema: z.ZodType<Prisma.T
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -19568,6 +24195,9 @@ export const TicketUncheckedUpdateManyWithoutPriorityInputSchema: z.ZodType<Pris
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCreateManyHelpTopicInputSchema: z.ZodType<Prisma.TicketCreateManyHelpTopicInput> = z.object({
@@ -19584,7 +24214,10 @@ export const TicketCreateManyHelpTopicInputSchema: z.ZodType<Prisma.TicketCreate
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUpdateWithoutHelpTopicInputSchema: z.ZodType<Prisma.TicketUpdateWithoutHelpTopicInput> = z.object({
@@ -19596,6 +24229,9 @@ export const TicketUpdateWithoutHelpTopicInputSchema: z.ZodType<Prisma.TicketUpd
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -19624,6 +24260,9 @@ export const TicketUncheckedUpdateWithoutHelpTopicInputSchema: z.ZodType<Prisma.
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -19646,6 +24285,9 @@ export const TicketUncheckedUpdateManyWithoutHelpTopicInputSchema: z.ZodType<Pri
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCreateManySlaPlanInputSchema: z.ZodType<Prisma.TicketCreateManySlaPlanInput> = z.object({
@@ -19662,7 +24304,10 @@ export const TicketCreateManySlaPlanInputSchema: z.ZodType<Prisma.TicketCreateMa
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   closedAt: z.coerce.date().optional().nullable(),
-  lastResponseAt: z.coerce.date().optional().nullable()
+  lastResponseAt: z.coerce.date().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketUpdateWithoutSlaPlanInputSchema: z.ZodType<Prisma.TicketUpdateWithoutSlaPlanInput> = z.object({
@@ -19674,6 +24319,9 @@ export const TicketUpdateWithoutSlaPlanInputSchema: z.ZodType<Prisma.TicketUpdat
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   assignedTo: z.lazy(() => UserUpdateOneWithoutTicketsAssignedNestedInputSchema).optional(),
   createdBy: z.lazy(() => UserUpdateOneRequiredWithoutTicketsCreatedNestedInputSchema).optional(),
   department: z.lazy(() => DepartmentUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
@@ -19702,6 +24350,9 @@ export const TicketUncheckedUpdateWithoutSlaPlanInputSchema: z.ZodType<Prisma.Ti
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
@@ -19724,6 +24375,9 @@ export const TicketUncheckedUpdateManyWithoutSlaPlanInputSchema: z.ZodType<Prism
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   closedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   lastResponseAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentCreateManyTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateManyTicketThreadInput> = z.object({
@@ -19732,7 +24386,12 @@ export const TicketAttachmentCreateManyTicketThreadInputSchema: z.ZodType<Prisma
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
-  createdAt: z.coerce.date().optional()
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketAttachmentUpdateWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateWithoutTicketThreadInput> = z.object({
@@ -19741,6 +24400,11 @@ export const TicketAttachmentUpdateWithoutTicketThreadInputSchema: z.ZodType<Pri
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
 }).strict();
 
@@ -19751,6 +24415,11 @@ export const TicketAttachmentUncheckedUpdateWithoutTicketThreadInputSchema: z.Zo
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketAttachmentUncheckedUpdateManyWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyWithoutTicketThreadInput> = z.object({
@@ -19760,17 +24429,34 @@ export const TicketAttachmentUncheckedUpdateManyWithoutTicketThreadInputSchema: 
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldCreateManyFieldInputSchema: z.ZodType<Prisma.TicketCustomFieldCreateManyFieldInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  value: z.string()
+  value: z.string(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const TicketCustomFieldUpdateWithoutFieldInputSchema: z.ZodType<Prisma.TicketCustomFieldUpdateWithoutFieldInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutCustomFieldsNestedInputSchema).optional()
 }).strict();
 
@@ -19778,12 +24464,24 @@ export const TicketCustomFieldUncheckedUpdateWithoutFieldInputSchema: z.ZodType<
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const TicketCustomFieldUncheckedUpdateManyWithoutFieldInputSchema: z.ZodType<Prisma.TicketCustomFieldUncheckedUpdateManyWithoutFieldInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   value: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UserCreateManyAddressInputSchema: z.ZodType<Prisma.UserCreateManyAddressInput> = z.object({
@@ -19797,7 +24495,11 @@ export const UserCreateManyAddressInputSchema: z.ZodType<Prisma.UserCreateManyAd
   role: z.string().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  dateOfBirth: z.coerce.date().optional().nullable()
+  dateOfBirth: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
 export const UserUpdateWithoutAddressInputSchema: z.ZodType<Prisma.UserUpdateWithoutAddressInput> = z.object({
@@ -19812,6 +24514,10 @@ export const UserUpdateWithoutAddressInputSchema: z.ZodType<Prisma.UserUpdateWit
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -19844,6 +24550,10 @@ export const UserUncheckedUpdateWithoutAddressInputSchema: z.ZodType<Prisma.User
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   auditLogs: z.lazy(() => AuditLogUncheckedUpdateManyWithoutPerformedByNestedInputSchema).optional(),
   digitalCertificates: z.lazy(() => DigitalCertificateUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
   documentUsers: z.lazy(() => DocumentUserUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
@@ -19876,6 +24586,10 @@ export const UserUncheckedUpdateManyWithoutAddressInputSchema: z.ZodType<Prisma.
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 /////////////////////////////////////////
