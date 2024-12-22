@@ -12,10 +12,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
- /// The `User` model represents system users.
-/// In a GED context, users can create, own, and share documents.
-/// In a BPM context, users may be assigned tasks within workflows or manage them.
-/// A `role` field helps define user permissions and responsibilities.
+
 /// The `User` model represents system users with roles in the organizational structure.
 model User {
   id                      String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -46,7 +43,7 @@ model User {
   ticketThreads           TicketThread[]
   ticketUsers             TicketUser[]
   userDepartments         UserDepartment[]
-  headOfDepartments       Department[]             @relation("Department_Head") // Contra-relação
+  headOfDepartments       Department[]             @relation("Department_Head")
   mayorInstitutions       Institution[]            @relation("Institution_Mayor")
   viceMayorInstitutions   Institution[]            @relation("Institution_ViceMayor")
   userOnDocuments         UserOnDocuments[]
@@ -255,7 +252,10 @@ model Institution {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
   address     String?
+  city        String?
+  state       String?
   phone       String?
+  whatsapp    String?
   email       String?
   flag        String? // Path to the flag image
   emblem      String? // Path to the emblem image
@@ -286,7 +286,7 @@ model Department {
   institution        Institution      @relation(fields: [institutionId], references: [id])
   parentDepartment   Department?      @relation("ParentDepartment", fields: [parentDepartmentId], references: [id])
   childDepartments   Department[]     @relation("ParentDepartment")
-  head               User?            @relation("Department_Head", fields: [headId], references: [id]) // Relacionamento corrigido
+  head               User?            @relation("Department_Head", fields: [headId], references: [id])
   userDepartments    UserDepartment[]
   tickets            Ticket[]
   helpTopics         HelpTopic[]
@@ -320,7 +320,7 @@ model Ticket {
   slaPlanId      Int?
   dueDate        DateTime?
   createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
+  updatedAt      DateTime             @default(now())
   closedAt       DateTime?
   lastResponseAt DateTime?
   assignedTo     User?                @relation("TicketsAssigned", fields: [assignedToId], references: [id])

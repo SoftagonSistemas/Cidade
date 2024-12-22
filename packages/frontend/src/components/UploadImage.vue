@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BaseService from '@/services/BaseService'
+import FileService from '@/services/FileService'
 import { z } from 'zod'
 
 const props = defineProps<{ modelValue: string | null }>()
@@ -8,7 +8,7 @@ const emit = defineEmits(['update:modelValue'])
 const file = ref<File | null>(null)
 const previewUrl = ref<string | null>(null)
 const isValid = ref(false)
-const service = new BaseService('images')
+const service = new FileService()
 const uploadResponse = reactive<{ path: string | null, versionId: string | null }>({ path: null, versionId: null })
 
 const schema = z.object({

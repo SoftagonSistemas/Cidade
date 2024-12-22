@@ -122,18 +122,18 @@ const adminMenuItem = {
     <NotificationMenu :model-value="notificationDrawerOpen" />
     <!-- Conteúdo Principal -->
     <v-main>
-      <v-container
-        class="d-flex justify-center align-center "
-        style="height: 100%"
+      <v-sheet
+        elevation="0"
+        class="fill-height d-flex flex-column"
+        color="white"
       >
-        <v-sheet
-          elevation="0"
-          style="height: 100%; width: 100%;"
-          class="pl-8 pt-4 pr-4 pb-4"
+        <v-container
+          fluid
+          class="fill-height d-flex flex-column"
         >
           <router-view />
-        </v-sheet>
-      </v-container>
+        </v-container>
+      </v-sheet>
     </v-main>
 
     <!-- Rodapé Opcional -->
@@ -145,10 +145,6 @@ const adminMenuItem = {
 </template>
 
 <style scoped>
-.v-main {
-  background-color: #f5f5f5;
-}
-
 .secondary-drawer {
   transition: margin-left 0.3s ease;
   position: absolute;
@@ -181,13 +177,17 @@ const adminMenuItem = {
 }
 
 .v-app {
-  height: 100vh; /* Garante que o v-app ocupe a altura total da viewport */
-  overflow: hidden; /* Evita overflow do v-app */
+  min-height: 100vh; /* Garante que o app ocupe toda a altura da tela */
+  display: flex;
+  flex-direction: column;
 }
 
 .v-main {
-  height: calc(100vh - 64px); /* Ajusta a altura, subtraindo a altura do app-bar */
-  overflow-y: auto; /* Permite scroll interno no conteúdo principal, se necessário */
-  background-color: #f5f5f5;
+  flex-grow: 1; /* Permite que o conteúdo principal cresça para preencher o espaço */
+}
+
+.v-footer {
+  background-color: #f5f5f5; /* Exemplo, pode ser ajustado */
+  color: #000; /* Cor do texto */
 }
 </style>

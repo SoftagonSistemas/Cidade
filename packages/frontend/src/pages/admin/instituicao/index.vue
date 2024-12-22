@@ -1,41 +1,42 @@
 <script setup lang="ts">
 import UploadImage from '@/components/UploadImage.vue'
+import BaseService from '@/services/BaseService'
+import { OrganizationService } from '@/services/OrganizationService'
 import { z } from 'zod'
 
 const formData = ref({
-  nome: 'Prefeitura de Teste',
-  bandeira: 'bandeira-teste.png',
-  brasao: 'brasao-teste.png',
-  telefone: '123456789',
+  name: 'Prefeitura de Exemplo',
+  address: 'Rua Exemplo, 123',
+  city: 'Cidade Exemplo',
+  state: 'Estado Exemplo',
+  phone: '123456789',
   whatsapp: '987654321',
-  email: 'teste@prefeitura.com',
-  endereco: 'Rua de Teste, 123',
-  cidade: 'Cidade Teste',
-  estado: 'Estado Teste',
-  prefeito: { id: 1, name: 'João Prefeito' },
-  vicePrefeito: { id: 2, name: 'Maria Vice' },
+  email: 'exemplo@prefeitura.com',
+  flag: 'bandeira-exemplo.png',
+  emblem: 'brasao-exemplo.png',
+  mayorId: null,
+  viceMayorId: null,
 })
-
-const usuarios = ref([
-  { id: 1, name: 'João Prefeito' },
-  { id: 2, name: 'Maria Vice' },
-]) // Exemplo de dados pré-existentes
 
 const isFormValid = ref(false)
 
 const schema = z.object({
-  nome: z.string().min(1, 'Campo obrigatório'),
-  bandeira: z.any().refine(val => val !== null, 'Campo obrigatório'),
-  brasao: z.any().refine(val => val !== null, 'Campo obrigatório'),
-  telefone: z.string().optional(),
-  whatsapp: z.string().min(1, 'Campo obrigatório'),
-  email: z.string().email('E-mail inválido').min(1, 'Campo obrigatório'),
-  endereco: z.string().min(1, 'Campo obrigatório'),
-  cidade: z.string().min(1, 'Campo obrigatório'),
-  estado: z.string().min(1, 'Campo obrigatório'),
-  prefeito: z.object({ id: z.number(), name: z.string() }).refine(val => val !== null, 'Campo obrigatório'),
-  vicePrefeito: z.object({ id: z.number(), name: z.string() }).refine(val => val !== null, 'Campo obrigatório'),
+  name: z.string().min(1, 'Campo obrigatório'),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  phone: z.string().optional(),
+  whatsapp: z.string().optional(),
+  email: z.string().email('E-mail inválido').optional(),
+  flag: z.string().nullable(),
+  emblem: z.string().nullable(),
+  mayorId: z.string().nullable(),
+  viceMayorId: z.string().nullable(),
 })
+
+const institutionService = new BaseService('institution')
+const orgService = new OrganizationService()
+const usuarios = ref([])
 
 function validateForm() {
   const result = schema.safeParse(formData.value)
@@ -43,37 +44,54 @@ function validateForm() {
   return result
 }
 
-function cadastrarUsuario(tipo) {
-  console.log(`Abrindo modal para cadastrar ${tipo}...`)
-  // Implementar lógica para abrir modal de cadastro de usuário
+function cadastrarUsuario(tipo: string) {
+  console.warn(`Abrindo modal para cadastrar ${tipo}...`)
 }
 
-function submitForm() {
+async function submitForm() {
   const validation = validateForm()
   if (validation.success) {
-    console.log('Dados enviados:', formData.value)
+    try {
+      await institutionService.create(formData.value)
+      toast.success('Dados enviados com sucesso!')
+    }
+    catch (error: any) {
+      toast.error(`Erro ao enviar dados: ${error.message}`)
+    }
   }
   else {
-    console.log('Erros de validação:', validation.error.errors)
+    toast.error('Erros de validação no formulário.')
   }
 }
 
 function resetForm() {
   formData.value = {
-    nome: '',
-    bandeira: null,
-    brasao: null,
-    telefone: '',
+    name: '',
+    address: '',
+    city: '',
+    state: '',
+    phone: '',
     whatsapp: '',
     email: '',
-    endereco: '',
-    cidade: '',
-    estado: '',
-    prefeito: null,
-    vicePrefeito: null,
+    flag: '',
+    emblem: '',
+    mayorId: null,
+    viceMayorId: null,
   }
   isFormValid.value = false
 }
+
+async function getMembersFromOrganization() {
+  const members = await orgService.getMembers()
+  usuarios.value = members.map((member: any) => ({
+    id: member.user.id,
+    name: member.user.name || 'Sem Nome',
+  }))
+}
+
+onMounted(async () => {
+  await getMembersFromOrganization()
+})
 </script>
 
 <template>
@@ -83,85 +101,47 @@ function resetForm() {
       <v-row>
         <!-- Nome da Prefeitura -->
         <v-col cols="12">
-          <v-text-field
-            v-model="formData.nome"
-            label="Nome da Prefeitura"
-            :rules="[() => validateForm().success || 'Campo obrigatório']"
-            required
-          />
-        </v-col>
-
-        <!-- Bandeira e Brasão -->
-        <v-col cols="6">
-          <UploadImage v-model="formData.bandeira" />
-        </v-col>
-        <v-col cols="6">
-          <UploadImage v-model="formData.brasao" />
-        </v-col>
-
-        <!-- Contatos -->
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="formData.telefone"
-            label="Telefone"
-            type="tel"
-          />
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="formData.whatsapp"
-            label="WhatsApp"
-            type="tel"
-            :rules="[() => validateForm().success || 'Campo obrigatório']"
-            required
-          />
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-            v-model="formData.email"
-            label="E-mail"
-            type="email"
-            :rules="[() => validateForm().success || 'E-mail inválido']"
-            required
-          />
+          <v-text-field v-model="formData.name" label="Nome da Prefeitura" required />
         </v-col>
 
         <!-- Endereço -->
         <v-col cols="12">
-          <v-text-field
-            v-model="formData.endereco"
-            label="Endereço"
-            :rules="[() => validateForm().success || 'Campo obrigatório']"
-            required
-          />
+          <v-text-field v-model="formData.address" label="Endereço" />
         </v-col>
         <v-col cols="6">
-          <v-text-field
-            v-model="formData.cidade"
-            label="Cidade"
-            :rules="[() => validateForm().success || 'Campo obrigatório']"
-            required
-          />
+          <v-text-field v-model="formData.city" label="Cidade" />
         </v-col>
         <v-col cols="6">
-          <v-text-field
-            v-model="formData.estado"
-            label="Estado"
-            :rules="[() => validateForm().success || 'Campo obrigatório']"
-            required
-          />
+          <v-text-field v-model="formData.state" label="Estado" />
+        </v-col>
+
+        <!-- Contatos -->
+        <v-col cols="12" sm="6">
+          <v-text-field v-model="formData.phone" label="Telefone" />
+        </v-col>
+        <v-col cols="12" sm="6">
+          <v-text-field v-model="formData.whatsapp" label="WhatsApp" />
+        </v-col>
+        <v-col cols="12">
+          <v-text-field v-model="formData.email" label="E-mail" />
+        </v-col>
+
+        <!-- Bandeira e Brasão -->
+        <v-col cols="6">
+          <UploadImage v-model="formData.flag" />
+        </v-col>
+        <v-col cols="6">
+          <UploadImage v-model="formData.emblem" />
         </v-col>
 
         <!-- Prefeito e Vice -->
         <v-col cols="12" sm="6">
           <v-select
-            v-model="formData.prefeito"
+            v-model="formData.mayorId"
             label="Prefeito"
             :items="usuarios"
-            item-text="name"
+            item-title="name"
             item-value="id"
-            :rules="[() => validateForm().success || 'Campo obrigatório']"
-            required
             return-object
           >
             <template #append-item>
@@ -180,13 +160,11 @@ function resetForm() {
         </v-col>
         <v-col cols="12" sm="6">
           <v-select
-            v-model="formData.vicePrefeito"
+            v-model="formData.viceMayorId"
             label="Vice-Prefeito"
             :items="usuarios"
-            item-text="name"
+            item-title="name"
             item-value="id"
-            :rules="[() => validateForm().success || 'Campo obrigatório']"
-            required
             return-object
           >
             <template #append-item>
@@ -204,12 +182,25 @@ function resetForm() {
           </v-select>
         </v-col>
 
-        <!-- Botões -->
         <v-col cols="12" class="d-flex justify-end">
-          <v-btn type="submit" :disabled="!isFormValid" color="primary">
+          <!-- Botão Salvar -->
+          <v-btn
+            type="submit"
+            :disabled="!isFormValid"
+            color="primary"
+            variant="elevated"
+          >
             Salvar
           </v-btn>
-          <v-btn type="reset" class="ml-2" @click="resetForm">
+
+          <!-- Botão Limpar -->
+          <v-btn
+            type="reset"
+            color="secondary"
+            variant="outlined"
+            class="ml-2"
+            @click="resetForm"
+          >
             Limpar
           </v-btn>
         </v-col>
