@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
 
 // Zod Schema para Validação
@@ -192,6 +192,7 @@ onMounted(() => {
             />
             <v-text-field
               v-model="newUser.phoneNumber"
+              v-maskito="phoneMaskOptions"
               label="Telefone"
               outlined
             />
