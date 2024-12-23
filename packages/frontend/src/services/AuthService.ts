@@ -1,5 +1,7 @@
 import type { ClientOptions, User } from 'better-auth/types'
+import router from '@/router'
 import { useAuthStore } from '@/stores/AuthStore'
+import { autoResetRef } from '@vueuse/core'
 import { organizationClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
 
@@ -51,6 +53,8 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       await this.client.signOut()
+      useAuthStore().logout()
+      router.push({ path: '/' })
     }
     catch (error) {
       throw new Error(`Logout failed: ${(error as Error).message}`)

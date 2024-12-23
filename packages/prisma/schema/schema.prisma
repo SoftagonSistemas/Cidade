@@ -16,15 +16,15 @@ datasource db {
 /// The `User` model represents system users with roles in the organizational structure.
 model User {
   id                      String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  apiUserId               String                   @unique
   email                   String                   @unique
   name                    String
   phoneNumber             String?
   jobTitle                String? // E.g., "Mayor", "Vice-Mayor", "Secretary"
   profilePhoto            String? // Path to the user's profile photo
-  role                    String                   @default("user") // Define system permissions
+  role                    String                   @default("member") // Define system permissions
+  apiUserId               String                   @unique
   createdAt               DateTime                 @default(now())
-  updatedAt               DateTime                 @updatedAt
+  updatedAt               DateTime?                @updatedAt
   dateOfBirth             DateTime?                // Date of birth
   addressId               String?                  @db.Uuid         // Foreign key to Address
   createdBy               String?
@@ -180,7 +180,7 @@ model Workflow {
   type        String     @default("general")
   status      String
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  updatedAt   DateTime?   @updatedAt
   createdBy   String?
   updatedBy   String?
   tenantId    String?
@@ -204,7 +204,7 @@ model Task {
   status       String
   dueDate      DateTime?
   createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  updatedAt    DateTime? @updatedAt
   createdBy    String?
   updatedBy    String?
   tenantId     String?
@@ -330,7 +330,7 @@ model Institution {
   mayorId     String?      @db.Uuid
   viceMayorId String?      @db.Uuid
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  updatedAt   DateTime? @updatedAt
   createdBy   String?
   updatedBy   String?
   tenantId    String?
@@ -353,7 +353,7 @@ model Department {
   parentDepartmentId Int?
   headId             String?          @db.Uuid // The head of the department (e.g., Secretary, Director)
   createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
+  updatedAt          DateTime? @updatedAt
   createdBy          String?
   updatedBy          String?
   tenantId           String?
@@ -401,7 +401,7 @@ model Ticket {
   slaPlanId      Int?
   dueDate        DateTime?
   createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @default(now())
+  updatedAt      DateTime?             @default(now())
   closedAt       DateTime?
   lastResponseAt DateTime?
   updatedBy      String?
@@ -608,7 +608,7 @@ model Address {
   country     String
   postalCode  String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime? @updatedAt
   createdBy   String?
   updatedBy   String?
   tenantId    String?

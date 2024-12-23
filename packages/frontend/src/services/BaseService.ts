@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/stores/AuthStore'
 import { PostgrestClient } from '@supabase/postgrest-js'
+import { AuthService } from './AuthService'
 
 const authStore = useAuthStore()
 
@@ -79,8 +80,12 @@ export default class BaseService<T> {
       .select()
       .single()
 
-    if (error)
+    if (error) {
+      if (error.message.includes('JWT ')) {
+        new AuthService().logout()
+      }
       throw new Error(error.message)
+    }
     return data
   }
 
