@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { roles } from '@/data/roles'
+import { AuthService } from '@/services/AuthService'
 import BaseService from '@/services/BaseService'
-import { useAuthStore } from '@/stores/AuthStore'
+import generateSecurePassword from '@/utils/generateSecurePassword'
 import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
 // Props
@@ -27,11 +28,11 @@ const userSchema = z.object({
 // Novo Usuário
 const newUser = ref({
   name: 'Hermes',
-  email: 'hermes@softagon.com.br',
+  email: 'hermes@softasgon.com.br',
   phoneNumber: '87 99200 5656',
   jobTitle: 'Servidor',
   role: 'member',
-  apiUserId: useAuthStore().user.id,
+  apiUserId: '',
 })
 
 const items = ref<string[]>(['Servidor público', 'Secretário Municipal', 'Vice-Prefeito', 'Prefeito'])
@@ -49,7 +50,7 @@ function onSearchUpdate(query: string) {
 const isFormValid = ref(false)
 
 function resetDialog() {
-  newUser.value = { name: '', email: '', phoneNumber: '', jobTitle: '' }
+  newUser.value = { name: '', email: '', phoneNumber: '', jobTitle: '', apiUserId: '', role: 'member' }
   dialogOpen.value = false
 }
 
@@ -65,6 +66,14 @@ async function submitUser() {
 
   const userService = new BaseService('user')
   try {
+    const authService = new AuthService()
+    const authUserCreated = await authService.register(newUser.value.email, generateSecurePassword(), newUser.value.name)
+    if (!authUserCreated) {
+      toast.error('Erro ao criar usuário no Auth')
+      throw new Error('Erro ao criar usuário no Auth')
+    }
+
+    newUser.value.apiUserId = authUserCreated.id
     const createdUser = await userService.create(newUser.value)
     if (createdUser) {
       props.onUserCreated(createdUser) // Notifica o sucesso

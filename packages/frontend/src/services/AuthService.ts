@@ -1,7 +1,6 @@
 import type { ClientOptions, User } from 'better-auth/types'
 import router from '@/router'
 import { useAuthStore } from '@/stores/AuthStore'
-import { autoResetRef } from '@vueuse/core'
 import { organizationClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
 

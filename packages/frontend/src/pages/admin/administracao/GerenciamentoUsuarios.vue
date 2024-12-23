@@ -1,44 +1,38 @@
 <script setup lang="ts">
+// Dados
+import type { User } from '@prisma/client'
 import UserDialog from '@/components/UserDialog.vue'
 
-// Dados
-const users = ref([])
+import BaseService from '@/services/BaseService'
+
+const users = ref<User[]>([])
 const loading = ref(false)
 const search = ref('')
 const itemsPerPage = ref(6)
 const currentPage = ref(1)
 
-const isDialogOpen = ref(false) // Controle do estado do dialog
+const isDialogOpen = ref(false)
 
 // Callback para quando um usuário é criado
-function handleUserCreated(newUser: any) {
-  console.log('Usuário criado com sucesso:', newUser)
-  users.value.push(newUser) // Adiciona o novo usuário à lista
+async function handleUserCreated() {
+  await fetchUsers()
 }
 
 async function fetchUsers() {
   loading.value = true
-  setTimeout(() => {
-    users.value = [
-      {
-        id: '1',
-        name: 'João da Silva',
-        email: 'joao.silva@example.com',
-        phoneNumber: '123456789',
-        jobTitle: 'Prefeito',
-        profilePhoto: '/default-avatar.png',
-      },
-      {
-        id: '2',
-        name: 'Maria Souza',
-        email: 'maria.souza@example.com',
-        phoneNumber: '987654321',
-        jobTitle: 'Vice-Prefeita',
-        profilePhoto: '/default-avatar.png',
-      },
-    ]
+  const userService = new BaseService('user')
+  try {
+    const allUsers = await userService.getAll()
+    users.value = allUsers
+    console.log('Usuários:', users.value)
+  }
+  catch (error) {
+    toast.error('Erro ao buscar usuários. Back falhou.')
+    console.error('Erro ao buscar usuários:', error)
+  }
+  finally {
     loading.value = false
-  }, 1000)
+  }
 }
 
 onMounted(() => {
