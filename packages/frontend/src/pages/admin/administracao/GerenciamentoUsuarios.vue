@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import { phoneMaskOptions } from '@/utils/phoneMask'
-import { z } from 'zod'
-
-// Zod Schema para Validação
-const userSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório.'),
-  email: z.string().email('Email inválido.'),
-  phoneNumber: z.string().optional(),
-  jobTitle: z.string().optional(),
-})
+import UserDialog from '@/components/UserDialog.vue'
 
 // Dados
 const users = ref([])
@@ -16,35 +7,13 @@ const loading = ref(false)
 const search = ref('')
 const itemsPerPage = ref(6)
 const currentPage = ref(1)
-const dialogOpen = ref(false)
-const isFormValid = ref(false)
 
-// Novo Usuário
-const newUser = ref({
-  name: '',
-  email: '',
-  phoneNumber: '',
-  jobTitle: '',
-})
+const isDialogOpen = ref(false) // Controle do estado do dialog
 
-function resetDialog() {
-  newUser.value = {
-    name: '',
-    email: '',
-    phoneNumber: '',
-    jobTitle: '',
-  }
-  dialogOpen.value = false
-}
-
-function submitUser() {
-  const validation = userSchema.safeParse(newUser.value)
-  if (!validation.success) {
-    console.error('Erros de validação:', validation.error.errors)
-    return
-  }
-  users.value.push({ ...newUser.value, id: Date.now().toString() })
-  resetDialog()
+// Callback para quando um usuário é criado
+function handleUserCreated(newUser: any) {
+  console.log('Usuário criado com sucesso:', newUser)
+  users.value.push(newUser) // Adiciona o novo usuário à lista
 }
 
 async function fetchUsers() {
@@ -89,7 +58,7 @@ onMounted(() => {
           color="primary"
           variant="elevated"
           prepend-icon="mdi-plus"
-          @click="dialogOpen = true"
+          @click="isDialogOpen = true"
         >
           Novo Usuário
         </v-btn>
@@ -173,49 +142,9 @@ onMounted(() => {
     </v-row>
 
     <!-- Dialog de Novo Usuário -->
-    <v-dialog v-model="dialogOpen" persistent max-width="500">
-      <v-card>
-        <v-card-title>Criar Novo Usuário</v-card-title>
-        <v-card-text>
-          <v-form v-model="isFormValid">
-            <v-text-field
-              v-model="newUser.name"
-              label="Nome"
-              outlined
-              required
-            />
-            <v-text-field
-              v-model="newUser.email"
-              label="Email"
-              outlined
-              required
-            />
-            <v-text-field
-              v-model="newUser.phoneNumber"
-              v-maskito="phoneMaskOptions"
-              label="Telefone"
-              outlined
-            />
-            <v-text-field
-              v-model="newUser.jobTitle"
-              label="Cargo"
-              outlined
-            />
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="secondary" @click="resetDialog">
-            Cancelar
-          </v-btn>
-          <v-btn
-            :disabled="!isFormValid"
-            color="primary"
-            @click="submitUser"
-          >
-            Salvar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <UserDialog
+      v-model="isDialogOpen"
+      :on-user-created="handleUserCreated"
+    />
   </v-container>
 </template>
