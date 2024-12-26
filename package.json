@@ -10,7 +10,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@antfu/eslint-config": "^3.12.0",
+    "@antfu/eslint-config": "^3.12.1",
     "@types/bun": "^1.1.14",
     "eslint": "latest",
     "prisma": "^6.1.0",

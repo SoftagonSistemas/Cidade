@@ -7,7 +7,7 @@ export const primaryMenuItems: MenuItem[] = [
     label: 'Instituição',
     children: [
       { title: 'Institução', route: '/admin/instituicao/' },
-      { title: 'Entidade', route: '/admin/instituicao/entidade' },
+      { title: 'Secretarias', route: '/admin/instituicao/secretarias' },
       { title: 'Organograma', route: '/admin/instituicao/organograma' },
     ],
   },

@@ -2,18 +2,19 @@
 import UploadImage from '@/components/UploadImage.vue'
 import BaseService from '@/services/BaseService'
 import { OrganizationService } from '@/services/OrganizationService'
+import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
 
 const formData = ref({
-  name: 'Prefeitura de Exemplo',
-  address: 'Rua Exemplo, 123',
-  city: 'Cidade Exemplo',
-  state: 'Estado Exemplo',
-  phone: '123456789',
-  whatsapp: '987654321',
-  email: 'exemplo@prefeitura.com',
-  flag: 'bandeira-exemplo.png',
-  emblem: 'brasao-exemplo.png',
+  name: '',
+  address: '',
+  city: '',
+  state: '',
+  phone: '',
+  whatsapp: '',
+  email: '',
+  flag: '',
+  emblem: '',
   mayorId: null,
   viceMayorId: null,
 })
@@ -22,7 +23,7 @@ const isFormValid = ref(false)
 const formErrors = ref({})
 
 const schema = z.object({
-  name: z.string().min(1, 'Campo obrigatório'),
+  name: z.string().min(10, 'Campo obrigatório'),
   address: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),
@@ -53,10 +54,6 @@ function validateForm() {
   }
 
   return result
-}
-
-function cadastrarUsuario(tipo: string) {
-  console.warn(`Abrindo modal para cadastrar ${tipo}...`)
 }
 
 async function submitForm() {
@@ -97,14 +94,42 @@ function resetForm() {
 
 async function getMembersFromOrganization() {
   const members = await orgService.getMembers()
+
   usuarios.value = members.map((member: any) => ({
     id: member.user.id,
     name: member.user.name || 'Sem Nome',
   }))
 }
 
+async function getInstitutionData() {
+  try {
+    const institutions = await institutionService.getAll()
+    console.log('Dados da instituição:', institutions)
+    if (institutions.length > 0) {
+      const institution = institutions[0]
+      formData.value = {
+        name: institution.name || '',
+        address: institution.address || '',
+        city: institution.city || '',
+        state: institution.state || '',
+        phone: institution.phone || '',
+        whatsapp: institution.whatsapp || '',
+        email: institution.email || '',
+        flag: institution.flag || '',
+        emblem: institution.emblem || '',
+        mayorId: institution.mayorId || null,
+        viceMayorId: institution.viceMayorId || null,
+      }
+    }
+  }
+  catch (error) {
+    console.error('Erro ao buscar dados da instituição:', error)
+  }
+}
+
 onMounted(async () => {
   await getMembersFromOrganization()
+  await getInstitutionData()
 })
 </script>
 
@@ -131,10 +156,10 @@ onMounted(async () => {
 
         <!-- Contatos -->
         <v-col cols="12" sm="6">
-          <v-text-field v-model="formData.phone" label="Telefone" />
+          <v-text-field v-model="formData.phone" v-maskito="phoneMaskOptions" label="Telefone" />
         </v-col>
         <v-col cols="12" sm="6">
-          <v-text-field v-model="formData.whatsapp" label="WhatsApp" />
+          <v-text-field v-model="formData.whatsapp" v-maskito="phoneMaskOptions" label="WhatsApp" />
         </v-col>
         <v-col cols="12">
           <v-text-field v-model="formData.email" label="E-mail" />
@@ -142,9 +167,11 @@ onMounted(async () => {
 
         <!-- Bandeira e Brasão -->
         <v-col cols="6">
+          <span>Bandeira</span>
           <UploadImage v-model="formData.flag" />
         </v-col>
         <v-col cols="6">
+          <span>Emblema</span>
           <UploadImage v-model="formData.emblem" />
         </v-col>
 

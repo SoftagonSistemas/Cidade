@@ -20,7 +20,8 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/admin/administracao/ConfiguracoesSistema': RouteRecordInfo<'/admin/administracao/ConfiguracoesSistema', '/admin/administracao/ConfiguracoesSistema', Record<never, never>, Record<never, never>>,
-    '/admin/administracao/GerenciamentoUsuarios': RouteRecordInfo<'/admin/administracao/GerenciamentoUsuarios', '/admin/administracao/GerenciamentoUsuarios', Record<never, never>, Record<never, never>>,
+    '/admin/administracao/usuarios/': RouteRecordInfo<'/admin/administracao/usuarios/', '/admin/administracao/usuarios', Record<never, never>, Record<never, never>>,
+    '/admin/administracao/usuarios/adicionar': RouteRecordInfo<'/admin/administracao/usuarios/adicionar', '/admin/administracao/usuarios/adicionar', Record<never, never>, Record<never, never>>,
     '/admin/assinaturas/AssinaturaDocumentos': RouteRecordInfo<'/admin/assinaturas/AssinaturaDocumentos', '/admin/assinaturas/AssinaturaDocumentos', Record<never, never>, Record<never, never>>,
     '/admin/assinaturas/GerenciarCertificados': RouteRecordInfo<'/admin/assinaturas/GerenciarCertificados', '/admin/assinaturas/GerenciarCertificados', Record<never, never>, Record<never, never>>,
     '/admin/assinaturas/ValidacaoAssinaturas': RouteRecordInfo<'/admin/assinaturas/ValidacaoAssinaturas', '/admin/assinaturas/ValidacaoAssinaturas', Record<never, never>, Record<never, never>>,
@@ -34,6 +35,8 @@ declare module 'vue-router/auto-routes' {
     '/admin/fluxos/HistoricoFluxos': RouteRecordInfo<'/admin/fluxos/HistoricoFluxos', '/admin/fluxos/HistoricoFluxos', Record<never, never>, Record<never, never>>,
     '/admin/fluxos/MeusFluxos': RouteRecordInfo<'/admin/fluxos/MeusFluxos', '/admin/fluxos/MeusFluxos', Record<never, never>, Record<never, never>>,
     '/admin/instituicao/': RouteRecordInfo<'/admin/instituicao/', '/admin/instituicao', Record<never, never>, Record<never, never>>,
+    '/admin/instituicao/secretarias/': RouteRecordInfo<'/admin/instituicao/secretarias/', '/admin/instituicao/secretarias', Record<never, never>, Record<never, never>>,
+    '/admin/instituicao/secretarias/adicionar': RouteRecordInfo<'/admin/instituicao/secretarias/adicionar', '/admin/instituicao/secretarias/adicionar', Record<never, never>, Record<never, never>>,
     '/admin/notificacoes/CentralNotificacoes': RouteRecordInfo<'/admin/notificacoes/CentralNotificacoes', '/admin/notificacoes/CentralNotificacoes', Record<never, never>, Record<never, never>>,
     '/admin/notificacoes/NotificacoesTempoReal': RouteRecordInfo<'/admin/notificacoes/NotificacoesTempoReal', '/admin/notificacoes/NotificacoesTempoReal', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/Exportacao': RouteRecordInfo<'/admin/relatorios/Exportacao', '/admin/relatorios/Exportacao', Record<never, never>, Record<never, never>>,

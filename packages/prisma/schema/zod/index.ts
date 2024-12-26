@@ -3554,11 +3554,21 @@ export const DepartmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Departme
   _relevance: z.lazy(() => DepartmentOrderByRelevanceInputSchema).optional()
 }).strict();
 
-export const DepartmentWhereUniqueInputSchema: z.ZodType<Prisma.DepartmentWhereUniqueInput> = z.object({
-  id: z.number().int()
-})
+export const DepartmentWhereUniqueInputSchema: z.ZodType<Prisma.DepartmentWhereUniqueInput> = z.union([
+  z.object({
+    id: z.number().int(),
+    name_institutionId_isSecretariat: z.lazy(() => DepartmentNameInstitutionIdIsSecretariatCompoundUniqueInputSchema)
+  }),
+  z.object({
+    id: z.number().int(),
+  }),
+  z.object({
+    name_institutionId_isSecretariat: z.lazy(() => DepartmentNameInstitutionIdIsSecretariatCompoundUniqueInputSchema),
+  }),
+])
 .and(z.object({
   id: z.number().int().optional(),
+  name_institutionId_isSecretariat: z.lazy(() => DepartmentNameInstitutionIdIsSecretariatCompoundUniqueInputSchema).optional(),
   AND: z.union([ z.lazy(() => DepartmentWhereInputSchema),z.lazy(() => DepartmentWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => DepartmentWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => DepartmentWhereInputSchema),z.lazy(() => DepartmentWhereInputSchema).array() ]).optional(),
@@ -9314,6 +9324,12 @@ export const DepartmentOrderByRelevanceInputSchema: z.ZodType<Prisma.DepartmentO
   fields: z.union([ z.lazy(() => DepartmentOrderByRelevanceFieldEnumSchema),z.lazy(() => DepartmentOrderByRelevanceFieldEnumSchema).array() ]),
   sort: z.lazy(() => SortOrderSchema),
   search: z.string()
+}).strict();
+
+export const DepartmentNameInstitutionIdIsSecretariatCompoundUniqueInputSchema: z.ZodType<Prisma.DepartmentNameInstitutionIdIsSecretariatCompoundUniqueInput> = z.object({
+  name: z.string(),
+  institutionId: z.string(),
+  isSecretariat: z.boolean()
 }).strict();
 
 export const DepartmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.DepartmentCountOrderByAggregateInput> = z.object({

@@ -343,7 +343,7 @@ model Institution {
   @@map("institution")
 }
 
-/// The `Department` model represents organizational units within an institution.
+/// The `Department` model represents organizational units within an institution. 
 model Department {
   id                 Int              @id @default(autoincrement())
   name               String
@@ -364,8 +364,11 @@ model Department {
   childDepartments   Department[]     @relation("ParentDepartment")
   head               User?            @relation("Department_Head", fields: [headId], references: [id])
   userDepartments    UserDepartment[]
+  contactInfos       ContactInfo[]
   tickets            Ticket[]
   helpTopics         HelpTopic[]
+
+  @@unique([name, institutionId, isSecretariat])
 
   @@map("department")
 }
@@ -617,4 +620,20 @@ model Address {
   users       User[]
 
   @@map("address")
+}
+model ContactInfo {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type          String      // Tipo de contato (e.g., "phone", "email", "instagram", "opening_hours")
+  value         String      // Valor do contato (e.g., número de telefone, e-mail, URL de Instagram, ou horário no formato "08:00-17:00")
+  description   String?     // Descrição opcional (e.g., "Atendimento Geral", "WhatsApp Oficial")
+  dayOfWeek     Int?        // 0 (Domingo) a 6 (Sábado), para horários de funcionamento
+  departmentId  Int?        // Relacionado a um Departamento
+  institutionId String?     @db.Uuid // Relacionado a uma Instituição
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime?   @updatedAt
+
+  department    Department? @relation(fields: [departmentId], references: [id])
+ 
+
+  @@map("contact_info")
 }

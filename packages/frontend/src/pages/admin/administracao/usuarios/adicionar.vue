@@ -5,17 +5,6 @@ import BaseService from '@/services/BaseService'
 import generateSecurePassword from '@/utils/generateSecurePassword'
 import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
-// Props
-const props = defineProps<{
-  modelValue: boolean
-  onUserCreated: (user: any) => void
-}>()
-
-const emit = defineEmits(['update:modelValue'])
-const dialogOpen = computed({
-  get: () => props.modelValue,
-  set: value => emit('update:modelValue', value),
-})
 
 // Zod Schema para Validação
 const userSchema = z.object({
@@ -23,6 +12,9 @@ const userSchema = z.object({
   email: z.string().email('Email inválido.'),
   phoneNumber: z.string().optional(),
   jobTitle: z.string().optional(),
+  profilePhoto: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  addressId: z.string().optional(),
 })
 
 // Novo Usuário
@@ -33,6 +25,9 @@ const newUser = ref({
   jobTitle: 'Servidor',
   role: 'member',
   apiUserId: '',
+  profilePhoto: '',
+  dateOfBirth: '',
+  addressId: '',
 })
 
 const items = ref<string[]>(['Servidor público', 'Secretário Municipal', 'Vice-Prefeito', 'Prefeito'])
@@ -50,8 +45,17 @@ function onSearchUpdate(query: string) {
 const isFormValid = ref(false)
 
 function resetDialog() {
-  newUser.value = { name: '', email: '', phoneNumber: '', jobTitle: '', apiUserId: '', role: 'member' }
-  dialogOpen.value = false
+  newUser.value = {
+    name: '',
+    email: '',
+    phoneNumber: '',
+    jobTitle: '',
+    apiUserId: '',
+    role: 'member',
+    profilePhoto: '',
+    dateOfBirth: '',
+    addressId: '',
+  }
 }
 
 async function submitUser() {
@@ -76,31 +80,36 @@ async function submitUser() {
     newUser.value.apiUserId = authUserCreated.id
     const createdUser = await userService.create(newUser.value)
     if (createdUser) {
-      props.onUserCreated(createdUser) // Notifica o sucesso
+      toast.success('Usuário criado com sucesso.')
+      this.$router.push('/admin/administracao/usuarios')
       resetDialog()
     }
   }
   catch (error) {
-    toast.error('Erro ao criar usuário. Back falhou.')
+    toast.error('Erro ao criar usuário. Servidor falhou.')
     console.error('Erro ao criar usuário:', error)
   }
 }
 </script>
 
 <template>
-  <v-dialog v-model="dialogOpen" persistent max-width="500">
+  <v-container>
     <v-card>
       <v-card-title>Criar Novo Usuário</v-card-title>
       <v-card-text>
         <v-form v-model="isFormValid">
-          <v-text-field v-model="newUser.name" label="Nome" outlined required />
-          <v-text-field v-model="newUser.email" label="Email" outlined required />
+          <v-text-field v-model="newUser.name" label="Nome completo" outlined required />
+          <span>Foto do Usuário</span>
+          <UploadImage v-model="newUser.profilePhoto" />
+          <v-text-field v-model="newUser.email" label="E-mail" outlined required />
           <v-text-field
             v-model="newUser.phoneNumber"
             v-maskito="phoneMaskOptions"
             label="Telefone"
             outlined
           />
+          <Nascimento v-model="newUser.dateOfBirth" />
+          <v-text-field v-model="newUser.addressId" label="ID do Endereço" outlined />
           <v-autocomplete
             v-model="selectedValue"
             :items="items"
@@ -130,5 +139,5 @@ async function submitUser() {
         </v-btn>
       </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-container>
 </template>

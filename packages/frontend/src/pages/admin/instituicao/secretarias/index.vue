@@ -1,11 +1,9 @@
 <script setup lang="ts">
-// Dados
-import type { User } from '@prisma/client'
-import UserDialog from '@/components/UserDialog.vue'
+import type { Department } from '@prisma/client'
 
 import BaseService from '@/services/BaseService'
 
-const users = ref<User[]>([])
+const departments = ref<Department[]>([])
 const loading = ref(false)
 const search = ref('')
 const itemsPerPage = ref(6)
@@ -13,22 +11,21 @@ const currentPage = ref(1)
 
 const isDialogOpen = ref(false)
 
-// Callback para quando um usuário é criado
-async function handleUserCreated() {
-  await fetchUsers()
+// Callback para quando um departamento é criado
+async function handleDepartmentCreated() {
+  await fetchDepartments()
 }
 
-async function fetchUsers() {
+async function fetchDepartments() {
   loading.value = true
-  const userService = new BaseService('user')
+  const departmentService = new BaseService('department')
   try {
-    const allUsers = await userService.getAll()
-    users.value = allUsers
-    console.log('Usuários:', users.value)
+    const allDepartments = await departmentService.getAll()
+    departments.value = allDepartments
   }
   catch (error) {
-    toast.error('Erro ao buscar usuários. Back falhou.')
-    console.error('Erro ao buscar usuários:', error)
+    toast.error('Erro ao buscar departamentos. Verifique o servidor.')
+    console.error('Erro ao buscar departamentos:', error)
   }
   finally {
     loading.value = false
@@ -36,7 +33,7 @@ async function fetchUsers() {
 }
 
 onMounted(() => {
-  fetchUsers()
+  fetchDepartments()
 })
 </script>
 
@@ -45,16 +42,16 @@ onMounted(() => {
     <v-row>
       <!-- Título e Botão Alinhados -->
       <v-col cols="6">
-        <h1>Listagem de Usuários</h1>
+        <h1>Departamentos e Secretarias</h1>
       </v-col>
       <v-col cols="6" class="d-flex justify-end">
         <v-btn
           color="primary"
           variant="elevated"
           prepend-icon="mdi-plus"
-          @click="isDialogOpen = true"
+          @click="$router.push('/admin/instituicao/secretarias/adicionar')"
         >
-          Novo Usuário
+          Novo Departamento
         </v-btn>
       </v-col>
     </v-row>
@@ -65,7 +62,7 @@ onMounted(() => {
         <v-data-iterator
           v-model:items-per-page="itemsPerPage"
           v-model:page="currentPage"
-          :items="users"
+          :items="departments"
           :loading="loading"
           :search="search"
         >
@@ -73,50 +70,52 @@ onMounted(() => {
           <template #header>
             <v-text-field
               v-model="search"
-              label="Buscar Usuário"
+              label="Buscar Departamento"
               prepend-icon="mdi-magnify"
               dense
               outlined
             />
           </template>
 
-          <!-- Lista de Usuários -->
+          <!-- Lista de Departamentos -->
           <template #default="{ items }">
             <v-row v-if="items.length">
               <v-col
-                v-for="user in items"
-                :key="user.id"
+                v-for="department in items"
+                :key="department.id"
                 cols="12"
                 sm="6"
                 md="4"
               >
                 <v-card>
-                  <v-img
-                    :src="user.profilePhoto || '/default-avatar.png'"
-                    height="120"
-                  />
-                  <v-card-title class="text-h6">
-                    {{ user.name }}
+                  <!-- Nome do Departamento -->
+                  <v-card-title class="text-h6 text-center">
+                    {{ department.name }}
                   </v-card-title>
-                  <v-card-subtitle>
-                    {{ user.jobTitle || "Sem Cargo" }}
+
+                  <!-- Descrição e Tipo -->
+                  <v-card-subtitle class="text-center">
+                    <p>{{ department.description || "Sem descrição" }}</p>
+                    <p><strong>Tipo:</strong> {{ department.isSecretariat ? "Secretaria" : "Departamento" }}</p>
                   </v-card-subtitle>
+
+                  <!-- Instituição -->
                   <v-card-text>
-                    <p>Email: {{ user.email }}</p>
-                    <p>Telefone: {{ user.phoneNumber || "Não informado" }}</p>
+                    <p><strong>Instituição:</strong> {{ department.institution?.name || "Não vinculada" }}</p>
+                    <p><strong>Chefe:</strong> {{ department.head?.name || "Não definido" }}</p>
                   </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
 
-            <!-- Nenhum Usuário -->
+            <!-- Nenhum Departamento -->
             <v-row v-else>
               <v-col cols="12" class="text-center">
                 <v-icon size="48" color="grey">
-                  mdi-account-off
+                  mdi-office-building-off
                 </v-icon>
                 <p class="text-h5">
-                  Ainda não há usuários cadastrados.
+                  Ainda não há departamentos cadastrados.
                 </p>
               </v-col>
             </v-row>
@@ -126,7 +125,7 @@ onMounted(() => {
           <template #footer>
             <v-pagination
               v-model="currentPage"
-              :length="Math.ceil(users.length / itemsPerPage)"
+              :length="Math.ceil(departments.length / itemsPerPage)"
               total-visible="5"
               color="primary"
             />
@@ -134,11 +133,5 @@ onMounted(() => {
         </v-data-iterator>
       </v-col>
     </v-row>
-
-    <!-- Dialog de Novo Usuário -->
-    <UserDialog
-      v-model="isDialogOpen"
-      :on-user-created="handleUserCreated"
-    />
   </v-container>
 </template>

@@ -9,9 +9,12 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AvatarMenu: typeof import('./components/User/AvatarMenu.vue')['default']
+    DepartamentDialog: typeof import('./components/DepartamentDialog.vue')['default']
+    DepartmentDialog: typeof import('./components/DepartmentDialog.vue')['default']
     Editor: typeof import('./components/Documents/Editor.vue')['default']
     FullEditor: typeof import('./components/Documents/FullEditor.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    Nascimento: typeof import('./components/Nascimento.vue')['default']
     NewCertificate: typeof import('./components/Documents/NewCertificate.vue')['default']
     NotificationMenu: typeof import('./components/User/NotificationMenu.vue')['default']
     PDFList: typeof import('./components/Documents/PDFList.vue')['default']

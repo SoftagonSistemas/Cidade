@@ -3,20 +3,18 @@ import { PostgrestClient } from '@supabase/postgrest-js'
 import { AuthService } from './AuthService'
 
 const authStore = useAuthStore()
-
 export default class BaseService<T> {
   private client: PostgrestClient
   private userId = authStore.user?.id
   private orgId = authStore.organization?.id
-  constructor(private readonly table: string) {
-    const authStore = useAuthStore()
-    const token = authStore.getPostgrestToken()
-    const postgrestUrl = this.getPostgresUrl()
+  private token = authStore.getPostgrestToken()
 
+  constructor(private readonly table: string) {
+    const postgrestUrl = this.getPostgresUrl()
     try {
       this.client = new PostgrestClient(postgrestUrl, {
         headers: {
-          ...(token && { Authorization: `Bearer ${token}` }),
+          Authorization: `Bearer ${this.token}`,
         },
       })
     }
@@ -27,7 +25,6 @@ export default class BaseService<T> {
   }
 
   getPostgresUrl() {
-    const authStore = useAuthStore()
     const rawMetadata = authStore.organization?.metadata
     const postgrestUrl = rawMetadata ? JSON.parse(rawMetadata).postgrest : null
     return postgrestUrl
