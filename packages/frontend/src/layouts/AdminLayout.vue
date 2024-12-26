@@ -16,7 +16,7 @@ const adminMenuItem = {
   icon: 'mdi-cog',
   label: 'Administração',
   children: [
-    { title: 'Gerenciamento de Usuários e Secretarias', route: '/admin/administracao/GerenciamentoUsuarios' },
+    { title: 'Gerenciamento de Usuários e Secretarias', route: '/admin/administracao/usuarios/' },
     { title: 'Configurações do Sistema', route: '/admin/administracao/ConfiguracoesSistema' },
   ],
 }

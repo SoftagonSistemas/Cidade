@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import FileService from '@/services/FileService'
+import { useAuthStore } from '@/stores/AuthStore'
 import { z } from 'zod'
 
 const props = defineProps<{ modelValue: string | null }>()
 const emit = defineEmits(['update:modelValue'])
+const authStore = useAuthStore()
 
 const file = ref<File | null>(null)
 const previewUrl = ref<string | null>(null)
@@ -22,10 +24,20 @@ function validateFile() {
 }
 
 async function uploadImage() {
+  const { id: userId, email, name: userName } = authStore.user
+  const { id: orgId, name: orgName } = authStore.organization
+
+  const extractedData = {
+    userId,
+    email,
+    userName,
+    orgId,
+    orgName,
+  }
   const validation = validateFile()
   if (validation.success && file.value) {
     try {
-      const response = await service.uploadFile(file.value)
+      const response = await service.uploadFile(file.value, extractedData)
       uploadResponse.path = response.path
       uploadResponse.versionId = response.versionId
       emit('update:modelValue', response.path)

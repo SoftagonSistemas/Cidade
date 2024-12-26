@@ -11,12 +11,12 @@ export default class FileService {
    * @param additionalData Any additional data to include in the FormData.
    * @returns The server response for the uploaded file.
    */
-  async uploadFile(file: File, additionalData: Record<string, any> = {}) {
+  async uploadFile(file: File, userData: Record<string, any>, additionalData: Record<string, any> = {}) {
     const endpoint = `upload`
 
     const formData = new FormData()
     formData.append('file', file)
-
+    formData.append('userData', JSON.stringify(userData))
     // Add any additional data to the form
     Object.entries(additionalData).forEach(([key, value]) => {
       formData.append(key, value)
@@ -52,6 +52,30 @@ export default class FileService {
     }
 
     return response
+  }
+
+  async urlFile(path: string): Promise<string> {
+    const endpoint = `url?path=${encodeURIComponent(path)}`
+
+    const options: RequestInit = {
+      method: 'GET',
+      credentials: 'include',
+    }
+
+    const response = await fetch(`${this.baseURL}/${endpoint}`, options)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    // Extrai o corpo da resposta como JSON
+    const data = await response.json()
+
+    if (!data.url) {
+      throw new Error('URL not found in the response')
+    }
+
+    return data.url
   }
 
   /**

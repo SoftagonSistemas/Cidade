@@ -3,8 +3,9 @@ import dateMask from '@/utils/dateMask'
 import { z } from 'zod'
 
 // Estado do modelo para a data de nascimento
-const birthDate = ref<string>('')
 const model = defineModel()
+const birthDate = ref<string>(typeof model.value === 'string' ? model.value : '')
+
 // Calcula a data mínima e máxima
 const today = new Date()
 const minDate = new Date(today.getFullYear() - 90, today.getMonth(), today.getDate()) // Máximo de 90 anos atrás
@@ -34,14 +35,12 @@ function formatDate(date: Date): string {
   return `${day}/${month}/${year}`
 }
 
-// Validação ao atingir exatamente 10 caracteres
-watch(birthDate, (newValue) => {
+// Função de validação chamada no @change
+function validateBirthDate(newValue: string) {
   if (newValue.length === 10) { // Valida apenas quando o valor tem 10 caracteres
     try {
       birthDateSchema.parse(newValue)
       model.value = newValue
-      const [day, month, year] = newValue.split('/')
-      model.value = `${month}/${day}/${year}`
     }
     catch (error) {
       if (error instanceof z.ZodError) {
@@ -50,6 +49,10 @@ watch(birthDate, (newValue) => {
       }
     }
   }
+}
+
+watch(model, (newValue) => {
+  birthDate.value = newValue as string
 })
 </script>
 
@@ -62,5 +65,6 @@ watch(birthDate, (newValue) => {
     placeholder="DD/MM/AAAA"
     outlined
     prepend-icon="mdi-cake-variant"
+    @change="validateBirthDate(birthDate)"
   />
 </template>

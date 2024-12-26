@@ -2,25 +2,30 @@
 // Dados
 import type { User } from '@prisma/client'
 import BaseService from '@/services/BaseService'
+import FileService from '@/services/FileService'
 
 const users = ref<User[]>([])
 const loading = ref(false)
 const search = ref('')
 const itemsPerPage = ref(6)
 const currentPage = ref(1)
+const fileService = new FileService()
 
-const isDialogOpen = ref(false)
-
-// Callback para quando um usuário é criado
-async function handleUserCreated() {
-  await fetchUsers()
-}
+const router = useRouter()
 
 async function fetchUsers() {
   loading.value = true
   const userService = new BaseService('user')
   try {
     const allUsers = await userService.getAll()
+    for (let i = 0; i < allUsers.length; i++) {
+      if (allUsers[i].profilePhoto) {
+        allUsers[i].profilePhoto = await fileService.urlFile(allUsers[i].profilePhoto)
+      }
+      else {
+        allUsers[i].profilePhoto = '/avatar.webp'
+      }
+    }
     users.value = allUsers
   }
   catch (error) {
@@ -49,7 +54,7 @@ onMounted(() => {
           color="primary"
           variant="elevated"
           prepend-icon="mdi-plus"
-          @click="$router.push('adicionar')"
+          @click="$router.push('/admin/administracao/usuarios/adicionar')"
         >
           Usuário
         </v-btn>
@@ -87,7 +92,10 @@ onMounted(() => {
                 sm="6"
                 md="4"
               >
-                <v-card>
+                <v-card
+                  class="hover-card"
+                  @click="router.push(`/admin/administracao/usuarios/editar/${user.raw.id}`)"
+                >
                   <!-- Imagem do usuário ou padrão -->
                   <v-img
                     :src="user.raw.profilePhoto || '/avatar.webp'"
@@ -103,7 +111,7 @@ onMounted(() => {
                   <!-- Cargo e email -->
                   <v-card-subtitle class="text-center">
                     <p>{{ user.raw.jobTitle || "Sem Cargo" }}</p>
-                    <p>Email: <strong>{{ user.raw.email || "Não informado" }}</strong></p>
+                    <p> <strong>{{ user.raw.email || "Não informado" }}</strong></p>
                   </v-card-subtitle>
 
                   <!-- Informações adicionais -->
@@ -142,3 +150,13 @@ onMounted(() => {
     </v-row>
   </v-container>
 </template>
+
+<style scoped>
+.hover-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.hover-card:hover {
+  transform: scale(1.05);
+}
+</style>

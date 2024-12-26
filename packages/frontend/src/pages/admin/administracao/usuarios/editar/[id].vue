@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { roles } from '@/data/roles'
-import { AuthService } from '@/services/AuthService'
 import BaseService from '@/services/BaseService'
-import generateSecurePassword from '@/utils/generateSecurePassword'
 import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
 
 const router = useRouter()
+const route = useRoute()
+
 // Zod Schema para Validação
 const userSchema = z.object({
   name: z.string().min(3, 'Nome é obrigatório.').regex(/^[A-ZÀ-ÿ\s]+$/i, 'Nome não pode conter números.'),
@@ -15,11 +15,11 @@ const userSchema = z.object({
   jobTitle: z.string().optional(),
   profilePhoto: z.string().optional(),
   dateOfBirth: z.string().optional(),
-  addressId: z.string().optional(),
 })
 
-// Novo Usuário
-const newUser = ref({
+// Usuário a ser editado
+const user = ref({
+  id: '',
   name: '',
   email: '',
   phoneNumber: '',
@@ -43,21 +43,34 @@ function onSearchUpdate(query: string) {
 
 const isFormValid = ref(false)
 
-function resetDialog() {
-  newUser.value = {
-    name: '',
-    email: '',
-    phoneNumber: '',
-    jobTitle: '',
-    apiUserId: '',
-    role: 'member',
-    profilePhoto: '',
-    dateOfBirth: '',
+function formatDate(dateString: string) {
+  if (!dateString)
+    return ''
+  const date = new Date(dateString)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
+}
+
+const birthDate = ref('')
+
+async function fetchUser() {
+  const userService = new BaseService('user')
+  try {
+    const userId = route.params.id
+    const fetchedUser = await userService.getById(userId)
+    user.value = fetchedUser
+    user.value.dateOfBirth = formatDate(fetchedUser.dateOfBirth)
+  }
+  catch (error) {
+    toast.error('Erro ao buscar usuário.')
+    console.error('Erro ao buscar usuário:', error)
   }
 }
 
 async function submitUser() {
-  const validation = userSchema.safeParse(newUser.value)
+  const validation = userSchema.safeParse(user.value)
   if (!validation.success) {
     validation.error.errors.forEach((err) => {
       toast.error(err.message)
@@ -68,47 +81,43 @@ async function submitUser() {
 
   const userService = new BaseService('user')
   try {
-    const authService = new AuthService()
-    const authUserCreated = await authService.register(newUser.value.email, generateSecurePassword(), newUser.value.name)
-    if (!authUserCreated) {
-      toast.error('Erro ao criar usuário no Auth')
-      throw new Error('Erro ao criar usuário no Auth')
-    }
-
-    newUser.value.apiUserId = authUserCreated.id
-    const createdUser = await userService.create(newUser.value)
-    if (createdUser) {
-      toast.success('Usuário criado com sucesso.')
+    const updatedUser = await userService.update(user.value.id, user.value)
+    if (updatedUser) {
+      toast.success('Usuário atualizado com sucesso.')
       router.push('/admin/administracao/usuarios')
-      resetDialog()
     }
   }
   catch (error) {
-    toast.error('Erro ao criar usuário. Servidor falhou.')
-    console.error('Erro ao criar usuário:', error)
+    toast.error('Erro ao atualizar usuário. Servidor falhou.')
+    console.error('Erro ao atualizar usuário:', error)
   }
 }
+
+// Busca os dados do usuário ao montar o componente
+onMounted(() => {
+  fetchUser()
+})
 </script>
 
 <template>
   <v-container>
     <v-card>
-      <v-card-title>Criar Novo Usuário</v-card-title>
+      <v-card-title>Editar Usuário</v-card-title>
       <v-card-text>
         <v-form v-model="isFormValid">
-          <v-text-field v-model="newUser.name" label="Nome completo" outlined required />
+          <v-text-field v-model="user.name" label="Nome completo" outlined required />
           <span>Foto do Usuário</span>
-          <UploadImage v-model="newUser.profilePhoto" />
-          <v-text-field v-model="newUser.email" label="E-mail" outlined required />
+          <UploadImage v-model="user.profilePhoto" />
+          <v-text-field v-model="user.email" label="E-mail" outlined required />
           <v-text-field
-            v-model="newUser.phoneNumber"
+            v-model="user.phoneNumber"
             v-maskito="phoneMaskOptions"
             label="Telefone"
             outlined
           />
-          <Nascimento v-model="newUser.dateOfBirth" />
+          <Nascimento v-model="user.dateOfBirth" />
           <v-autocomplete
-            v-model="newUser.jobTitle"
+            v-model="user.jobTitle"
             :items="items"
             label="Cargo/Função"
             clearable
@@ -118,7 +127,7 @@ async function submitUser() {
             @update:search="onSearchUpdate"
           />
           <v-select
-            v-model="newUser.role"
+            v-model="user.role"
             :items="roles"
             item-title="label"
             item-value="value"
@@ -128,7 +137,7 @@ async function submitUser() {
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="secondary" @click="resetDialog">
+        <v-btn color="secondary" @click="router.push('/admin/administracao/usuarios')">
           Cancelar
         </v-btn>
         <v-btn :disabled="!isFormValid" color="primary" @click="submitUser">
