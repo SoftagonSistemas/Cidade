@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AvatarMenu: typeof import('./components/User/AvatarMenu.vue')['default']
+    Breadcrumbs: typeof import('./components/Breadcrumbs.vue')['default']
     DepartamentDialog: typeof import('./components/DepartamentDialog.vue')['default']
     DepartmentDialog: typeof import('./components/DepartmentDialog.vue')['default']
     Editor: typeof import('./components/Documents/Editor.vue')['default']

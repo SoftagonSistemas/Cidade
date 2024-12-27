@@ -78,6 +78,29 @@ export default class FileService {
     return data.url
   }
 
+  async getFileVersion(path: string): Promise<string> {
+    const endpoint = `version?path=${encodeURIComponent(path)}`
+
+    const options: RequestInit = {
+      method: 'GET',
+      credentials: 'include',
+    }
+
+    const response = await fetch(`${this.baseURL}/${endpoint}`, options)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const data = await response.json()
+
+    if (!data.versionId) {
+      throw new Error('Version not found in the response')
+    }
+
+    return data.versionId
+  }
+
   /**
    * Deletes a file from the server.
    * @param versionId The version ID of the file to be deleted.
@@ -85,7 +108,12 @@ export default class FileService {
    * @returns The server response for the deleted file.
    */
   async deleteFile(versionId: string, path: string): Promise<void> {
-    const endpoint = `delete?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
+    let version = versionId
+    if (!versionId) {
+      version = await this.getFileVersion(path)
+    }
+
+    const endpoint = `delete?versionId=${encodeURIComponent(version)}&path=${encodeURIComponent(path)}`
 
     const options: RequestInit = {
       method: 'DELETE',

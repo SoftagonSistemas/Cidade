@@ -54,7 +54,7 @@ onMounted(() => {
           color="primary"
           variant="elevated"
           prepend-icon="mdi-plus"
-          @click="$router.push('/admin/administracao/usuarios/adicionar')"
+          @click="$router.push('/admin/usuarios/adicionar')"
         >
           Usuário
         </v-btn>
@@ -94,7 +94,7 @@ onMounted(() => {
               >
                 <v-card
                   class="hover-card"
-                  @click="router.push(`/admin/administracao/usuarios/editar/${user.raw.id}`)"
+                  @click="router.push(`/admin/usuarios/editar/${user.raw.id}`)"
                 >
                   <!-- Imagem do usuário ou padrão -->
                   <v-img

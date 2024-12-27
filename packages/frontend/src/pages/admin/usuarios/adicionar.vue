@@ -17,7 +17,13 @@ const userSchema = z.object({
   dateOfBirth: z.string().optional(),
   addressId: z.string().optional(),
 })
-
+definePage({
+  meta: {
+    breadcrumb: [
+      { title: 'Usuários', to: '/admin/usuarios/' },
+    ],
+  },
+})
 // Novo Usuário
 const newUser = ref({
   name: '',
@@ -79,7 +85,7 @@ async function submitUser() {
     const createdUser = await userService.create(newUser.value)
     if (createdUser) {
       toast.success('Usuário criado com sucesso.')
-      router.push('/admin/administracao/usuarios')
+      router.push('/admin/usuarios')
       resetDialog()
     }
   }
@@ -92,49 +98,43 @@ async function submitUser() {
 
 <template>
   <v-container>
-    <v-card>
-      <v-card-title>Criar Novo Usuário</v-card-title>
-      <v-card-text>
-        <v-form v-model="isFormValid">
-          <v-text-field v-model="newUser.name" label="Nome completo" outlined required />
-          <span>Foto do Usuário</span>
-          <UploadImage v-model="newUser.profilePhoto" />
-          <v-text-field v-model="newUser.email" label="E-mail" outlined required />
-          <v-text-field
-            v-model="newUser.phoneNumber"
-            v-maskito="phoneMaskOptions"
-            label="Telefone"
-            outlined
-          />
-          <Nascimento v-model="newUser.dateOfBirth" />
-          <v-autocomplete
-            v-model="newUser.jobTitle"
-            :items="items"
-            label="Cargo/Função"
-            clearable
-            no-data-text="Digite para adicionar"
-            hint="Siga o organograma"
-            class="mb-4"
-            @update:search="onSearchUpdate"
-          />
-          <v-select
-            v-model="newUser.role"
-            :items="roles"
-            item-title="label"
-            item-value="value"
-            label="Permissão do sistema"
-            outlined
-          />
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="secondary" @click="resetDialog">
-          Cancelar
-        </v-btn>
-        <v-btn :disabled="!isFormValid" color="primary" @click="submitUser">
-          Salvar
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+    <h1>Criar Novo Usuário</h1>
+    <v-form v-model="isFormValid">
+      <v-text-field v-model="newUser.name" label="Nome completo" outlined required />
+      <span>Foto do Usuário</span>
+      <UploadImage v-model="newUser.profilePhoto" />
+      <v-text-field v-model="newUser.email" label="E-mail" outlined required />
+      <v-text-field
+        v-model="newUser.phoneNumber"
+        v-maskito="phoneMaskOptions"
+        label="Telefone"
+        outlined
+      />
+      <Nascimento v-model="newUser.dateOfBirth" />
+      <v-autocomplete
+        v-model="newUser.jobTitle"
+        :items="items"
+        label="Cargo/Função"
+        clearable
+        no-data-text="Digite para adicionar"
+        hint="Siga o organograma"
+        class="mb-4"
+        @update:search="onSearchUpdate"
+      />
+      <v-select
+        v-model="newUser.role"
+        :items="roles"
+        item-title="label"
+        item-value="value"
+        label="Permissão do sistema"
+        outlined
+      />
+    </v-form>
+    <v-btn color="secondary" @click="resetDialog">
+      Cancelar
+    </v-btn>
+    <v-btn :disabled="!isFormValid" color="primary" @click="submitUser">
+      Salvar
+    </v-btn>
   </v-container>
 </template>

@@ -20,9 +20,6 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/admin/administracao/ConfiguracoesSistema': RouteRecordInfo<'/admin/administracao/ConfiguracoesSistema', '/admin/administracao/ConfiguracoesSistema', Record<never, never>, Record<never, never>>,
-    '/admin/administracao/usuarios/': RouteRecordInfo<'/admin/administracao/usuarios/', '/admin/administracao/usuarios', Record<never, never>, Record<never, never>>,
-    '/admin/administracao/usuarios/adicionar': RouteRecordInfo<'/admin/administracao/usuarios/adicionar', '/admin/administracao/usuarios/adicionar', Record<never, never>, Record<never, never>>,
-    '/admin/administracao/usuarios/editar/[id]': RouteRecordInfo<'/admin/administracao/usuarios/editar/[id]', '/admin/administracao/usuarios/editar/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/admin/assinaturas/AssinaturaDocumentos': RouteRecordInfo<'/admin/assinaturas/AssinaturaDocumentos', '/admin/assinaturas/AssinaturaDocumentos', Record<never, never>, Record<never, never>>,
     '/admin/assinaturas/GerenciarCertificados': RouteRecordInfo<'/admin/assinaturas/GerenciarCertificados', '/admin/assinaturas/GerenciarCertificados', Record<never, never>, Record<never, never>>,
     '/admin/assinaturas/ValidacaoAssinaturas': RouteRecordInfo<'/admin/assinaturas/ValidacaoAssinaturas', '/admin/assinaturas/ValidacaoAssinaturas', Record<never, never>, Record<never, never>>,
@@ -42,6 +39,9 @@ declare module 'vue-router/auto-routes' {
     '/admin/notificacoes/NotificacoesTempoReal': RouteRecordInfo<'/admin/notificacoes/NotificacoesTempoReal', '/admin/notificacoes/NotificacoesTempoReal', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/Exportacao': RouteRecordInfo<'/admin/relatorios/Exportacao', '/admin/relatorios/Exportacao', Record<never, never>, Record<never, never>>,
     '/admin/relatorios/RelatoriosGerenciais': RouteRecordInfo<'/admin/relatorios/RelatoriosGerenciais', '/admin/relatorios/RelatoriosGerenciais', Record<never, never>, Record<never, never>>,
+    '/admin/usuarios/': RouteRecordInfo<'/admin/usuarios/', '/admin/usuarios', Record<never, never>, Record<never, never>>,
+    '/admin/usuarios/adicionar': RouteRecordInfo<'/admin/usuarios/adicionar', '/admin/usuarios/adicionar', Record<never, never>, Record<never, never>>,
+    '/admin/usuarios/editar/[id]': RouteRecordInfo<'/admin/usuarios/editar/[id]', '/admin/usuarios/editar/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/auth/': RouteRecordInfo<'/auth/', '/auth', Record<never, never>, Record<never, never>>,
     '/auth/organization': RouteRecordInfo<'/auth/organization', '/auth/organization', Record<never, never>, Record<never, never>>,
   }

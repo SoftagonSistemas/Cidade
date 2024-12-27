@@ -5,8 +5,15 @@ import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
 
 const router = useRouter()
-const route = useRoute()
+const route: any = useRoute()
 
+definePage({
+  meta: {
+    breadcrumb: [
+      { title: 'Usuários', to: '/admin/usuarios/' },
+    ],
+  },
+})
 // Zod Schema para Validação
 const userSchema = z.object({
   name: z.string().min(3, 'Nome é obrigatório.').regex(/^[A-ZÀ-ÿ\s]+$/i, 'Nome não pode conter números.'),
@@ -53,13 +60,11 @@ function formatDate(dateString: string) {
   return `${day}/${month}/${year}`
 }
 
-const birthDate = ref('')
-
 async function fetchUser() {
   const userService = new BaseService('user')
   try {
-    const userId = route.params.id
-    const fetchedUser = await userService.getById(userId)
+    const userId = route.params.id as string
+    const fetchedUser = await userService.getById(userId) as typeof user.value
     user.value = fetchedUser
     user.value.dateOfBirth = formatDate(fetchedUser.dateOfBirth)
   }
@@ -81,10 +86,12 @@ async function submitUser() {
 
   const userService = new BaseService('user')
   try {
+    const [day, month, year] = user.value.dateOfBirth.split('/')
+    user.value.dateOfBirth = new Date(`${year}-${month}-${day}`).toISOString()
     const updatedUser = await userService.update(user.value.id, user.value)
     if (updatedUser) {
       toast.success('Usuário atualizado com sucesso.')
-      router.push('/admin/administracao/usuarios')
+      router.push('/admin/usuarios')
     }
   }
   catch (error) {
@@ -101,49 +108,43 @@ onMounted(() => {
 
 <template>
   <v-container>
-    <v-card>
-      <v-card-title>Editar Usuário</v-card-title>
-      <v-card-text>
-        <v-form v-model="isFormValid">
-          <v-text-field v-model="user.name" label="Nome completo" outlined required />
-          <span>Foto do Usuário</span>
-          <UploadImage v-model="user.profilePhoto" />
-          <v-text-field v-model="user.email" label="E-mail" outlined required />
-          <v-text-field
-            v-model="user.phoneNumber"
-            v-maskito="phoneMaskOptions"
-            label="Telefone"
-            outlined
-          />
-          <Nascimento v-model="user.dateOfBirth" />
-          <v-autocomplete
-            v-model="user.jobTitle"
-            :items="items"
-            label="Cargo/Função"
-            clearable
-            no-data-text="Digite para adicionar"
-            hint="Siga o organograma"
-            class="mb-4"
-            @update:search="onSearchUpdate"
-          />
-          <v-select
-            v-model="user.role"
-            :items="roles"
-            item-title="label"
-            item-value="value"
-            label="Permissão do sistema"
-            outlined
-          />
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="secondary" @click="router.push('/admin/administracao/usuarios')">
-          Cancelar
-        </v-btn>
-        <v-btn :disabled="!isFormValid" color="primary" @click="submitUser">
-          Salvar
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+    <h1>Editar Usuário</h1>
+    <v-form v-model="isFormValid">
+      <v-text-field v-model="user.name" label="Nome completo" outlined required />
+      <span>Foto do Usuário</span>
+      <UploadImage v-model="user.profilePhoto" />
+      <v-text-field v-model="user.email" label="E-mail" outlined required />
+      <v-text-field
+        v-model="user.phoneNumber"
+        v-maskito="phoneMaskOptions"
+        label="Telefone"
+        outlined
+      />
+      <Nascimento v-model="user.dateOfBirth" />
+      <v-autocomplete
+        v-model="user.jobTitle"
+        :items="items"
+        label="Cargo/Função"
+        clearable
+        no-data-text="Digite para adicionar"
+        hint="Siga o organograma"
+        class="mb-4"
+        @update:search="onSearchUpdate"
+      />
+      <v-select
+        v-model="user.role"
+        :items="roles"
+        item-title="label"
+        item-value="value"
+        label="Permissão do sistema"
+        outlined
+      />
+    </v-form>
+    <v-btn color="secondary" @click="router.push('/admin/usuarios')">
+      Cancelar
+    </v-btn>
+    <v-btn :disabled="!isFormValid" color="primary" @click="submitUser">
+      Salvar
+    </v-btn>
   </v-container>
 </template>

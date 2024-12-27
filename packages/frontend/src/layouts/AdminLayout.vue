@@ -2,10 +2,7 @@
 <script setup lang="ts">
 import type { MenuItem } from '../composables/useAdminMenu'
 import { useAdminDrawer } from '@/composables/useAdminDrawer'
-import { useDisplay } from 'vuetify'
 import { useAdminMenu } from '../composables/useAdminMenu'
-
-const { mobile } = useDisplay()
 
 const { drawer, secondaryDrawer, toggleMenu } = useAdminDrawer()
 const { primaryMenuItems, expandedMenu, navigate, toggleExpandMenu, getMenuDescription } = useAdminMenu(secondaryDrawer)
@@ -16,7 +13,7 @@ const adminMenuItem = {
   icon: 'mdi-cog',
   label: 'Administração',
   children: [
-    { title: 'Gerenciamento de Usuários e Secretarias', route: '/admin/administracao/usuarios/' },
+    { title: 'Gerenciamento de Usuários e Secretarias', route: '/admin/usuarios/' },
     { title: 'Configurações do Sistema', route: '/admin/administracao/ConfiguracoesSistema' },
   ],
 }
@@ -127,6 +124,7 @@ const adminMenuItem = {
         class="fill-height d-flex flex-column"
         color="white"
       >
+        <Breadcrumbs />
         <v-container
           fluid
           class="fill-height d-flex flex-column"
@@ -135,12 +133,6 @@ const adminMenuItem = {
         </v-container>
       </v-sheet>
     </v-main>
-
-    <!-- Rodapé Opcional -->
-    <v-footer v-if="!mobile" app>
-      <v-spacer />
-      <span>Softagon Sistemas © 2025</span>
-    </v-footer>
   </v-app>
 </template>
 

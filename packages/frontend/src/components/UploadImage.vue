@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import FileService from '@/services/FileService'
 import { useAuthStore } from '@/stores/AuthStore'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { z } from 'zod'
 
-const props = defineProps<{ modelValue: string | null }>()
 const emit = defineEmits(['update:modelValue'])
+const model = defineModel()
 const authStore = useAuthStore()
 
 const file = ref<File | null>(null)
 const previewUrl = ref<string | null>(null)
 const isValid = ref(false)
+const isLoading = ref(false) // Indica se está carregando
 const service = new FileService()
 const uploadResponse = reactive<{ path: string | null, versionId: string | null }>({ path: null, versionId: null })
 
@@ -37,17 +39,21 @@ async function uploadImage() {
   const validation = validateFile()
   if (validation.success && file.value) {
     try {
+      isLoading.value = true
       const response = await service.uploadFile(file.value, extractedData)
       uploadResponse.path = response.path
       uploadResponse.versionId = response.versionId
       emit('update:modelValue', response.path)
 
       // Obter a URL de visualização do arquivo
-      const viewResponse = await service.viewFile(response.versionId, response.path)
-      previewUrl.value = URL.createObjectURL(await viewResponse.blob())
+      const viewResponse = await service.urlFile(response.path)
+      previewUrl.value = viewResponse
     }
     catch (error) {
       console.error('Erro no upload:', error)
+    }
+    finally {
+      isLoading.value = false
     }
   }
   else {
@@ -56,9 +62,12 @@ async function uploadImage() {
 }
 
 async function removeImage() {
-  if (uploadResponse.path && uploadResponse.versionId) {
+  const path = uploadResponse.path || model.value
+  if (path) {
     try {
-      await service.deleteFile(uploadResponse.versionId, uploadResponse.path)
+      isLoading.value = true
+      const versionId = await service.getFileVersion(path)
+      await service.deleteFile(versionId, path)
       emit('update:modelValue', null)
       previewUrl.value = null
       uploadResponse.path = null
@@ -68,19 +77,55 @@ async function removeImage() {
     catch (error) {
       console.error('Erro ao remover a imagem:', error)
     }
+    finally {
+      isLoading.value = false
+    }
   }
 }
 
-watch(() => props.modelValue, (newValue) => {
-  previewUrl.value = newValue || null
-})
+async function loadExistingImage() {
+  if (model.value) {
+    const maxRetries = 3
+    const retryDelay = 1000 // 1 segundo entre tentativas
+    let attempts = 0
+    let success = false
+
+    isLoading.value = true
+
+    while (attempts < maxRetries && !success) {
+      try {
+        attempts++
+        const viewResponse = await service.urlFile(model.value)
+        previewUrl.value = viewResponse
+        success = true
+      }
+      catch (error) {
+        console.error(`Tentativa ${attempts} falhou ao carregar a imagem existente.`, error)
+        if (attempts >= maxRetries) {
+          console.error('Erro ao carregar a imagem após várias tentativas:', error)
+        }
+        else {
+          await new Promise(resolve => setTimeout(resolve, retryDelay))
+        }
+      }
+    }
+
+    isLoading.value = false
+  }
+}
+
+// Reativa a chamada para carregar a imagem caso `model.value` mude
+watch(() => model.value, loadExistingImage, { immediate: true })
 </script>
 
 <template>
   <v-container>
+    <!-- Barra de progresso enquanto carrega -->
+    <v-progress-linear v-if="isLoading" indeterminate color="primary" class="mb-4" />
+
     <!-- Campo de Upload de Arquivo -->
     <v-file-input
-      v-if="!previewUrl"
+      v-if="!previewUrl && !isLoading"
       v-model="file"
       label="Selecione uma imagem"
       accept="image/*"
@@ -92,10 +137,10 @@ watch(() => props.modelValue, (newValue) => {
 
     <!-- Pré-visualização da Imagem -->
     <v-card
-      v-if="previewUrl"
+      v-if="previewUrl && !isLoading"
       class="mx-auto"
       elevation="12"
-      max-width="400"
+      max-width="300"
       rounded="lg"
       style="position: relative;"
     >
@@ -119,6 +164,7 @@ watch(() => props.modelValue, (newValue) => {
         height="auto"
         alt="Imagem Selecionada"
         rounded="lg"
+        :eager="true"
       />
     </v-card>
   </v-container>
