@@ -66,8 +66,8 @@ async function removeImage() {
   if (path) {
     try {
       isLoading.value = true
-      const versionId = await service.getFileVersion(path)
-      await service.deleteFile(versionId, path)
+      const versionId = await service.getFileVersion(path as string)
+      await service.deleteFile(versionId, path as string)
       emit('update:modelValue', null)
       previewUrl.value = null
       uploadResponse.path = null
@@ -95,7 +95,7 @@ async function loadExistingImage() {
     while (attempts < maxRetries && !success) {
       try {
         attempts++
-        const viewResponse = await service.urlFile(model.value)
+        const viewResponse = await service.urlFile(model.value as string)
         previewUrl.value = viewResponse
         success = true
       }

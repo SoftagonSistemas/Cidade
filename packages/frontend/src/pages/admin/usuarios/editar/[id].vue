@@ -120,7 +120,7 @@ onMounted(() => {
         label="Telefone"
         outlined
       />
-      <Nascimento v-model="user.dateOfBirth" />
+      <BirthDate v-model="user.dateOfBirth" />
       <v-autocomplete
         v-model="user.jobTitle"
         :items="items"
