@@ -6,7 +6,7 @@ import { AuthService } from './AuthService'
 const authStore = useAuthStore()
 
 export default class BaseService<T> {
-  private client: PostgrestClient
+  public client: PostgrestClient
   private userId = authStore.user?.id
   private orgId = authStore.organization?.id
   constructor(private readonly table: string) {
