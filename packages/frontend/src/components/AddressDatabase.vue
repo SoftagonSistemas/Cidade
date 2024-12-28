@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import type { Address } from '@prisma/client'
 import AddressService from '@/services/AddressService'
-import { onMounted, ref, watch } from 'vue'
-import { z } from 'zod'
+
+defineProps<{
+  addressId: string | null
+}>()
+const emit = defineEmits<{
+  (event: 'update:addressId', value: string | null): void
+}>()
 
 // Instância do serviço
 const addressService = new AddressService()
-
 // Estado
 const address = ref<Partial<Address>>({
   street: '',
@@ -94,6 +98,7 @@ function handleAddressSelection(selected: string | Partial<Address>) {
   }
   else {
     // Preenche os campos, exceto número e complemento
+    emit('update:addressId', selected.id || null)
     address.value = {
       street: selected.street,
       city: selected.city,
@@ -121,31 +126,6 @@ function formatStreetName(streetName: string): string {
       return word.charAt(0).toUpperCase() + word.slice(1)
     })
     .join(' ')
-}
-
-// Esquema de validação Zod
-const addressSchema = z.object({
-  street: z.string().min(2, 'Rua é obrigatória'),
-  number: z.string().min(1, 'Número é obrigatório'),
-  complement: z.string().optional(),
-  city: z.string().min(3, 'Cidade é obrigatória'),
-  state: z.string().min(2, 'Estado é obrigatório'),
-  postalCode: z.string().min(8, 'CEP é obrigatório'),
-})
-
-// Função para validar o formulário
-function validateAddressForm() {
-  try {
-    addressSchema.parse(address.value)
-    toast.success('Endereço válido!')
-  }
-  catch (error) {
-    if (error instanceof z.ZodError) {
-      error.errors.forEach((err) => {
-        toast.error(err.message)
-      })
-    }
-  }
 }
 
 // Inicialização

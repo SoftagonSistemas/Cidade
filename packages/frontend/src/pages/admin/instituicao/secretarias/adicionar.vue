@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Department, User } from '@prisma/client'
 import BaseService from '@/services/BaseService'
-import { useAuthStore } from '@/stores/AuthStore'
-import { onMounted, ref } from 'vue'
 import { z } from 'zod'
 
 // Validação do formulário com Zod
@@ -135,7 +133,7 @@ function resetForm() {
   }
 }
 
-// Inicialização
+const addressId = ref<string>('')
 </script>
 
 <template>
@@ -200,7 +198,8 @@ function resetForm() {
 
       <!-- Endereço -->
       <v-row>
-        <AddressDatabase />
+        <AddressDatabase v-model:address-id="addressId" />
+        aqui  {{ addressId }}
       </v-row>
 
       <!-- Contatos -->
