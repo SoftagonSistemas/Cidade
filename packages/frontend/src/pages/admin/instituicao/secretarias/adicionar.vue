@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Department, User } from '@prisma/client'
 import BaseService from '@/services/BaseService'
 import { onMounted, ref } from 'vue'
 import { z } from 'zod'
@@ -29,7 +30,7 @@ const departmentSchema = z.object({
 })
 
 // Dados do formulário
-const form = ref({
+const form = ref<Department>({
   name: '',
   description: '',
   isSecretariat: false,

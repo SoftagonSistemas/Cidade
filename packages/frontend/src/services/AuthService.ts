@@ -168,7 +168,6 @@ export class AuthService {
       const { data } = await this.client.organization.setActive({
         organizationId,
       })
-      console.log('data', data)
       useAuthStore().setOrganization(data)
       const user = await this.getLocalUser()
       if (user?.id)
