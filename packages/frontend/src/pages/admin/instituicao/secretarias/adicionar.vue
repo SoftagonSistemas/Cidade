@@ -1,6 +1,32 @@
 <script setup lang="ts">
 import BaseService from '@/services/BaseService'
 import { onMounted, ref } from 'vue'
+import { z } from 'zod'
+
+// Validação do formulário com Zod
+const departmentSchema = z.object({
+  name: z.string().nonempty('O nome é obrigatório'),
+  description: z.string().optional(),
+  isSecretariat: z.boolean(),
+  parentDepartmentId: z.number().nullable(),
+  headId: z.string().nullable(),
+  address: z.object({
+    street: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    country: z.string().optional(),
+    postalCode: z.string().optional(),
+  }),
+  contacts: z
+    .array(
+      z.object({
+        type: z.string(),
+        value: z.string().nonempty('O contato é obrigatório'),
+      }),
+    )
+    .optional(),
+  institutionId: z.string().uuid('Instituição inválida'),
+})
 
 // Dados do formulário
 const form = ref({
@@ -27,9 +53,21 @@ const form = ref({
 const parentDepartments = ref([])
 const users = ref([])
 
-// Status de carregamento e salvamento
+// Status de carregamento
 const isLoading = ref(false)
 const isSaving = ref(false)
+
+// Função para validar o formulário
+function validateForm() {
+  const result = departmentSchema.safeParse(form.value)
+  if (!result.success) {
+    const errors = result.error.flatten().fieldErrors
+    toast.error('Erro na validação do formulário.')
+    console.error('Erros de validação:', errors)
+    return false
+  }
+  return true
+}
 
 // Função para buscar dados auxiliares
 async function fetchData() {
@@ -51,12 +89,15 @@ async function fetchData() {
 
 // Função para salvar o departamento/secretaria
 async function saveDepartment() {
+  if (!validateForm())
+    return
+
   isSaving.value = true
   const departmentService = new BaseService('department')
   try {
     await departmentService.create({
       ...form.value,
-      institutionId: 'INSTITUTION_ID_FIXO', // Substituir pelo ID fixo ou dinâmico da instituição
+      institutionId: 'INSTITUTION_ID_FIXO', // Substituir pelo ID dinâmico da instituição
     })
     toast.success('Departamento/Secretaria criado com sucesso!')
     resetForm()
@@ -93,10 +134,8 @@ function resetForm() {
   }
 }
 
-// Busca os dados auxiliares ao montar o componente
-onMounted(() => {
-  fetchData()
-})
+// Inicialização
+onMounted(fetchData)
 </script>
 
 <template>
@@ -110,9 +149,9 @@ onMounted(() => {
     </v-row>
 
     <v-form>
-      <!-- Nome e Descrição -->
+      <!-- Nome -->
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12">
           <v-text-field
             v-model="form.name"
             label="Nome"
@@ -121,7 +160,11 @@ onMounted(() => {
             dense
           />
         </v-col>
-        <v-col cols="6">
+      </v-row>
+
+      <!-- Descrição -->
+      <v-row>
+        <v-col cols="12">
           <v-textarea
             v-model="form.description"
             label="Descrição"
@@ -133,7 +176,7 @@ onMounted(() => {
 
       <!-- Tipo e Departamento Pai -->
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12">
           <v-switch
             v-model="form.isSecretariat"
             label="É uma Secretaria?"
@@ -141,7 +184,7 @@ onMounted(() => {
             dense
           />
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12">
           <v-select
             v-model="form.parentDepartmentId"
             label="Departamento Pai"
@@ -165,12 +208,20 @@ onMounted(() => {
         <v-col cols="6">
           <v-text-field
             v-model="form.address.street"
-            label="Rua"
+            label="Rua / Travesa similar"
             outlined
             dense
           />
         </v-col>
-        <v-col cols="3">
+        <v-col cols="6">
+          <v-text-field
+            v-model="form.address.number"
+            label="Número / Complemento"
+            outlined
+            dense
+          />
+        </v-col>
+        <v-col cols="6">
           <v-text-field
             v-model="form.address.city"
             label="Cidade"
@@ -178,7 +229,8 @@ onMounted(() => {
             dense
           />
         </v-col>
-        <v-col cols="3">
+
+        <v-col cols="6">
           <v-text-field
             v-model="form.address.state"
             label="Estado"
@@ -186,15 +238,8 @@ onMounted(() => {
             dense
           />
         </v-col>
-        <v-col cols="6">
-          <v-text-field
-            v-model="form.address.country"
-            label="País"
-            outlined
-            dense
-          />
-        </v-col>
-        <v-col cols="6">
+
+        <v-col cols="12">
           <v-text-field
             v-model="form.address.postalCode"
             label="CEP"
@@ -207,17 +252,27 @@ onMounted(() => {
       <!-- Contatos -->
       <v-row>
         <v-col cols="12">
-          <h3 class="text-h5">
-            Contatos
-          </h3>
+          <v-btn color="primary" @click="form.contacts.push({ type: '', value: '' })">
+            Adicionar Contato
+          </v-btn>
         </v-col>
-        <v-col v-for="(contact, index) in form.contacts" :key="index" cols="4">
-          <v-text-field
-            v-model="contact.value"
-            :label="`Contato (${contact.type})`"
+        <v-col v-for="(contact, index) in form.contacts" :key="index" cols="12">
+          <v-select
+            v-model="contact.type"
+            :items="['phone', 'email', 'instagram']"
+            label="Tipo de Contato"
             outlined
             dense
           />
+          <v-text-field
+            v-model="contact.value"
+            label="Valor"
+            outlined
+            dense
+          />
+          <v-btn icon color="red" @click="form.contacts.splice(index, 1)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
         </v-col>
       </v-row>
 

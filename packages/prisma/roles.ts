@@ -23,7 +23,14 @@ async function setupRoles() {
     await prisma.$executeRawUnsafe(createRoleQuery);
     console.log("Role 'owner' created (if it didn't already exist).");
 
-    // Step 2: Grant SELECT, INSERT, and UPDATE permissions to all tables that don't start with '_'
+    // Step 2: Grant USAGE on schema public
+    const grantSchemaUsageQuery = `
+      GRANT USAGE ON SCHEMA public TO owner;
+    `;
+    await prisma.$executeRawUnsafe(grantSchemaUsageQuery);
+    console.log("Granted USAGE on schema public to role 'owner'.");
+
+    // Step 3: Grant SELECT, INSERT, and UPDATE permissions to all tables that don't start with '_'
     const grantPermissionsQuery = `
       DO $$
       DECLARE

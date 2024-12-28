@@ -168,6 +168,7 @@ export class AuthService {
       const { data } = await this.client.organization.setActive({
         organizationId,
       })
+      console.log('data', data)
       useAuthStore().setOrganization(data)
       const user = await this.getLocalUser()
       if (user?.id)
@@ -205,29 +206,24 @@ export class AuthService {
   }
 
   async getLocalUser(): Promise<UserLocal> {
-    try {
-      const token = useAuthStore().getPostgrestToken()
-      if (!token) {
-        throw new Error('No PostgREST token found')
-      }
-      const email = useAuthStore().user?.email
-      const response = await fetch(`${getPostgrestURL()}/user?email=eq.${email}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error(`Token request failed: ${response.statusText}`)
-      }
-
-      const data = await response.json()
-      return data[0] as UserLocal
+    const token = useAuthStore().getPostgrestToken()
+    if (!token) {
+      throw new Error('No PostgREST token found')
     }
-    catch (error) {
-      throw new Error(`Token request failed: ${(error as Error).message}`)
+    const email = useAuthStore().user?.email
+    const response = await fetch(`${getPostgrestURL()}/user?email=eq.${email}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      console.error(`Token request failed: ${response.statusText}`)
     }
+
+    const data = await response.json()
+    return data[0] as UserLocal
   }
 
   async addMemberToOrg(userId: string, organizationId: string, role: string) {

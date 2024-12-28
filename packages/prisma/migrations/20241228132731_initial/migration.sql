@@ -1,283 +1,21 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Address` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Attachment` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `AuditLog` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `CustomField` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Department` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `DigitalCertificate` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Document` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `DocumentUser` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `DocumentVersion` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `DocumentVersionCreator` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `FileMetadata` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `HelpTopic` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Institution` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Notification` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `SLAPlan` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `SharedDocument` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Task` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TaskUser` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Ticket` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TicketAttachment` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TicketCollaborator` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TicketCustomField` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TicketPriority` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TicketStatus` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TicketThread` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `TicketUser` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `UserDepartment` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `UserOnDocuments` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Workflow` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "Attachment" DROP CONSTRAINT "Attachment_documentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "AuditLog" DROP CONSTRAINT "AuditLog_performedById_fkey";
-
--- DropForeignKey
-ALTER TABLE "AuditLog" DROP CONSTRAINT "AuditLog_taskId_fkey";
-
--- DropForeignKey
-ALTER TABLE "AuditLog" DROP CONSTRAINT "AuditLog_workflowId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Department" DROP CONSTRAINT "Department_headId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Department" DROP CONSTRAINT "Department_institutionId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Department" DROP CONSTRAINT "Department_parentDepartmentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "DigitalCertificate" DROP CONSTRAINT "DigitalCertificate_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "DocumentUser" DROP CONSTRAINT "DocumentUser_documentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "DocumentUser" DROP CONSTRAINT "DocumentUser_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "DocumentVersion" DROP CONSTRAINT "DocumentVersion_documentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "DocumentVersionCreator" DROP CONSTRAINT "DocumentVersionCreator_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "DocumentVersionCreator" DROP CONSTRAINT "DocumentVersionCreator_versionId_fkey";
-
--- DropForeignKey
-ALTER TABLE "FileMetadata" DROP CONSTRAINT "FileMetadata_documentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "HelpTopic" DROP CONSTRAINT "HelpTopic_departmentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Institution" DROP CONSTRAINT "Institution_mayorId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Institution" DROP CONSTRAINT "Institution_viceMayorId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Notification" DROP CONSTRAINT "Notification_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "SharedDocument" DROP CONSTRAINT "SharedDocument_documentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "SharedDocument" DROP CONSTRAINT "SharedDocument_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Task" DROP CONSTRAINT "Task_assignedToId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Task" DROP CONSTRAINT "Task_documentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Task" DROP CONSTRAINT "Task_workflowId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TaskUser" DROP CONSTRAINT "TaskUser_taskId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TaskUser" DROP CONSTRAINT "TaskUser_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_assignedToId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_createdById_fkey";
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_departmentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_helpTopicId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_priorityId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_slaPlanId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_statusId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketAttachment" DROP CONSTRAINT "TicketAttachment_ticketId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketAttachment" DROP CONSTRAINT "TicketAttachment_ticketThreadId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketCollaborator" DROP CONSTRAINT "TicketCollaborator_ticketId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketCollaborator" DROP CONSTRAINT "TicketCollaborator_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketCustomField" DROP CONSTRAINT "TicketCustomField_fieldId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketCustomField" DROP CONSTRAINT "TicketCustomField_ticketId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketThread" DROP CONSTRAINT "TicketThread_ticketId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketThread" DROP CONSTRAINT "TicketThread_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketUser" DROP CONSTRAINT "TicketUser_ticketId_fkey";
-
--- DropForeignKey
-ALTER TABLE "TicketUser" DROP CONSTRAINT "TicketUser_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "User" DROP CONSTRAINT "User_addressId_fkey";
-
--- DropForeignKey
-ALTER TABLE "UserDepartment" DROP CONSTRAINT "UserDepartment_departmentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "UserDepartment" DROP CONSTRAINT "UserDepartment_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "UserOnDocuments" DROP CONSTRAINT "UserOnDocuments_documentId_fkey";
-
--- DropForeignKey
-ALTER TABLE "UserOnDocuments" DROP CONSTRAINT "UserOnDocuments_userId_fkey";
-
--- DropTable
-DROP TABLE "Address";
-
--- DropTable
-DROP TABLE "Attachment";
-
--- DropTable
-DROP TABLE "AuditLog";
-
--- DropTable
-DROP TABLE "CustomField";
-
--- DropTable
-DROP TABLE "Department";
-
--- DropTable
-DROP TABLE "DigitalCertificate";
-
--- DropTable
-DROP TABLE "Document";
-
--- DropTable
-DROP TABLE "DocumentUser";
-
--- DropTable
-DROP TABLE "DocumentVersion";
-
--- DropTable
-DROP TABLE "DocumentVersionCreator";
-
--- DropTable
-DROP TABLE "FileMetadata";
-
--- DropTable
-DROP TABLE "HelpTopic";
-
--- DropTable
-DROP TABLE "Institution";
-
--- DropTable
-DROP TABLE "Notification";
-
--- DropTable
-DROP TABLE "SLAPlan";
-
--- DropTable
-DROP TABLE "SharedDocument";
-
--- DropTable
-DROP TABLE "Task";
-
--- DropTable
-DROP TABLE "TaskUser";
-
--- DropTable
-DROP TABLE "Ticket";
-
--- DropTable
-DROP TABLE "TicketAttachment";
-
--- DropTable
-DROP TABLE "TicketCollaborator";
-
--- DropTable
-DROP TABLE "TicketCustomField";
-
--- DropTable
-DROP TABLE "TicketPriority";
-
--- DropTable
-DROP TABLE "TicketStatus";
-
--- DropTable
-DROP TABLE "TicketThread";
-
--- DropTable
-DROP TABLE "TicketUser";
-
--- DropTable
-DROP TABLE "User";
-
--- DropTable
-DROP TABLE "UserDepartment";
-
--- DropTable
-DROP TABLE "UserOnDocuments";
-
--- DropTable
-DROP TABLE "Workflow";
-
 -- CreateTable
 CREATE TABLE "user" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "apiUserId" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "phoneNumber" TEXT,
     "jobTitle" TEXT,
     "profilePhoto" TEXT,
-    "role" TEXT NOT NULL DEFAULT 'user',
+    "role" TEXT NOT NULL DEFAULT 'member',
+    "apiUserId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
     "dateOfBirth" TIMESTAMP(3),
     "addressId" UUID,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -295,6 +33,11 @@ CREATE TABLE "document" (
     "signedAt" TIMESTAMP(3),
     "signature" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "document_pkey" PRIMARY KEY ("id")
 );
@@ -306,6 +49,11 @@ CREATE TABLE "user_on_documents" (
     "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "role" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "user_on_documents_pkey" PRIMARY KEY ("userId","documentId")
 );
@@ -316,6 +64,11 @@ CREATE TABLE "document_user" (
     "userId" UUID NOT NULL,
     "documentId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "document_user_pkey" PRIMARY KEY ("id")
 );
@@ -329,6 +82,11 @@ CREATE TABLE "document_version" (
     "changesDescription" TEXT,
     "createdById" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "document_version_pkey" PRIMARY KEY ("id")
 );
@@ -339,6 +97,11 @@ CREATE TABLE "document_version_creator" (
     "userId" UUID NOT NULL,
     "versionId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "document_version_creator_pkey" PRIMARY KEY ("id")
 );
@@ -351,6 +114,11 @@ CREATE TABLE "shared_document" (
     "sharedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "permission" TEXT NOT NULL DEFAULT 'read',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "shared_document_pkey" PRIMARY KEY ("id")
 );
@@ -363,7 +131,11 @@ CREATE TABLE "workflow" (
     "type" TEXT NOT NULL DEFAULT 'general',
     "status" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "workflow_pkey" PRIMARY KEY ("id")
 );
@@ -379,7 +151,11 @@ CREATE TABLE "task" (
     "status" TEXT NOT NULL,
     "dueDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "task_pkey" PRIMARY KEY ("id")
 );
@@ -393,6 +169,12 @@ CREATE TABLE "audit_log" (
     "performedById" UUID NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "description" TEXT,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "audit_log_pkey" PRIMARY KEY ("id")
 );
@@ -404,6 +186,11 @@ CREATE TABLE "notification" (
     "message" TEXT NOT NULL,
     "read" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "notification_pkey" PRIMARY KEY ("id")
 );
@@ -416,6 +203,11 @@ CREATE TABLE "attachment" (
     "fileName" TEXT NOT NULL,
     "mimeType" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "attachment_pkey" PRIMARY KEY ("id")
 );
@@ -429,6 +221,11 @@ CREATE TABLE "digital_certificate" (
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiration" TIMESTAMP(3) NOT NULL,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "digital_certificate_pkey" PRIMARY KEY ("id")
 );
@@ -441,6 +238,11 @@ CREATE TABLE "file_metadata" (
     "mimeType" TEXT NOT NULL,
     "checksum" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "file_metadata_pkey" PRIMARY KEY ("id")
 );
@@ -450,14 +252,21 @@ CREATE TABLE "institution" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "address" TEXT,
+    "city" TEXT,
+    "state" TEXT,
     "phone" TEXT,
+    "whatsapp" TEXT,
     "email" TEXT,
     "flag" TEXT,
     "emblem" TEXT,
     "mayorId" UUID,
     "viceMayorId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "institution_pkey" PRIMARY KEY ("id")
 );
@@ -472,7 +281,11 @@ CREATE TABLE "department" (
     "parentDepartmentId" INTEGER,
     "headId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "department_pkey" PRIMARY KEY ("id")
 );
@@ -484,6 +297,11 @@ CREATE TABLE "user_department" (
     "departmentId" INTEGER NOT NULL,
     "role" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "user_department_pkey" PRIMARY KEY ("id")
 );
@@ -502,9 +320,12 @@ CREATE TABLE "ticket" (
     "slaPlanId" INTEGER,
     "dueDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "closedAt" TIMESTAMP(3),
     "lastResponseAt" TIMESTAMP(3),
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_pkey" PRIMARY KEY ("id")
 );
@@ -514,6 +335,11 @@ CREATE TABLE "ticket_status" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_status_pkey" PRIMARY KEY ("id")
 );
@@ -523,6 +349,11 @@ CREATE TABLE "ticket_priority" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_priority_pkey" PRIMARY KEY ("id")
 );
@@ -534,6 +365,11 @@ CREATE TABLE "help_topic" (
     "description" TEXT,
     "departmentId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "help_topic_pkey" PRIMARY KEY ("id")
 );
@@ -544,6 +380,11 @@ CREATE TABLE "sla_plan" (
     "name" TEXT NOT NULL,
     "gracePeriod" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "sla_plan_pkey" PRIMARY KEY ("id")
 );
@@ -555,6 +396,11 @@ CREATE TABLE "ticket_thread" (
     "userId" UUID NOT NULL,
     "message" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_thread_pkey" PRIMARY KEY ("id")
 );
@@ -568,6 +414,11 @@ CREATE TABLE "ticket_attachment" (
     "fileName" TEXT NOT NULL,
     "mimeType" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_attachment_pkey" PRIMARY KEY ("id")
 );
@@ -577,6 +428,12 @@ CREATE TABLE "ticket_collaborator" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "ticketId" UUID NOT NULL,
     "userId" UUID NOT NULL,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_collaborator_pkey" PRIMARY KEY ("id")
 );
@@ -587,6 +444,11 @@ CREATE TABLE "custom_field" (
     "name" TEXT NOT NULL,
     "fieldType" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "custom_field_pkey" PRIMARY KEY ("id")
 );
@@ -597,6 +459,12 @@ CREATE TABLE "ticket_custom_field" (
     "ticketId" UUID NOT NULL,
     "fieldId" INTEGER NOT NULL,
     "value" TEXT NOT NULL,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_custom_field_pkey" PRIMARY KEY ("id")
 );
@@ -606,6 +474,12 @@ CREATE TABLE "task_user" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "taskId" UUID NOT NULL,
     "userId" UUID NOT NULL,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "task_user_pkey" PRIMARY KEY ("id")
 );
@@ -615,6 +489,12 @@ CREATE TABLE "ticket_user" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "ticketId" UUID NOT NULL,
     "userId" UUID NOT NULL,
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "ticket_user_pkey" PRIMARY KEY ("id")
 );
@@ -623,24 +503,48 @@ CREATE TABLE "ticket_user" (
 CREATE TABLE "address" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "street" TEXT NOT NULL,
+    "number" TEXT NOT NULL,
+    "complement" TEXT,
     "city" TEXT NOT NULL,
     "state" TEXT NOT NULL,
     "country" TEXT NOT NULL,
     "postalCode" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "address_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "user_apiUserId_key" ON "user"("apiUserId");
+-- CreateTable
+CREATE TABLE "contact_info" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "type" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "description" TEXT,
+    "dayOfWeek" INTEGER,
+    "departmentId" INTEGER,
+    "institutionId" UUID,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "contact_info_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "user_apiUserId_key" ON "user"("apiUserId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "file_metadata_documentId_key" ON "file_metadata"("documentId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "department_name_institutionId_isSecretariat_key" ON "department"("name", "institutionId", "isSecretariat");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ticket_thread_ticketId_key" ON "ticket_thread"("ticketId");
@@ -785,3 +689,6 @@ ALTER TABLE "ticket_user" ADD CONSTRAINT "ticket_user_ticketId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "ticket_user" ADD CONSTRAINT "ticket_user_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "contact_info" ADD CONSTRAINT "contact_info_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "department"("id") ON DELETE SET NULL ON UPDATE CASCADE;

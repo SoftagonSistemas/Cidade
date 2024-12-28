@@ -327,8 +327,8 @@ model Institution {
   email       String?
   flag        String? // Path to the flag image
   emblem      String? // Path to the emblem image
-  mayorId     String?      @db.Uuid
-  viceMayorId String?      @db.Uuid
+  mayorId     String?      @db.Uuid // ID of the Mayor (User)
+  viceMayorId String?      @db.Uuid // ID of the Vice-Mayor (User)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?    @updatedAt
   createdBy   String?
@@ -336,12 +336,13 @@ model Institution {
   tenantId    String? // OrgID
   deletedAt   DateTime?
   // Relations
-  mayor       User?        @relation("Institution_Mayor", fields: [mayorId], references: [id])
-  viceMayor   User?        @relation("Institution_ViceMayor", fields: [viceMayorId], references: [id])
-  departments Department[]
+  mayor       User?        @relation("Institution_Mayor", fields: [mayorId], references: [id]) // Relation to User as Mayor
+  viceMayor   User?        @relation("Institution_ViceMayor", fields: [viceMayorId], references: [id]) // Relation to User as Vice-Mayor
+  departments Department[] // List of Departments in the Institution
 
   @@map("institution")
 }
+
 
 /// The `Department` model represents organizational units within an institution. 
 model Department {
@@ -606,6 +607,8 @@ model TicketUser {
 model Address {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   street      String
+  number      String
+  complement  String?
   city        String
   state       String
   country     String
@@ -617,10 +620,11 @@ model Address {
   tenantId    String?
   deletedAt   DateTime?
   // Relations
-  users       User[]
+  users       User[] // Relacionamento com usuários
 
   @@map("address")
 }
+
 model ContactInfo {
   id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type          String      // Tipo de contato (e.g., "phone", "email", "instagram", "opening_hours")
