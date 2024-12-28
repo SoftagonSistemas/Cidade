@@ -64,7 +64,7 @@ export default class BaseService<T> {
   async create(record: T): Promise<T | null> {
     const recordWithAudit = {
       ...record,
-      updatedBy: this.userId,
+      createdBy: this.userId,
       tenantId: this.orgId,
     } as unknown as T
 
@@ -86,7 +86,8 @@ export default class BaseService<T> {
   async update(id: string, updates: Partial<T>): Promise<T | null> {
     const updatesWithAudit = {
       ...updates,
-      createdBy: this.userId,
+      updatedBy: this.userId,
+      updatedAt: new Date().toISOString(),
     } as unknown as Partial<T>
 
     const { data, error } = await this.client
