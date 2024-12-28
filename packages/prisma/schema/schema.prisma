@@ -353,17 +353,19 @@ model Department {
   institutionId      String           @db.Uuid
   parentDepartmentId Int?
   headId             String?          @db.Uuid // The head of the department (e.g., Secretary, Director)
+  addressId          String?          @db.Uuid // ID do endereço relacionado
   createdAt          DateTime         @default(now())
-  updatedAt          DateTime? @updatedAt
+  updatedAt          DateTime?        @updatedAt
   createdBy          String?
   updatedBy          String?
   tenantId           String?
   deletedAt          DateTime?
-  // Relations
+  // Relações
   institution        Institution      @relation(fields: [institutionId], references: [id])
   parentDepartment   Department?      @relation("ParentDepartment", fields: [parentDepartmentId], references: [id])
   childDepartments   Department[]     @relation("ParentDepartment")
   head               User?            @relation("Department_Head", fields: [headId], references: [id])
+  address            Address?         @relation(fields: [addressId], references: [id]) // Relação com Address
   userDepartments    UserDepartment[]
   contactInfos       ContactInfo[]
   tickets            Ticket[]
@@ -373,6 +375,7 @@ model Department {
 
   @@map("department")
 }
+
 
 /// The `UserDepartment` model links users to departments with specific roles.
 model UserDepartment {
@@ -603,27 +606,27 @@ model TicketUser {
 
   @@map("ticket_user")
 }
-
 model Address {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   street      String
   number      String
   complement  String?
   city        String
   state       String
-  country     String
   postalCode  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime? @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
   createdBy   String?
   updatedBy   String?
   tenantId    String?
   deletedAt   DateTime?
-  // Relations
-  users       User[] // Relacionamento com usuários
+  // Relações
+  users       User[]       // Relacionamento com usuários
+  departments Department[] // Relacionamento com departamentos
 
   @@map("address")
 }
+
 
 model ContactInfo {
   id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid

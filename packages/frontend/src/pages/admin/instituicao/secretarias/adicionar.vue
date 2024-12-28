@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Department, User } from '@prisma/client'
 import BaseService from '@/services/BaseService'
+import { useAuthStore } from '@/stores/AuthStore'
 import { onMounted, ref } from 'vue'
 import { z } from 'zod'
 
@@ -36,13 +37,13 @@ const form = ref<Department>({
   isSecretariat: false,
   parentDepartmentId: null,
   headId: null,
-  address: {
-    street: '',
-    city: '',
-    state: '',
-    country: '',
-    postalCode: '',
-  },
+  institutionId: '', // Adicionado para refletir o modelo
+  createdBy: '',
+  updatedBy: '',
+  tenantId: '',
+  deletedAt: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
   contacts: [
     { type: 'phone', value: '' },
     { type: 'email', value: '' },
@@ -69,7 +70,6 @@ function validateForm() {
   }
   return true
 }
-
 // Função para buscar dados auxiliares
 async function fetchData() {
   isLoading.value = true
@@ -120,13 +120,13 @@ function resetForm() {
     isSecretariat: false,
     parentDepartmentId: null,
     headId: null,
-    address: {
-      street: '',
-      city: '',
-      state: '',
-      country: '',
-      postalCode: '',
-    },
+    institutionId: '', // Adicionado para refletir o modelo
+    createdBy: '',
+    updatedBy: '',
+    tenantId: '',
+    deletedAt: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
     contacts: [
       { type: 'phone', value: '' },
       { type: 'email', value: '' },
@@ -136,7 +136,6 @@ function resetForm() {
 }
 
 // Inicialização
-onMounted(fetchData)
 </script>
 
 <template>
@@ -201,53 +200,7 @@ onMounted(fetchData)
 
       <!-- Endereço -->
       <v-row>
-        <v-col cols="12">
-          <h3 class="text-h5">
-            Endereço
-          </h3>
-        </v-col>
-        <v-col cols="6">
-          <v-text-field
-            v-model="form.address.street"
-            label="Rua / Travesa similar"
-            outlined
-            dense
-          />
-        </v-col>
-        <v-col cols="6">
-          <v-text-field
-            v-model="form.address.number"
-            label="Número / Complemento"
-            outlined
-            dense
-          />
-        </v-col>
-        <v-col cols="6">
-          <v-text-field
-            v-model="form.address.city"
-            label="Cidade"
-            outlined
-            dense
-          />
-        </v-col>
-
-        <v-col cols="6">
-          <v-text-field
-            v-model="form.address.state"
-            label="Estado"
-            outlined
-            dense
-          />
-        </v-col>
-
-        <v-col cols="12">
-          <v-text-field
-            v-model="form.address.postalCode"
-            label="CEP"
-            outlined
-            dense
-          />
-        </v-col>
+        <AddressDatabase />
       </v-row>
 
       <!-- Contatos -->
@@ -284,6 +237,22 @@ onMounted(fetchData)
             v-model="form.headId"
             label="Chefe do Departamento"
             :items="users"
+            item-text="name"
+            item-value="id"
+            outlined
+            dense
+            clearable
+          />
+        </v-col>
+      </v-row>
+
+      <!-- Instituição -->
+      <v-row>
+        <v-col cols="12">
+          <v-select
+            v-model="form.institutionId"
+            label="Instituição"
+            :items="institutions"
             item-text="name"
             item-value="id"
             outlined

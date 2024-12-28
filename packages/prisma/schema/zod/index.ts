@@ -42,7 +42,7 @@ export const FileMetadataScalarFieldEnumSchema = z.enum(['id','documentId','file
 
 export const InstitutionScalarFieldEnumSchema = z.enum(['id','name','address','city','state','phone','whatsapp','email','flag','emblem','mayorId','viceMayorId','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
-export const DepartmentScalarFieldEnumSchema = z.enum(['id','name','description','isSecretariat','institutionId','parentDepartmentId','headId','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
+export const DepartmentScalarFieldEnumSchema = z.enum(['id','name','description','isSecretariat','institutionId','parentDepartmentId','headId','addressId','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
 export const UserDepartmentScalarFieldEnumSchema = z.enum(['id','userId','departmentId','role','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
@@ -70,7 +70,7 @@ export const TaskUserScalarFieldEnumSchema = z.enum(['id','taskId','userId','cre
 
 export const TicketUserScalarFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId','deletedAt','createdAt','updatedAt']);
 
-export const AddressScalarFieldEnumSchema = z.enum(['id','street','number','complement','city','state','country','postalCode','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
+export const AddressScalarFieldEnumSchema = z.enum(['id','street','number','complement','city','state','postalCode','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
 export const ContactInfoScalarFieldEnumSchema = z.enum(['id','type','value','description','dayOfWeek','departmentId','institutionId','createdAt','updatedAt']);
 
@@ -110,7 +110,7 @@ export const FileMetadataOrderByRelevanceFieldEnumSchema = z.enum(['id','documen
 
 export const InstitutionOrderByRelevanceFieldEnumSchema = z.enum(['id','name','address','city','state','phone','whatsapp','email','flag','emblem','mayorId','viceMayorId','createdBy','updatedBy','tenantId']);
 
-export const DepartmentOrderByRelevanceFieldEnumSchema = z.enum(['name','description','institutionId','headId','createdBy','updatedBy','tenantId']);
+export const DepartmentOrderByRelevanceFieldEnumSchema = z.enum(['name','description','institutionId','headId','addressId','createdBy','updatedBy','tenantId']);
 
 export const UserDepartmentOrderByRelevanceFieldEnumSchema = z.enum(['id','userId','role','createdBy','updatedBy','tenantId']);
 
@@ -138,7 +138,7 @@ export const TaskUserOrderByRelevanceFieldEnumSchema = z.enum(['id','taskId','us
 
 export const TicketUserOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId']);
 
-export const AddressOrderByRelevanceFieldEnumSchema = z.enum(['id','street','number','complement','city','state','country','postalCode','createdBy','updatedBy','tenantId']);
+export const AddressOrderByRelevanceFieldEnumSchema = z.enum(['id','street','number','complement','city','state','postalCode','createdBy','updatedBy','tenantId']);
 
 export const ContactInfoOrderByRelevanceFieldEnumSchema = z.enum(['id','type','value','description','institutionId']);
 /////////////////////////////////////////
@@ -512,6 +512,7 @@ export const DepartmentSchema = z.object({
   institutionId: z.string(),
   parentDepartmentId: z.number().int().nullable(),
   headId: z.string().nullable(),
+  addressId: z.string().nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date().nullable(),
   createdBy: z.string().nullable(),
@@ -784,7 +785,6 @@ export const AddressSchema = z.object({
   complement: z.string().nullable(),
   city: z.string(),
   state: z.string(),
-  country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date().nullable(),
@@ -1409,6 +1409,7 @@ export const DepartmentIncludeSchema: z.ZodType<Prisma.DepartmentInclude> = z.ob
   parentDepartment: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
   childDepartments: z.union([z.boolean(),z.lazy(() => DepartmentFindManyArgsSchema)]).optional(),
   head: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  address: z.union([z.boolean(),z.lazy(() => AddressArgsSchema)]).optional(),
   userDepartments: z.union([z.boolean(),z.lazy(() => UserDepartmentFindManyArgsSchema)]).optional(),
   contactInfos: z.union([z.boolean(),z.lazy(() => ContactInfoFindManyArgsSchema)]).optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
@@ -1441,6 +1442,7 @@ export const DepartmentSelectSchema: z.ZodType<Prisma.DepartmentSelect> = z.obje
   institutionId: z.boolean().optional(),
   parentDepartmentId: z.boolean().optional(),
   headId: z.boolean().optional(),
+  addressId: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   createdBy: z.boolean().optional(),
@@ -1451,6 +1453,7 @@ export const DepartmentSelectSchema: z.ZodType<Prisma.DepartmentSelect> = z.obje
   parentDepartment: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
   childDepartments: z.union([z.boolean(),z.lazy(() => DepartmentFindManyArgsSchema)]).optional(),
   head: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  address: z.union([z.boolean(),z.lazy(() => AddressArgsSchema)]).optional(),
   userDepartments: z.union([z.boolean(),z.lazy(() => UserDepartmentFindManyArgsSchema)]).optional(),
   contactInfos: z.union([z.boolean(),z.lazy(() => ContactInfoFindManyArgsSchema)]).optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
@@ -1915,6 +1918,7 @@ export const TicketUserSelectSchema: z.ZodType<Prisma.TicketUserSelect> = z.obje
 
 export const AddressIncludeSchema: z.ZodType<Prisma.AddressInclude> = z.object({
   users: z.union([z.boolean(),z.lazy(() => UserFindManyArgsSchema)]).optional(),
+  departments: z.union([z.boolean(),z.lazy(() => DepartmentFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => AddressCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -1929,6 +1933,7 @@ export const AddressCountOutputTypeArgsSchema: z.ZodType<Prisma.AddressCountOutp
 
 export const AddressCountOutputTypeSelectSchema: z.ZodType<Prisma.AddressCountOutputTypeSelect> = z.object({
   users: z.boolean().optional(),
+  departments: z.boolean().optional(),
 }).strict();
 
 export const AddressSelectSchema: z.ZodType<Prisma.AddressSelect> = z.object({
@@ -1938,7 +1943,6 @@ export const AddressSelectSchema: z.ZodType<Prisma.AddressSelect> = z.object({
   complement: z.boolean().optional(),
   city: z.boolean().optional(),
   state: z.boolean().optional(),
-  country: z.boolean().optional(),
   postalCode: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
@@ -1947,6 +1951,7 @@ export const AddressSelectSchema: z.ZodType<Prisma.AddressSelect> = z.object({
   tenantId: z.boolean().optional(),
   deletedAt: z.boolean().optional(),
   users: z.union([z.boolean(),z.lazy(() => UserFindManyArgsSchema)]).optional(),
+  departments: z.union([z.boolean(),z.lazy(() => DepartmentFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => AddressCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -3569,6 +3574,7 @@ export const DepartmentWhereInputSchema: z.ZodType<Prisma.DepartmentWhereInput> 
   institutionId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   parentDepartmentId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number() ]).optional().nullable(),
   headId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  addressId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -3579,6 +3585,7 @@ export const DepartmentWhereInputSchema: z.ZodType<Prisma.DepartmentWhereInput> 
   parentDepartment: z.union([ z.lazy(() => DepartmentNullableScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentListRelationFilterSchema).optional(),
   head: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
+  address: z.union([ z.lazy(() => AddressNullableScalarRelationFilterSchema),z.lazy(() => AddressWhereInputSchema) ]).optional().nullable(),
   userDepartments: z.lazy(() => UserDepartmentListRelationFilterSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoListRelationFilterSchema).optional(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional(),
@@ -3593,6 +3600,7 @@ export const DepartmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Departme
   institutionId: z.lazy(() => SortOrderSchema).optional(),
   parentDepartmentId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   headId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  addressId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -3603,6 +3611,7 @@ export const DepartmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Departme
   parentDepartment: z.lazy(() => DepartmentOrderByWithRelationInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentOrderByRelationAggregateInputSchema).optional(),
   head: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+  address: z.lazy(() => AddressOrderByWithRelationInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentOrderByRelationAggregateInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoOrderByRelationAggregateInputSchema).optional(),
   tickets: z.lazy(() => TicketOrderByRelationAggregateInputSchema).optional(),
@@ -3634,6 +3643,7 @@ export const DepartmentWhereUniqueInputSchema: z.ZodType<Prisma.DepartmentWhereU
   institutionId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   parentDepartmentId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number().int() ]).optional().nullable(),
   headId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  addressId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -3644,6 +3654,7 @@ export const DepartmentWhereUniqueInputSchema: z.ZodType<Prisma.DepartmentWhereU
   parentDepartment: z.union([ z.lazy(() => DepartmentNullableScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentListRelationFilterSchema).optional(),
   head: z.union([ z.lazy(() => UserNullableScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional().nullable(),
+  address: z.union([ z.lazy(() => AddressNullableScalarRelationFilterSchema),z.lazy(() => AddressWhereInputSchema) ]).optional().nullable(),
   userDepartments: z.lazy(() => UserDepartmentListRelationFilterSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoListRelationFilterSchema).optional(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional(),
@@ -3658,6 +3669,7 @@ export const DepartmentOrderByWithAggregationInputSchema: z.ZodType<Prisma.Depar
   institutionId: z.lazy(() => SortOrderSchema).optional(),
   parentDepartmentId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   headId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  addressId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   createdBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -3682,6 +3694,7 @@ export const DepartmentScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.De
   institutionId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   parentDepartmentId: z.union([ z.lazy(() => IntNullableWithAggregatesFilterSchema),z.number() ]).optional().nullable(),
   headId: z.union([ z.lazy(() => UuidNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  addressId: z.union([ z.lazy(() => UuidNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
@@ -4882,7 +4895,6 @@ export const AddressWhereInputSchema: z.ZodType<Prisma.AddressWhereInput> = z.ob
   complement: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   city: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   state: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  country: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   postalCode: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -4890,7 +4902,8 @@ export const AddressWhereInputSchema: z.ZodType<Prisma.AddressWhereInput> = z.ob
   updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
-  users: z.lazy(() => UserListRelationFilterSchema).optional()
+  users: z.lazy(() => UserListRelationFilterSchema).optional(),
+  departments: z.lazy(() => DepartmentListRelationFilterSchema).optional()
 }).strict();
 
 export const AddressOrderByWithRelationInputSchema: z.ZodType<Prisma.AddressOrderByWithRelationInput> = z.object({
@@ -4900,7 +4913,6 @@ export const AddressOrderByWithRelationInputSchema: z.ZodType<Prisma.AddressOrde
   complement: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   city: z.lazy(() => SortOrderSchema).optional(),
   state: z.lazy(() => SortOrderSchema).optional(),
-  country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -4909,6 +4921,7 @@ export const AddressOrderByWithRelationInputSchema: z.ZodType<Prisma.AddressOrde
   tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   users: z.lazy(() => UserOrderByRelationAggregateInputSchema).optional(),
+  departments: z.lazy(() => DepartmentOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => AddressOrderByRelevanceInputSchema).optional()
 }).strict();
 
@@ -4925,7 +4938,6 @@ export const AddressWhereUniqueInputSchema: z.ZodType<Prisma.AddressWhereUniqueI
   complement: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   city: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   state: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  country: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   postalCode: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -4933,7 +4945,8 @@ export const AddressWhereUniqueInputSchema: z.ZodType<Prisma.AddressWhereUniqueI
   updatedBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
-  users: z.lazy(() => UserListRelationFilterSchema).optional()
+  users: z.lazy(() => UserListRelationFilterSchema).optional(),
+  departments: z.lazy(() => DepartmentListRelationFilterSchema).optional()
 }).strict());
 
 export const AddressOrderByWithAggregationInputSchema: z.ZodType<Prisma.AddressOrderByWithAggregationInput> = z.object({
@@ -4943,7 +4956,6 @@ export const AddressOrderByWithAggregationInputSchema: z.ZodType<Prisma.AddressO
   complement: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   city: z.lazy(() => SortOrderSchema).optional(),
   state: z.lazy(() => SortOrderSchema).optional(),
-  country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
@@ -4966,7 +4978,6 @@ export const AddressScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Addre
   complement: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   city: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   state: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  country: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   postalCode: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
@@ -6769,6 +6780,7 @@ export const DepartmentCreateInputSchema: z.ZodType<Prisma.DepartmentCreateInput
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -6783,6 +6795,7 @@ export const DepartmentUncheckedCreateInputSchema: z.ZodType<Prisma.DepartmentUn
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -6810,6 +6823,7 @@ export const DepartmentUpdateInputSchema: z.ZodType<Prisma.DepartmentUpdateInput
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -6824,6 +6838,7 @@ export const DepartmentUncheckedUpdateInputSchema: z.ZodType<Prisma.DepartmentUn
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -6845,6 +6860,7 @@ export const DepartmentCreateManyInputSchema: z.ZodType<Prisma.DepartmentCreateM
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -6873,6 +6889,7 @@ export const DepartmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Departme
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -8085,7 +8102,6 @@ export const AddressCreateInputSchema: z.ZodType<Prisma.AddressCreateInput> = z.
   complement: z.string().optional().nullable(),
   city: z.string(),
   state: z.string(),
-  country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
@@ -8093,7 +8109,8 @@ export const AddressCreateInputSchema: z.ZodType<Prisma.AddressCreateInput> = z.
   updatedBy: z.string().optional().nullable(),
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
-  users: z.lazy(() => UserCreateNestedManyWithoutAddressInputSchema).optional()
+  users: z.lazy(() => UserCreateNestedManyWithoutAddressInputSchema).optional(),
+  departments: z.lazy(() => DepartmentCreateNestedManyWithoutAddressInputSchema).optional()
 }).strict();
 
 export const AddressUncheckedCreateInputSchema: z.ZodType<Prisma.AddressUncheckedCreateInput> = z.object({
@@ -8103,7 +8120,6 @@ export const AddressUncheckedCreateInputSchema: z.ZodType<Prisma.AddressUnchecke
   complement: z.string().optional().nullable(),
   city: z.string(),
   state: z.string(),
-  country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
@@ -8111,7 +8127,8 @@ export const AddressUncheckedCreateInputSchema: z.ZodType<Prisma.AddressUnchecke
   updatedBy: z.string().optional().nullable(),
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
-  users: z.lazy(() => UserUncheckedCreateNestedManyWithoutAddressInputSchema).optional()
+  users: z.lazy(() => UserUncheckedCreateNestedManyWithoutAddressInputSchema).optional(),
+  departments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutAddressInputSchema).optional()
 }).strict();
 
 export const AddressUpdateInputSchema: z.ZodType<Prisma.AddressUpdateInput> = z.object({
@@ -8121,7 +8138,6 @@ export const AddressUpdateInputSchema: z.ZodType<Prisma.AddressUpdateInput> = z.
   complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  country: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -8129,7 +8145,8 @@ export const AddressUpdateInputSchema: z.ZodType<Prisma.AddressUpdateInput> = z.
   updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  users: z.lazy(() => UserUpdateManyWithoutAddressNestedInputSchema).optional()
+  users: z.lazy(() => UserUpdateManyWithoutAddressNestedInputSchema).optional(),
+  departments: z.lazy(() => DepartmentUpdateManyWithoutAddressNestedInputSchema).optional()
 }).strict();
 
 export const AddressUncheckedUpdateInputSchema: z.ZodType<Prisma.AddressUncheckedUpdateInput> = z.object({
@@ -8139,7 +8156,6 @@ export const AddressUncheckedUpdateInputSchema: z.ZodType<Prisma.AddressUnchecke
   complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  country: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -8147,7 +8163,8 @@ export const AddressUncheckedUpdateInputSchema: z.ZodType<Prisma.AddressUnchecke
   updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  users: z.lazy(() => UserUncheckedUpdateManyWithoutAddressNestedInputSchema).optional()
+  users: z.lazy(() => UserUncheckedUpdateManyWithoutAddressNestedInputSchema).optional(),
+  departments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutAddressNestedInputSchema).optional()
 }).strict();
 
 export const AddressCreateManyInputSchema: z.ZodType<Prisma.AddressCreateManyInput> = z.object({
@@ -8157,7 +8174,6 @@ export const AddressCreateManyInputSchema: z.ZodType<Prisma.AddressCreateManyInp
   complement: z.string().optional().nullable(),
   city: z.string(),
   state: z.string(),
-  country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
@@ -8174,7 +8190,6 @@ export const AddressUpdateManyMutationInputSchema: z.ZodType<Prisma.AddressUpdat
   complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  country: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -8191,7 +8206,6 @@ export const AddressUncheckedUpdateManyInputSchema: z.ZodType<Prisma.AddressUnch
   complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  country: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -9599,6 +9613,7 @@ export const DepartmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.Depart
   institutionId: z.lazy(() => SortOrderSchema).optional(),
   parentDepartmentId: z.lazy(() => SortOrderSchema).optional(),
   headId: z.lazy(() => SortOrderSchema).optional(),
+  addressId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -9620,6 +9635,7 @@ export const DepartmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Departme
   institutionId: z.lazy(() => SortOrderSchema).optional(),
   parentDepartmentId: z.lazy(() => SortOrderSchema).optional(),
   headId: z.lazy(() => SortOrderSchema).optional(),
+  addressId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -9636,6 +9652,7 @@ export const DepartmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.Departme
   institutionId: z.lazy(() => SortOrderSchema).optional(),
   parentDepartmentId: z.lazy(() => SortOrderSchema).optional(),
   headId: z.lazy(() => SortOrderSchema).optional(),
+  addressId: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   createdBy: z.lazy(() => SortOrderSchema).optional(),
@@ -10422,7 +10439,6 @@ export const AddressCountOrderByAggregateInputSchema: z.ZodType<Prisma.AddressCo
   complement: z.lazy(() => SortOrderSchema).optional(),
   city: z.lazy(() => SortOrderSchema).optional(),
   state: z.lazy(() => SortOrderSchema).optional(),
-  country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
@@ -10439,7 +10455,6 @@ export const AddressMaxOrderByAggregateInputSchema: z.ZodType<Prisma.AddressMaxO
   complement: z.lazy(() => SortOrderSchema).optional(),
   city: z.lazy(() => SortOrderSchema).optional(),
   state: z.lazy(() => SortOrderSchema).optional(),
-  country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
@@ -10456,7 +10471,6 @@ export const AddressMinOrderByAggregateInputSchema: z.ZodType<Prisma.AddressMinO
   complement: z.lazy(() => SortOrderSchema).optional(),
   city: z.lazy(() => SortOrderSchema).optional(),
   state: z.lazy(() => SortOrderSchema).optional(),
-  country: z.lazy(() => SortOrderSchema).optional(),
   postalCode: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
@@ -12194,6 +12208,12 @@ export const UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema: z.ZodType<P
   connect: z.lazy(() => UserWhereUniqueInputSchema).optional()
 }).strict();
 
+export const AddressCreateNestedOneWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressCreateNestedOneWithoutDepartmentsInput> = z.object({
+  create: z.union([ z.lazy(() => AddressCreateWithoutDepartmentsInputSchema),z.lazy(() => AddressUncheckedCreateWithoutDepartmentsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => AddressCreateOrConnectWithoutDepartmentsInputSchema).optional(),
+  connect: z.lazy(() => AddressWhereUniqueInputSchema).optional()
+}).strict();
+
 export const UserDepartmentCreateNestedManyWithoutDepartmentInputSchema: z.ZodType<Prisma.UserDepartmentCreateNestedManyWithoutDepartmentInput> = z.object({
   create: z.union([ z.lazy(() => UserDepartmentCreateWithoutDepartmentInputSchema),z.lazy(() => UserDepartmentCreateWithoutDepartmentInputSchema).array(),z.lazy(() => UserDepartmentUncheckedCreateWithoutDepartmentInputSchema),z.lazy(() => UserDepartmentUncheckedCreateWithoutDepartmentInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => UserDepartmentCreateOrConnectWithoutDepartmentInputSchema),z.lazy(() => UserDepartmentCreateOrConnectWithoutDepartmentInputSchema).array() ]).optional(),
@@ -12297,6 +12317,16 @@ export const UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema: z.ZodType<P
   delete: z.union([ z.boolean(),z.lazy(() => UserWhereInputSchema) ]).optional(),
   connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => UserUpdateToOneWithWhereWithoutHeadOfDepartmentsInputSchema),z.lazy(() => UserUpdateWithoutHeadOfDepartmentsInputSchema),z.lazy(() => UserUncheckedUpdateWithoutHeadOfDepartmentsInputSchema) ]).optional(),
+}).strict();
+
+export const AddressUpdateOneWithoutDepartmentsNestedInputSchema: z.ZodType<Prisma.AddressUpdateOneWithoutDepartmentsNestedInput> = z.object({
+  create: z.union([ z.lazy(() => AddressCreateWithoutDepartmentsInputSchema),z.lazy(() => AddressUncheckedCreateWithoutDepartmentsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => AddressCreateOrConnectWithoutDepartmentsInputSchema).optional(),
+  upsert: z.lazy(() => AddressUpsertWithoutDepartmentsInputSchema).optional(),
+  disconnect: z.union([ z.boolean(),z.lazy(() => AddressWhereInputSchema) ]).optional(),
+  delete: z.union([ z.boolean(),z.lazy(() => AddressWhereInputSchema) ]).optional(),
+  connect: z.lazy(() => AddressWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => AddressUpdateToOneWithWhereWithoutDepartmentsInputSchema),z.lazy(() => AddressUpdateWithoutDepartmentsInputSchema),z.lazy(() => AddressUncheckedUpdateWithoutDepartmentsInputSchema) ]).optional(),
 }).strict();
 
 export const UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema: z.ZodType<Prisma.UserDepartmentUpdateManyWithoutDepartmentNestedInput> = z.object({
@@ -13204,11 +13234,25 @@ export const UserCreateNestedManyWithoutAddressInputSchema: z.ZodType<Prisma.Use
   connect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
+export const DepartmentCreateNestedManyWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentCreateNestedManyWithoutAddressInput> = z.object({
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutAddressInputSchema),z.lazy(() => DepartmentCreateWithoutAddressInputSchema).array(),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema),z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => DepartmentCreateManyAddressInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
 export const UserUncheckedCreateNestedManyWithoutAddressInputSchema: z.ZodType<Prisma.UserUncheckedCreateNestedManyWithoutAddressInput> = z.object({
   create: z.union([ z.lazy(() => UserCreateWithoutAddressInputSchema),z.lazy(() => UserCreateWithoutAddressInputSchema).array(),z.lazy(() => UserUncheckedCreateWithoutAddressInputSchema),z.lazy(() => UserUncheckedCreateWithoutAddressInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => UserCreateOrConnectWithoutAddressInputSchema),z.lazy(() => UserCreateOrConnectWithoutAddressInputSchema).array() ]).optional(),
   createMany: z.lazy(() => UserCreateManyAddressInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const DepartmentUncheckedCreateNestedManyWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateNestedManyWithoutAddressInput> = z.object({
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutAddressInputSchema),z.lazy(() => DepartmentCreateWithoutAddressInputSchema).array(),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema),z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => DepartmentCreateManyAddressInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
 export const UserUpdateManyWithoutAddressNestedInputSchema: z.ZodType<Prisma.UserUpdateManyWithoutAddressNestedInput> = z.object({
@@ -13225,6 +13269,20 @@ export const UserUpdateManyWithoutAddressNestedInputSchema: z.ZodType<Prisma.Use
   deleteMany: z.union([ z.lazy(() => UserScalarWhereInputSchema),z.lazy(() => UserScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
+export const DepartmentUpdateManyWithoutAddressNestedInputSchema: z.ZodType<Prisma.DepartmentUpdateManyWithoutAddressNestedInput> = z.object({
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutAddressInputSchema),z.lazy(() => DepartmentCreateWithoutAddressInputSchema).array(),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema),z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => DepartmentUpsertWithWhereUniqueWithoutAddressInputSchema),z.lazy(() => DepartmentUpsertWithWhereUniqueWithoutAddressInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => DepartmentCreateManyAddressInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => DepartmentUpdateWithWhereUniqueWithoutAddressInputSchema),z.lazy(() => DepartmentUpdateWithWhereUniqueWithoutAddressInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => DepartmentUpdateManyWithWhereWithoutAddressInputSchema),z.lazy(() => DepartmentUpdateManyWithWhereWithoutAddressInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => DepartmentScalarWhereInputSchema),z.lazy(() => DepartmentScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
 export const UserUncheckedUpdateManyWithoutAddressNestedInputSchema: z.ZodType<Prisma.UserUncheckedUpdateManyWithoutAddressNestedInput> = z.object({
   create: z.union([ z.lazy(() => UserCreateWithoutAddressInputSchema),z.lazy(() => UserCreateWithoutAddressInputSchema).array(),z.lazy(() => UserUncheckedCreateWithoutAddressInputSchema),z.lazy(() => UserUncheckedCreateWithoutAddressInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => UserCreateOrConnectWithoutAddressInputSchema),z.lazy(() => UserCreateOrConnectWithoutAddressInputSchema).array() ]).optional(),
@@ -13237,6 +13295,20 @@ export const UserUncheckedUpdateManyWithoutAddressNestedInputSchema: z.ZodType<P
   update: z.union([ z.lazy(() => UserUpdateWithWhereUniqueWithoutAddressInputSchema),z.lazy(() => UserUpdateWithWhereUniqueWithoutAddressInputSchema).array() ]).optional(),
   updateMany: z.union([ z.lazy(() => UserUpdateManyWithWhereWithoutAddressInputSchema),z.lazy(() => UserUpdateManyWithWhereWithoutAddressInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => UserScalarWhereInputSchema),z.lazy(() => UserScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const DepartmentUncheckedUpdateManyWithoutAddressNestedInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyWithoutAddressNestedInput> = z.object({
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutAddressInputSchema),z.lazy(() => DepartmentCreateWithoutAddressInputSchema).array(),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema),z.lazy(() => DepartmentCreateOrConnectWithoutAddressInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => DepartmentUpsertWithWhereUniqueWithoutAddressInputSchema),z.lazy(() => DepartmentUpsertWithWhereUniqueWithoutAddressInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => DepartmentCreateManyAddressInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => DepartmentWhereUniqueInputSchema),z.lazy(() => DepartmentWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => DepartmentUpdateWithWhereUniqueWithoutAddressInputSchema),z.lazy(() => DepartmentUpdateWithWhereUniqueWithoutAddressInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => DepartmentUpdateManyWithWhereWithoutAddressInputSchema),z.lazy(() => DepartmentUpdateManyWithWhereWithoutAddressInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => DepartmentScalarWhereInputSchema),z.lazy(() => DepartmentScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const DepartmentCreateNestedOneWithoutContactInfosInputSchema: z.ZodType<Prisma.DepartmentCreateNestedOneWithoutContactInfosInput> = z.object({
@@ -13521,14 +13593,14 @@ export const AddressCreateWithoutUsersInputSchema: z.ZodType<Prisma.AddressCreat
   complement: z.string().optional().nullable(),
   city: z.string(),
   state: z.string(),
-  country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   updatedBy: z.string().optional().nullable(),
   tenantId: z.string().optional().nullable(),
-  deletedAt: z.coerce.date().optional().nullable()
+  deletedAt: z.coerce.date().optional().nullable(),
+  departments: z.lazy(() => DepartmentCreateNestedManyWithoutAddressInputSchema).optional()
 }).strict();
 
 export const AddressUncheckedCreateWithoutUsersInputSchema: z.ZodType<Prisma.AddressUncheckedCreateWithoutUsersInput> = z.object({
@@ -13538,14 +13610,14 @@ export const AddressUncheckedCreateWithoutUsersInputSchema: z.ZodType<Prisma.Add
   complement: z.string().optional().nullable(),
   city: z.string(),
   state: z.string(),
-  country: z.string(),
   postalCode: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
   updatedBy: z.string().optional().nullable(),
   tenantId: z.string().optional().nullable(),
-  deletedAt: z.coerce.date().optional().nullable()
+  deletedAt: z.coerce.date().optional().nullable(),
+  departments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutAddressInputSchema).optional()
 }).strict();
 
 export const AddressCreateOrConnectWithoutUsersInputSchema: z.ZodType<Prisma.AddressCreateOrConnectWithoutUsersInput> = z.object({
@@ -14110,6 +14182,7 @@ export const DepartmentCreateWithoutHeadInputSchema: z.ZodType<Prisma.Department
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -14123,6 +14196,7 @@ export const DepartmentUncheckedCreateWithoutHeadInputSchema: z.ZodType<Prisma.D
   isSecretariat: z.boolean().optional(),
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -14302,7 +14376,6 @@ export const AddressUpdateWithoutUsersInputSchema: z.ZodType<Prisma.AddressUpdat
   complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  country: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -14310,6 +14383,7 @@ export const AddressUpdateWithoutUsersInputSchema: z.ZodType<Prisma.AddressUpdat
   updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  departments: z.lazy(() => DepartmentUpdateManyWithoutAddressNestedInputSchema).optional()
 }).strict();
 
 export const AddressUncheckedUpdateWithoutUsersInputSchema: z.ZodType<Prisma.AddressUncheckedUpdateWithoutUsersInput> = z.object({
@@ -14319,7 +14393,6 @@ export const AddressUncheckedUpdateWithoutUsersInputSchema: z.ZodType<Prisma.Add
   complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  country: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -14327,6 +14400,7 @@ export const AddressUncheckedUpdateWithoutUsersInputSchema: z.ZodType<Prisma.Add
   updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  departments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutAddressNestedInputSchema).optional()
 }).strict();
 
 export const AuditLogUpsertWithWhereUniqueWithoutPerformedByInputSchema: z.ZodType<Prisma.AuditLogUpsertWithWhereUniqueWithoutPerformedByInput> = z.object({
@@ -14801,6 +14875,7 @@ export const DepartmentScalarWhereInputSchema: z.ZodType<Prisma.DepartmentScalar
   institutionId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   parentDepartmentId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number() ]).optional().nullable(),
   headId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  addressId: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   createdBy: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -18165,6 +18240,7 @@ export const DepartmentCreateWithoutInstitutionInputSchema: z.ZodType<Prisma.Dep
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -18178,6 +18254,7 @@ export const DepartmentUncheckedCreateWithoutInstitutionInputSchema: z.ZodType<P
   isSecretariat: z.boolean().optional(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -18443,6 +18520,7 @@ export const DepartmentCreateWithoutChildDepartmentsInputSchema: z.ZodType<Prism
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -18457,6 +18535,7 @@ export const DepartmentUncheckedCreateWithoutChildDepartmentsInputSchema: z.ZodT
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -18487,6 +18566,7 @@ export const DepartmentCreateWithoutParentDepartmentInputSchema: z.ZodType<Prism
   institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
@@ -18500,6 +18580,7 @@ export const DepartmentUncheckedCreateWithoutParentDepartmentInputSchema: z.ZodT
   isSecretariat: z.boolean().optional(),
   institutionId: z.string(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -18598,6 +18679,45 @@ export const UserUncheckedCreateWithoutHeadOfDepartmentsInputSchema: z.ZodType<P
 export const UserCreateOrConnectWithoutHeadOfDepartmentsInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutHeadOfDepartmentsInput> = z.object({
   where: z.lazy(() => UserWhereUniqueInputSchema),
   create: z.union([ z.lazy(() => UserCreateWithoutHeadOfDepartmentsInputSchema),z.lazy(() => UserUncheckedCreateWithoutHeadOfDepartmentsInputSchema) ]),
+}).strict();
+
+export const AddressCreateWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressCreateWithoutDepartmentsInput> = z.object({
+  id: z.string().optional(),
+  street: z.string(),
+  number: z.string(),
+  complement: z.string().optional().nullable(),
+  city: z.string(),
+  state: z.string(),
+  postalCode: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  users: z.lazy(() => UserCreateNestedManyWithoutAddressInputSchema).optional()
+}).strict();
+
+export const AddressUncheckedCreateWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressUncheckedCreateWithoutDepartmentsInput> = z.object({
+  id: z.string().optional(),
+  street: z.string(),
+  number: z.string(),
+  complement: z.string().optional().nullable(),
+  city: z.string(),
+  state: z.string(),
+  postalCode: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  users: z.lazy(() => UserUncheckedCreateNestedManyWithoutAddressInputSchema).optional()
+}).strict();
+
+export const AddressCreateOrConnectWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressCreateOrConnectWithoutDepartmentsInput> = z.object({
+  where: z.lazy(() => AddressWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => AddressCreateWithoutDepartmentsInputSchema),z.lazy(() => AddressUncheckedCreateWithoutDepartmentsInputSchema) ]),
 }).strict();
 
 export const UserDepartmentCreateWithoutDepartmentInputSchema: z.ZodType<Prisma.UserDepartmentCreateWithoutDepartmentInput> = z.object({
@@ -18838,6 +18958,7 @@ export const DepartmentUpdateWithoutChildDepartmentsInputSchema: z.ZodType<Prism
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -18852,6 +18973,7 @@ export const DepartmentUncheckedUpdateWithoutChildDepartmentsInputSchema: z.ZodT
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -18963,6 +19085,51 @@ export const UserUncheckedUpdateWithoutHeadOfDepartmentsInputSchema: z.ZodType<P
   userOnDocuments: z.lazy(() => UserOnDocumentsUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
 
+export const AddressUpsertWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressUpsertWithoutDepartmentsInput> = z.object({
+  update: z.union([ z.lazy(() => AddressUpdateWithoutDepartmentsInputSchema),z.lazy(() => AddressUncheckedUpdateWithoutDepartmentsInputSchema) ]),
+  create: z.union([ z.lazy(() => AddressCreateWithoutDepartmentsInputSchema),z.lazy(() => AddressUncheckedCreateWithoutDepartmentsInputSchema) ]),
+  where: z.lazy(() => AddressWhereInputSchema).optional()
+}).strict();
+
+export const AddressUpdateToOneWithWhereWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressUpdateToOneWithWhereWithoutDepartmentsInput> = z.object({
+  where: z.lazy(() => AddressWhereInputSchema).optional(),
+  data: z.union([ z.lazy(() => AddressUpdateWithoutDepartmentsInputSchema),z.lazy(() => AddressUncheckedUpdateWithoutDepartmentsInputSchema) ]),
+}).strict();
+
+export const AddressUpdateWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressUpdateWithoutDepartmentsInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  street: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  users: z.lazy(() => UserUpdateManyWithoutAddressNestedInputSchema).optional()
+}).strict();
+
+export const AddressUncheckedUpdateWithoutDepartmentsInputSchema: z.ZodType<Prisma.AddressUncheckedUpdateWithoutDepartmentsInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  street: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  number: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  complement: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  city: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  state: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  postalCode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  users: z.lazy(() => UserUncheckedUpdateManyWithoutAddressNestedInputSchema).optional()
+}).strict();
+
 export const UserDepartmentUpsertWithWhereUniqueWithoutDepartmentInputSchema: z.ZodType<Prisma.UserDepartmentUpsertWithWhereUniqueWithoutDepartmentInput> = z.object({
   where: z.lazy(() => UserDepartmentWhereUniqueInputSchema),
   update: z.union([ z.lazy(() => UserDepartmentUpdateWithoutDepartmentInputSchema),z.lazy(() => UserDepartmentUncheckedUpdateWithoutDepartmentInputSchema) ]),
@@ -19072,6 +19239,7 @@ export const DepartmentCreateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -19085,6 +19253,7 @@ export const DepartmentUncheckedCreateWithoutUserDepartmentsInputSchema: z.ZodTy
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -19204,6 +19373,7 @@ export const DepartmentUpdateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -19217,6 +19387,7 @@ export const DepartmentUncheckedUpdateWithoutUserDepartmentsInputSchema: z.ZodTy
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -19480,6 +19651,7 @@ export const DepartmentCreateWithoutTicketsInputSchema: z.ZodType<Prisma.Departm
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -19493,6 +19665,7 @@ export const DepartmentUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prism
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -19978,6 +20151,7 @@ export const DepartmentUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.Departm
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -19991,6 +20165,7 @@ export const DepartmentUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prism
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -20438,6 +20613,7 @@ export const DepartmentCreateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.Depa
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -20451,6 +20627,7 @@ export const DepartmentUncheckedCreateWithoutHelpTopicsInputSchema: z.ZodType<Pr
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -20553,6 +20730,7 @@ export const DepartmentUpdateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.Depa
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -20566,6 +20744,7 @@ export const DepartmentUncheckedUpdateWithoutHelpTopicsInputSchema: z.ZodType<Pr
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -22294,6 +22473,57 @@ export const UserCreateManyAddressInputEnvelopeSchema: z.ZodType<Prisma.UserCrea
   skipDuplicates: z.boolean().optional()
 }).strict();
 
+export const DepartmentCreateWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentCreateWithoutAddressInput> = z.object({
+  name: z.string(),
+  description: z.string().optional().nullable(),
+  isSecretariat: z.boolean().optional(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
+  parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
+  childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
+  head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+}).strict();
+
+export const DepartmentUncheckedCreateWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutAddressInput> = z.object({
+  id: z.number().int().optional(),
+  name: z.string(),
+  description: z.string().optional().nullable(),
+  isSecretariat: z.boolean().optional(),
+  institutionId: z.string(),
+  parentDepartmentId: z.number().int().optional().nullable(),
+  headId: z.string().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+}).strict();
+
+export const DepartmentCreateOrConnectWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutAddressInput> = z.object({
+  where: z.lazy(() => DepartmentWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema) ]),
+}).strict();
+
+export const DepartmentCreateManyAddressInputEnvelopeSchema: z.ZodType<Prisma.DepartmentCreateManyAddressInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => DepartmentCreateManyAddressInputSchema),z.lazy(() => DepartmentCreateManyAddressInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
+}).strict();
+
 export const UserUpsertWithWhereUniqueWithoutAddressInputSchema: z.ZodType<Prisma.UserUpsertWithWhereUniqueWithoutAddressInput> = z.object({
   where: z.lazy(() => UserWhereUniqueInputSchema),
   update: z.union([ z.lazy(() => UserUpdateWithoutAddressInputSchema),z.lazy(() => UserUncheckedUpdateWithoutAddressInputSchema) ]),
@@ -22332,6 +22562,22 @@ export const UserScalarWhereInputSchema: z.ZodType<Prisma.UserScalarWhereInput> 
   deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
+export const DepartmentUpsertWithWhereUniqueWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUpsertWithWhereUniqueWithoutAddressInput> = z.object({
+  where: z.lazy(() => DepartmentWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => DepartmentUpdateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedUpdateWithoutAddressInputSchema) ]),
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutAddressInputSchema) ]),
+}).strict();
+
+export const DepartmentUpdateWithWhereUniqueWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUpdateWithWhereUniqueWithoutAddressInput> = z.object({
+  where: z.lazy(() => DepartmentWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => DepartmentUpdateWithoutAddressInputSchema),z.lazy(() => DepartmentUncheckedUpdateWithoutAddressInputSchema) ]),
+}).strict();
+
+export const DepartmentUpdateManyWithWhereWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUpdateManyWithWhereWithoutAddressInput> = z.object({
+  where: z.lazy(() => DepartmentScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => DepartmentUpdateManyMutationInputSchema),z.lazy(() => DepartmentUncheckedUpdateManyWithoutAddressInputSchema) ]),
+}).strict();
+
 export const DepartmentCreateWithoutContactInfosInputSchema: z.ZodType<Prisma.DepartmentCreateWithoutContactInfosInput> = z.object({
   name: z.string(),
   description: z.string().optional().nullable(),
@@ -22346,6 +22592,7 @@ export const DepartmentCreateWithoutContactInfosInputSchema: z.ZodType<Prisma.De
   parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
@@ -22359,6 +22606,7 @@ export const DepartmentUncheckedCreateWithoutContactInfosInputSchema: z.ZodType<
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -22401,6 +22649,7 @@ export const DepartmentUpdateWithoutContactInfosInputSchema: z.ZodType<Prisma.De
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
@@ -22414,6 +22663,7 @@ export const DepartmentUncheckedUpdateWithoutContactInfosInputSchema: z.ZodType<
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -22622,6 +22872,7 @@ export const DepartmentCreateManyHeadInputSchema: z.ZodType<Prisma.DepartmentCre
   isSecretariat: z.boolean().optional(),
   institutionId: z.string(),
   parentDepartmentId: z.number().int().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -23288,6 +23539,7 @@ export const DepartmentUpdateWithoutHeadInputSchema: z.ZodType<Prisma.Department
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -23301,6 +23553,7 @@ export const DepartmentUncheckedUpdateWithoutHeadInputSchema: z.ZodType<Prisma.D
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -23321,6 +23574,7 @@ export const DepartmentUncheckedUpdateManyWithoutHeadInputSchema: z.ZodType<Pris
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -24094,6 +24348,7 @@ export const DepartmentCreateManyInstitutionInputSchema: z.ZodType<Prisma.Depart
   isSecretariat: z.boolean().optional(),
   parentDepartmentId: z.number().int().optional().nullable(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -24115,6 +24370,7 @@ export const DepartmentUpdateWithoutInstitutionInputSchema: z.ZodType<Prisma.Dep
   parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -24128,6 +24384,7 @@ export const DepartmentUncheckedUpdateWithoutInstitutionInputSchema: z.ZodType<P
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -24148,6 +24405,7 @@ export const DepartmentUncheckedUpdateManyWithoutInstitutionInputSchema: z.ZodTy
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -24163,6 +24421,7 @@ export const DepartmentCreateManyParentDepartmentInputSchema: z.ZodType<Prisma.D
   isSecretariat: z.boolean().optional(),
   institutionId: z.string(),
   headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional().nullable(),
   createdBy: z.string().optional().nullable(),
@@ -24239,6 +24498,7 @@ export const DepartmentUpdateWithoutParentDepartmentInputSchema: z.ZodType<Prism
   institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
   childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
@@ -24252,6 +24512,7 @@ export const DepartmentUncheckedUpdateWithoutParentDepartmentInputSchema: z.ZodT
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -24272,6 +24533,7 @@ export const DepartmentUncheckedUpdateManyWithoutParentDepartmentInputSchema: z.
   isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -25130,6 +25392,22 @@ export const UserCreateManyAddressInputSchema: z.ZodType<Prisma.UserCreateManyAd
   deletedAt: z.coerce.date().optional().nullable()
 }).strict();
 
+export const DepartmentCreateManyAddressInputSchema: z.ZodType<Prisma.DepartmentCreateManyAddressInput> = z.object({
+  id: z.number().int().optional(),
+  name: z.string(),
+  description: z.string().optional().nullable(),
+  isSecretariat: z.boolean().optional(),
+  institutionId: z.string(),
+  parentDepartmentId: z.number().int().optional().nullable(),
+  headId: z.string().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable()
+}).strict();
+
 export const UserUpdateWithoutAddressInputSchema: z.ZodType<Prisma.UserUpdateWithoutAddressInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -25214,6 +25492,63 @@ export const UserUncheckedUpdateManyWithoutAddressInputSchema: z.ZodType<Prisma.
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   dateOfBirth: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
+export const DepartmentUpdateWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUpdateWithoutAddressInput> = z.object({
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
+  parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
+  childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
+  head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+}).strict();
+
+export const DepartmentUncheckedUpdateWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutAddressInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+}).strict();
+
+export const DepartmentUncheckedUpdateManyWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyWithoutAddressInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parentDepartmentId: z.union([ z.number().int(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
