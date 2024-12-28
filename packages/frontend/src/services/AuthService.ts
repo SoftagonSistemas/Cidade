@@ -1,6 +1,8 @@
+import type { User as UserLocal } from '@prisma/client'
 import type { ClientOptions, User } from 'better-auth/types'
 import router from '@/router'
 import { useAuthStore } from '@/stores/AuthStore'
+import { getPostgrestURL } from '@/utils/getPostgrestURL'
 import { organizationClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/vue'
 
@@ -38,6 +40,7 @@ export class AuthService {
 
       // Get autorization token for PostgREST
       await this.postgrestToken()
+      useAuthStore().login(data.user)
       return data.user as User
     }
     catch (error) {
@@ -66,6 +69,7 @@ export class AuthService {
    * @param password User's password
    * @param name Full name.
    * @param image Profile picture.
+   * @TODO FALTA INFORMAR A ORGANIZAÇÂO DO USUÁRIO
    * @returns A promise resolving to the created user.
    */
   async register(
@@ -80,6 +84,8 @@ export class AuthService {
       name,
       image: image ?? undefined,
     })
+    const organizationId = useAuthStore().organization?.id
+    this.addMemberToOrg(response.data.id, organizationId, 'member')
     if (response.data) {
       return response.data as User
     }
@@ -162,8 +168,11 @@ export class AuthService {
       const { data } = await this.client.organization.setActive({
         organizationId,
       })
-      const authStore = useAuthStore()
-      authStore.setOrganization(data)
+      useAuthStore().setOrganization(data)
+      const user = await this.getLocalUser()
+      if (user?.id)
+        useAuthStore().login(user)
+
       return data
     }
     catch (error) {
@@ -193,5 +202,47 @@ export class AuthService {
     catch (error) {
       throw new Error(`Token request failed: ${(error as Error).message}`)
     }
+  }
+
+  async getLocalUser(): Promise<UserLocal> {
+    try {
+      const token = useAuthStore().getPostgrestToken()
+      if (!token) {
+        throw new Error('No PostgREST token found')
+      }
+      const email = useAuthStore().user?.email
+      const response = await fetch(`${getPostgrestURL()}/user?email=eq.${email}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`Token request failed: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      return data[0] as UserLocal
+    }
+    catch (error) {
+      throw new Error(`Token request failed: ${(error as Error).message}`)
+    }
+  }
+
+  async addMemberToOrg(userId: string, organizationId: string, role: string) {
+    const response = await fetch(`${import.meta.env.VITE_BACK3ND_URL}/organization/add-member`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+        organizationId,
+        role,
+      }),
+    })
+    return response
   }
 }

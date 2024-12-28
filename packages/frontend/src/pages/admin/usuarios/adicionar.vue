@@ -75,15 +75,19 @@ async function submitUser() {
   const userService = new BaseService('user')
   try {
     const authService = new AuthService()
-    const authUserCreated = await authService.register(newUser.value.email, generateSecurePassword(), newUser.value.name)
+    const securePassword = generateSecurePassword()
+    const authUserCreated = await authService.register(newUser.value.email, securePassword, newUser.value.name)
     if (!authUserCreated) {
       toast.error('Erro ao criar usuário no Auth')
       throw new Error('Erro ao criar usuário no Auth')
     }
 
     newUser.value.apiUserId = authUserCreated.id
+    const [day, month, year] = newUser.value.dateOfBirth.split('/')
+    newUser.value.dateOfBirth = new Date(`${year}-${month}-${day}`).toISOString()
     const createdUser = await userService.create(newUser.value)
     if (createdUser) {
+      console.warn('Usuário criado:', createdUser, securePassword)
       toast.success('Usuário criado com sucesso.')
       router.push('/admin/usuarios')
       resetDialog()
@@ -110,7 +114,7 @@ async function submitUser() {
         label="Telefone"
         outlined
       />
-      <Nascimento v-model="newUser.dateOfBirth" />
+      <BirthDate v-model="newUser.dateOfBirth" />
       <v-autocomplete
         v-model="newUser.jobTitle"
         :items="items"

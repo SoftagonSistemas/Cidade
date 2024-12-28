@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { AuthService } from '@/services/AuthService'
-import { useAuthStore } from '@/stores/AuthStore'
 import { useRouter } from 'vue-router'
-
 // State
-const email = ref('user@back3nd.com')
-const password = ref('adminPassword123')
-const authStore = useAuthStore()
+const email = ref('')
+const password = ref('') // z)Ii1z=M
 const router = useRouter()
 const authService = new AuthService()
 
@@ -14,7 +11,6 @@ const authService = new AuthService()
 async function login() {
   try {
     const user = await authService.login(email.value, password.value)
-    authStore.login(user)
     if (user) {
       toast.success('Acesso concedido com sucesso!')
       setTimeout(() => {

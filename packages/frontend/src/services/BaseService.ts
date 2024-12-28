@@ -1,20 +1,23 @@
 import { useAuthStore } from '@/stores/AuthStore'
+import { getPostgrestURL } from '@/utils/getPostgrestURL'
 import { PostgrestClient } from '@supabase/postgrest-js'
 import { AuthService } from './AuthService'
 
 const authStore = useAuthStore()
+
 export default class BaseService<T> {
   private client: PostgrestClient
   private userId = authStore.user?.id
   private orgId = authStore.organization?.id
-  private token = authStore.getPostgrestToken()
-
   constructor(private readonly table: string) {
-    const postgrestUrl = this.getPostgresUrl()
+    const authStore = useAuthStore()
+    const token = authStore.getPostgrestToken()
+    const postgrestUrl = getPostgrestURL()
+
     try {
       this.client = new PostgrestClient(postgrestUrl, {
         headers: {
-          Authorization: `Bearer ${this.token}`,
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
       })
     }
@@ -22,12 +25,6 @@ export default class BaseService<T> {
       authStore.logout()
       throw new Error(`Failed to initialize PostgrestClient: ${error.message}`)
     }
-  }
-
-  getPostgresUrl() {
-    const rawMetadata = authStore.organization?.metadata
-    const postgrestUrl = rawMetadata ? JSON.parse(rawMetadata).postgrest : null
-    return postgrestUrl
   }
 
   async getById(id: string): Promise<T | null> {
@@ -130,11 +127,38 @@ export default class BaseService<T> {
     return count || 0
   }
 
-  async filter(column: keyof T, value: string): Promise<T[]> {
-    const { data, error } = await this.client
-      .from(this.table)
-      .select('*')
-      .eq(column as string, value)
+  /**
+   * Filters records in the table based on the provided filters.
+   *
+   * @param filters - An object where the keys are column names and the values are the filter criteria.
+   *                  The filter criteria can be a single value or an array of values.
+   * @returns A promise that resolves to an array of records that match the filter criteria.
+   *
+   * @example
+   * // Filter records where the 'status' column is 'active'
+   * const activeRecords = await baseService.filter({ status: 'active' });
+   *
+   * @example
+   * // Filter records where the 'status' column is 'active' or 'pending'
+   * const activeOrPendingRecords = await baseService.filter({ status: ['active', 'pending'] });
+   *
+   * @example
+   * // Filter records where the 'status' column is 'active' and 'type' column is 'admin'
+   * const activeAdminRecords = await baseService.filter({ status: 'active', type: 'admin' });
+   */
+  async filter(filters: Partial<Record<keyof T, string | string[]>>): Promise<T[]> {
+    let query = this.client.from(this.table).select('*')
+
+    for (const [column, value] of Object.entries(filters)) {
+      if (Array.isArray(value)) {
+        query = query.in(column, value)
+      }
+      else {
+        query = query.eq(column, value)
+      }
+    }
+
+    const { data, error } = await query
 
     if (error)
       throw new Error(error.message)

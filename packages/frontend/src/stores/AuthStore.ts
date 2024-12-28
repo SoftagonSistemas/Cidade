@@ -1,4 +1,4 @@
-import type { User } from 'better-auth/types'
+import type { User as UserLocal } from '@prisma/client'
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore, skipHydrate } from 'pinia'
 import { computed } from 'vue'
@@ -45,7 +45,7 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   // Methods
-  function login(userData: User) {
+  function login(userData: UserLocal) {
     user.value = JSON.stringify(userData)
   }
 

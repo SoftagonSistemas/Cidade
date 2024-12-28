@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { Institution, User } from '@prisma/client'
 import UploadImage from '@/components/UploadImage.vue'
 import BaseService from '@/services/BaseService'
-import { OrganizationService } from '@/services/OrganizationService'
 import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
 
@@ -37,8 +37,10 @@ const schema = z.object({
 })
 
 const institutionService = new BaseService('institution')
-const orgService = new OrganizationService()
-const usuarios = ref([])
+const userService = new BaseService('user')
+
+const existingInstitution = ref<Institution>()
+const usuarios = ref<Partial<User>[]>([])
 
 function validateForm() {
   const result = schema.safeParse(formData.value)
@@ -60,8 +62,17 @@ async function submitForm() {
   const validation = validateForm()
   if (validation.success) {
     try {
-      await institutionService.create(formData.value)
-      toast.success('Dados enviados com sucesso!')
+      if (existingInstitution.value) {
+        // Atualizar os dados da instituição existente
+        await institutionService.update(existingInstitution.value.id, formData.value)
+        toast.success('Dados atualizados com sucesso!')
+      }
+      else {
+        // Criar nova instituição
+        const newInstitution = await institutionService.create(formData.value) as Institution
+        existingInstitution.value = newInstitution
+        toast.success('Dados enviados com sucesso!')
+      }
     }
     catch (error: any) {
       toast.error(`Erro ao enviar dados: ${error.message}`)
@@ -69,7 +80,7 @@ async function submitForm() {
   }
   else {
     const errorMessages = Object.entries(formErrors.value)
-      .map(([field, errors]) => `${field}: ${errors.join(', ')}`)
+      .map(([field, errors]) => `${field}: ${(errors as string[]).join(', ')}`)
       .join(' | ')
     toast.error(`Erros de validação no formulário: ${errorMessages}`)
   }
@@ -93,20 +104,19 @@ function resetForm() {
 }
 
 async function getMembersFromOrganization() {
-  const members = await orgService.getMembers()
-
+  const members = await userService.filter({ jobTitle: ['Prefeito', 'Vice-Prefeito'] })
   usuarios.value = members.map((member: any) => ({
-    id: member.user.id,
-    name: member.user.name || 'Sem Nome',
+    id: member.id,
+    name: member.name || 'Sem Nome',
   }))
 }
 
 async function getInstitutionData() {
   try {
     const institutions = await institutionService.getAll()
-    console.log('Dados da instituição:', institutions)
     if (institutions.length > 0) {
       const institution = institutions[0]
+      existingInstitution.value = institution
       formData.value = {
         name: institution.name || '',
         address: institution.address || '',
@@ -203,7 +213,7 @@ onMounted(async () => {
             color="primary"
             variant="elevated"
           >
-            Salvar
+            {{ existingInstitution ? 'Atualizar' : 'Salvar' }}
           </v-btn>
 
           <!-- Botão Limpar -->

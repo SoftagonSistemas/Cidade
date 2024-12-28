@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // Dados
 import type { User } from '@prisma/client'
+import { roles } from '@/data/roles'
 import BaseService from '@/services/BaseService'
 import FileService from '@/services/FileService'
 
@@ -12,6 +13,11 @@ const currentPage = ref(1)
 const fileService = new FileService()
 
 const router = useRouter()
+
+function getRoleLabel(roleValue: string): string {
+  const role = roles.find(r => r.value === roleValue)
+  return role ? role.label : 'Não informado'
+}
 
 async function fetchUsers() {
   loading.value = true
@@ -117,7 +123,7 @@ onMounted(() => {
                   <!-- Informações adicionais -->
                   <v-card-text>
                     <p><strong>Telefone:</strong> {{ user.raw.phoneNumber || "Não informado" }}</p>
-                    <p><strong>Função:</strong> {{ user.raw.role || "Não informado" }}</p>
+                    <p><strong>Função:</strong> {{ getRoleLabel(user.raw.role) }}</p>
                   </v-card-text>
                 </v-card>
               </v-col>
