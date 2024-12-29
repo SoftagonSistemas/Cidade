@@ -1,13 +1,26 @@
 <script setup lang="ts">
-import type { Department, User } from '@prisma/client'
-import BaseService from '@/services/BaseService'
+import type { DepartmentWithRelations } from '@/services/DepartmentService'
 import DepartmentService from '@/services/DepartmentService'
 
-const departments = ref<Department[]>([])
+const departments = ref<DepartmentWithRelations[]>([])
 const loading = ref(false)
 const search = ref('')
+const showOnlySecretariats = ref(false)
 const itemsPerPage = ref(6)
 const currentPage = ref(1)
+
+const filteredDepartments = computed(() => {
+  return departments.value.filter((dept) => {
+    if (showOnlySecretariats.value) {
+      return dept.isSecretariat
+    }
+    return true
+  })
+})
+
+const switchLabel = computed(() =>
+  showOnlySecretariats.value ? 'Secretarias' : 'Mostrar Todos',
+)
 
 async function fetchDepartments() {
   loading.value = true
@@ -15,7 +28,6 @@ async function fetchDepartments() {
   try {
     const allDepartments = await departmentService.getDepartmentsWithRelations()
     departments.value = allDepartments
-    console.log('Departamentos:', departments.value)
   }
   catch (error) {
     toast.error('Erro ao buscar departamentos. Verifique o servidor.')
@@ -55,18 +67,29 @@ onMounted(() => {
         <v-data-iterator
           v-model:items-per-page="itemsPerPage"
           v-model:page="currentPage"
-          :items="departments"
+          :items="filteredDepartments"
           :loading="loading"
           :search="search"
         >
           <template #header>
-            <v-text-field
-              v-model="search"
-              label="Buscar Departamento"
-              prepend-icon="mdi-magnify"
-              variant="outlined"
-              density="compact"
-            />
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  v-model="search"
+                  label="Buscar Local"
+                  prepend-icon="mdi-magnify"
+                  density="compact"
+                />
+              </v-col>
+              <v-col cols="4" class="d-flex align-center">
+                <v-switch
+                  v-model="showOnlySecretariats"
+                  color="primary"
+                  :label="switchLabel"
+                  hide-details
+                />
+              </v-col>
+            </v-row>
           </template>
 
           <template #default="{ items }">
