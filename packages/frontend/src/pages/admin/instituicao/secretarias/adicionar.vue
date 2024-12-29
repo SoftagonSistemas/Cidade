@@ -101,15 +101,25 @@ async function getLocalUsers() {
   const userService = new BaseService('user')
   try {
     const usersResponse = await userService.getAll()
-    console.log('Usuários:', usersResponse)
     users.value = usersResponse
   }
   catch (error) {
     console.error('Erro ao buscar usuários:', error)
   }
 }
+async function getLocalDepartments() {
+  const departmentService = new BaseService('department')
+  try {
+    const departmentsResponse = await departmentService.getAll()
+    parentDepartments.value = departmentsResponse
+  }
+  catch (error) {
+    console.error('Erro ao buscar departamentos:', error)
+  }
+}
 onMounted(() => {
   getLocalUsers()
+  getLocalDepartments()
 })
 </script>
 
@@ -155,6 +165,7 @@ onMounted(() => {
           <span class="text-caption">Secretaria ou um Departamento?</span>
           <v-switch
             v-model="form.isSecretariat"
+            class="mb-n10 mx-auto"
             :label="form.isSecretariat ? 'Secretaria' : 'Departamento'"
             color="primary"
           />
@@ -162,9 +173,10 @@ onMounted(() => {
         <v-col v-if="!form.isSecretariat" cols="12">
           <v-select
             v-model="form.parentDepartmentId"
+
             label="Secretaria"
             :items="parentDepartments"
-            item-text="name"
+            item-title="name"
             item-value="id"
             :return-object="false"
             hint="Departamento de qual secretaria?"
@@ -181,7 +193,6 @@ onMounted(() => {
           <AddressDatabase
             v-model:address-id="form.addressId as string"
           />
-          <p>Endereço Selecionado: {{ form.addressId }}</p>
         </v-col>
       </v-row>
 
