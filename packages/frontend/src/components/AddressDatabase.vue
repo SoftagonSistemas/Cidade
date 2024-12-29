@@ -2,11 +2,11 @@
 import type { Address } from '@prisma/client'
 import AddressService from '@/services/AddressService'
 
-defineProps<{
-  addressId: string | null
+const props = defineProps<{
+  id: string | null
 }>()
 const emit = defineEmits<{
-  (event: 'update:addressId', value: string | null): void
+  (event: 'update:id', value: string | null): void
 }>()
 
 // Instância do serviço
@@ -88,7 +88,7 @@ async function addAddress() {
     try {
       const addressInserted = address.value as Address
       const newAddress = await addressService.create(addressInserted) as Address
-      emit('update:addressId', newAddress.id)
+      emit('update:id', newAddress.id)
     }
     catch (error) {
       console.error('Erro ao adicionar endereço:', error)
@@ -111,7 +111,7 @@ function handleAddressSelection(selected: string | Partial<Address>) {
   else {
     // Preenche os campos, exceto número e complemento
     if (selected.id)
-      emit('update:addressId', selected.id)
+      emit('update:id', selected.id)
     address.value = {
       street: selected.street,
       city: selected.city,
@@ -141,11 +141,41 @@ function formatStreetName(streetName: string): string {
     .join(' ')
 }
 
+async function fetchAddressDetails() {
+  const addressId = props.id as string
+  try {
+    const addressDetails = await addressService.getById(addressId)
+    if (addressDetails) {
+      address.value = {
+        street: addressDetails.street || '',
+        number: addressDetails.number || '',
+        complement: addressDetails.complement || '',
+        city: addressDetails.city || '',
+        state: addressDetails.state || '',
+        postalCode: addressDetails.postalCode || '',
+      }
+    }
+  }
+  catch (error) {
+    console.error('Erro ao buscar detalhes do endereço:', error)
+  }
+}
+watch(
+  () => props.id,
+  (newId, oldId) => {
+    if (newId && newId !== oldId) {
+      fetchAddressDetails()
+    }
+  },
+  { immediate: true }, // Isso garante que `fetchAddressDetails` seja chamado ao montar, se `id` já estiver definido
+)
+
 // Inicialização
 onMounted(() => {
   fetchCitySuggestions()
   fetchStateSuggestions()
   fetchPostalCodeSuggestions()
+  fetchAddressDetails()
 })
 </script>
 

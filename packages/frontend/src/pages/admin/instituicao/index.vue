@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Institution, User } from '@prisma/client'
+import AddressDatabase from '@/components/AddressDatabase.vue'
 import UploadImage from '@/components/UploadImage.vue'
 import BaseService from '@/services/BaseService'
 import { useAuthStore } from '@/stores/AuthStore'
@@ -8,9 +9,7 @@ import { z } from 'zod'
 
 const formData = ref({
   name: '',
-  address: '',
-  city: '',
-  state: '',
+  addressId: '',
   phone: '',
   whatsapp: '',
   email: '',
@@ -26,9 +25,7 @@ const formErrors = ref({})
 
 const schema = z.object({
   name: z.string().min(10, 'Campo obrigatório'),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
+  addressId: z.string().optional(),
   phone: z.string().optional(),
   whatsapp: z.string().optional(),
   email: z.string().email('E-mail inválido').optional(),
@@ -91,9 +88,7 @@ async function submitForm() {
 function resetForm() {
   formData.value = {
     name: '',
-    address: '',
-    city: '',
-    state: '',
+    addressId: '',
     phone: '',
     whatsapp: '',
     email: '',
@@ -122,9 +117,7 @@ async function getInstitutionData() {
       existingInstitution.value = institution
       formData.value = {
         name: institution.name || '',
-        address: institution.address || '',
-        city: institution.city || '',
-        state: institution.state || '',
+        addressId: institution.addressId || '',
         phone: institution.phone || '',
         whatsapp: institution.whatsapp || '',
         email: institution.email || '',
@@ -159,15 +152,8 @@ onMounted(async () => {
 
         <!-- Endereço -->
         <v-col cols="12">
-          <v-text-field v-model="formData.address" label="Endereço" />
+          <AddressDatabase :id="formData.addressId" />
         </v-col>
-        <v-col cols="6">
-          <v-text-field v-model="formData.city" label="Cidade" />
-        </v-col>
-        <v-col cols="6">
-          <v-text-field v-model="formData.state" label="Estado" />
-        </v-col>
-
         <!-- Contatos -->
         <v-col cols="12" sm="6">
           <v-text-field v-model="formData.phone" v-maskito="phoneMaskOptions" label="Telefone" />

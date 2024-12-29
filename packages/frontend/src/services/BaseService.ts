@@ -28,6 +28,9 @@ export default class BaseService<T> {
   }
 
   async getById(id: string): Promise<T | null> {
+    if (!id)
+      return null
+
     const { data, error } = await this.client
       .from(this.table)
       .select('*')
