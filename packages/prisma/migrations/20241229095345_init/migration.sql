@@ -251,12 +251,11 @@ CREATE TABLE "file_metadata" (
 CREATE TABLE "institution" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
-    "address" TEXT,
-    "city" TEXT,
-    "state" TEXT,
+    "addressId" UUID,
     "phone" TEXT,
     "whatsapp" TEXT,
     "email" TEXT,
+    "cnpj" TEXT,
     "flag" TEXT,
     "emblem" TEXT,
     "mayorId" UUID,
@@ -312,13 +311,13 @@ CREATE TABLE "ticket" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "subject" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "statusId" INTEGER NOT NULL,
-    "priorityId" INTEGER NOT NULL,
+    "statusId" UUID NOT NULL,
+    "priorityId" UUID NOT NULL,
     "createdById" UUID NOT NULL,
     "assignedToId" UUID,
     "departmentId" UUID NOT NULL,
-    "helpTopicId" INTEGER NOT NULL,
-    "slaPlanId" INTEGER,
+    "helpTopicId" UUID NOT NULL,
+    "slaPlanId" UUID,
     "dueDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
@@ -333,7 +332,7 @@ CREATE TABLE "ticket" (
 
 -- CreateTable
 CREATE TABLE "ticket_status" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdBy" TEXT,
@@ -347,7 +346,7 @@ CREATE TABLE "ticket_status" (
 
 -- CreateTable
 CREATE TABLE "ticket_priority" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdBy" TEXT,
@@ -361,7 +360,7 @@ CREATE TABLE "ticket_priority" (
 
 -- CreateTable
 CREATE TABLE "help_topic" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "topic" TEXT NOT NULL,
     "description" TEXT,
     "departmentId" UUID NOT NULL,
@@ -377,7 +376,7 @@ CREATE TABLE "help_topic" (
 
 -- CreateTable
 CREATE TABLE "sla_plan" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "gracePeriod" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -441,7 +440,7 @@ CREATE TABLE "ticket_collaborator" (
 
 -- CreateTable
 CREATE TABLE "custom_field" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "fieldType" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -458,7 +457,7 @@ CREATE TABLE "custom_field" (
 CREATE TABLE "ticket_custom_field" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "ticketId" UUID NOT NULL,
-    "fieldId" INTEGER NOT NULL,
+    "fieldId" UUID NOT NULL,
     "value" TEXT NOT NULL,
     "createdBy" TEXT,
     "updatedBy" TEXT,
@@ -548,6 +547,9 @@ CREATE UNIQUE INDEX "user_apiUserId_key" ON "user"("apiUserId");
 CREATE UNIQUE INDEX "file_metadata_documentId_key" ON "file_metadata"("documentId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "institution_addressId_key" ON "institution"("addressId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "department_name_institutionId_isSecretariat_key" ON "department"("name", "institutionId", "isSecretariat");
 
 -- CreateIndex
@@ -618,6 +620,9 @@ ALTER TABLE "institution" ADD CONSTRAINT "institution_mayorId_fkey" FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE "institution" ADD CONSTRAINT "institution_viceMayorId_fkey" FOREIGN KEY ("viceMayorId") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "institution" ADD CONSTRAINT "institution_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "address"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "department" ADD CONSTRAINT "department_institutionId_fkey" FOREIGN KEY ("institutionId") REFERENCES "institution"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -319,12 +319,11 @@ model FileMetadata {
 model Institution {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
-  address     String?
-  city        String?
-  state       String?
+  addressId   String?      @unique @db.Uuid // ID do endereço relacionado
   phone       String?
   whatsapp    String?
   email       String?
+  cnpj        String?
   flag        String? // Path to the flag image
   emblem      String? // Path to the emblem image
   mayorId     String?      @db.Uuid // ID of the Mayor (User)
@@ -338,11 +337,11 @@ model Institution {
   // Relations
   mayor       User?        @relation("Institution_Mayor", fields: [mayorId], references: [id]) // Relation to User as Mayor
   viceMayor   User?        @relation("Institution_ViceMayor", fields: [viceMayorId], references: [id]) // Relation to User as Vice-Mayor
+  address     Address?     @relation(fields: [addressId], references: [id]) // Relação com Address
   departments Department[] // List of Departments in the Institution
 
   @@map("institution")
 }
-
 
 /// The `Department` model represents organizational units within an institution. 
 model Department {
@@ -399,13 +398,13 @@ model Ticket {
   id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   subject        String
   description    String
-  statusId       Int
-  priorityId     Int
+  statusId       String @db.Uuid
+  priorityId     String @db.Uuid
   createdById    String               @db.Uuid
   assignedToId   String?              @db.Uuid
   departmentId   String @db.Uuid
-  helpTopicId    Int
-  slaPlanId      Int?
+  helpTopicId    String @db.Uuid
+  slaPlanId      String? @db.Uuid
   dueDate        DateTime?
   createdAt      DateTime             @default(now())
   updatedAt      DateTime?             @default(now())
@@ -431,7 +430,7 @@ model Ticket {
 }
 
 model TicketStatus {
-  id        Int      @id @default(autoincrement())
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   createdAt DateTime @default(now())
   createdBy String?
@@ -445,7 +444,7 @@ model TicketStatus {
 }
 
 model TicketPriority {
-  id        Int      @id @default(autoincrement())
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   createdAt DateTime @default(now())
   createdBy String?
@@ -459,7 +458,7 @@ model TicketPriority {
 }
 
 model HelpTopic {
-  id           Int        @id @default(autoincrement())
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   topic        String
   description  String?
   departmentId String @db.Uuid
@@ -476,7 +475,7 @@ model HelpTopic {
 }
 
 model SLAPlan {
-  id          Int      @id @default(autoincrement())
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
   gracePeriod Int
   createdAt   DateTime @default(now())
@@ -544,7 +543,7 @@ model TicketCollaborator {
 }
 
 model CustomField {
-  id        Int                 @id @default(autoincrement())
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   fieldType String
   createdAt DateTime            @default(now())
@@ -561,7 +560,7 @@ model CustomField {
 model TicketCustomField {
   id       String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   ticketId String      @db.Uuid
-  fieldId  Int
+  fieldId  String @db.Uuid
   value    String
   createdBy String?
   updatedBy String?
@@ -623,6 +622,7 @@ model Address {
   // Relações
   users       User[]       // Relacionamento com usuários
   departments Department[] // Relacionamento com departamentos
+  institution Institution? // Relacionamento com instituição
 
   @@map("address")
 }
