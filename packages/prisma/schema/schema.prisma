@@ -346,12 +346,12 @@ model Institution {
 
 /// The `Department` model represents organizational units within an institution. 
 model Department {
-  id                 Int              @id @default(autoincrement())
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name               String
   description        String?
   isSecretariat      Boolean          @default(false) // True for secretariats
   institutionId      String           @db.Uuid
-  parentDepartmentId Int?
+  parentDepartmentId String?          @db.Uuid // Corrigir o tipo de dados para UUID
   headId             String?          @db.Uuid // The head of the department (e.g., Secretary, Director)
   addressId          String?          @db.Uuid // ID do endereço relacionado
   createdAt          DateTime         @default(now())
@@ -381,7 +381,7 @@ model Department {
 model UserDepartment {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId       String     @db.Uuid
-  departmentId Int
+  departmentId String @db.Uuid
   role         String // E.g., "Director", "Supervisor", "Employee"
   createdAt    DateTime   @default(now())
   createdBy    String?
@@ -403,7 +403,7 @@ model Ticket {
   priorityId     Int
   createdById    String               @db.Uuid
   assignedToId   String?              @db.Uuid
-  departmentId   Int
+  departmentId   String @db.Uuid
   helpTopicId    Int
   slaPlanId      Int?
   dueDate        DateTime?
@@ -462,7 +462,7 @@ model HelpTopic {
   id           Int        @id @default(autoincrement())
   topic        String
   description  String?
-  departmentId Int
+  departmentId String @db.Uuid
   createdAt    DateTime   @default(now())
   createdBy    String?
   updatedBy    String?
@@ -627,20 +627,22 @@ model Address {
   @@map("address")
 }
 
-
 model ContactInfo {
   id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type          String      // Tipo de contato (e.g., "phone", "email", "instagram", "opening_hours")
   value         String      // Valor do contato (e.g., número de telefone, e-mail, URL de Instagram, ou horário no formato "08:00-17:00")
   description   String?     // Descrição opcional (e.g., "Atendimento Geral", "WhatsApp Oficial")
   dayOfWeek     Int?        // 0 (Domingo) a 6 (Sábado), para horários de funcionamento
-  departmentId  Int?        // Relacionado a um Departamento
+  departmentId  String      @db.Uuid // Relacionado a um Departamento
   institutionId String?     @db.Uuid // Relacionado a uma Instituição
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime?   @updatedAt
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime?    @updatedAt
+  createdBy     String?
+  updatedBy     String?
+  tenantId      String?
+  deletedAt     DateTime?
 
-  department    Department? @relation(fields: [departmentId], references: [id])
- 
+  department    Department   @relation(fields: [departmentId], references: [id])
 
   @@map("contact_info")
 }

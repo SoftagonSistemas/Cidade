@@ -2,6 +2,7 @@
 import type { Institution, User } from '@prisma/client'
 import UploadImage from '@/components/UploadImage.vue'
 import BaseService from '@/services/BaseService'
+import { useAuthStore } from '@/stores/AuthStore'
 import { phoneMaskOptions } from '@/utils/phoneMask'
 import { z } from 'zod'
 
@@ -17,6 +18,7 @@ const formData = ref({
   emblem: '',
   mayorId: null,
   viceMayorId: null,
+  tenantId: useAuthStore().organization?.id || '',
 })
 
 const isFormValid = ref(false)
@@ -99,6 +101,7 @@ function resetForm() {
     emblem: '',
     mayorId: null,
     viceMayorId: null,
+    tenantId: useAuthStore().organization?.id || '',
   }
   isFormValid.value = false
 }
@@ -129,6 +132,7 @@ async function getInstitutionData() {
         emblem: institution.emblem || '',
         mayorId: institution.mayorId || null,
         viceMayorId: institution.viceMayorId || null,
+        tenantId: institution.tenantId || '',
       }
     }
   }

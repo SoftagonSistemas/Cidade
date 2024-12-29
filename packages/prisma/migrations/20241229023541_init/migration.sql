@@ -273,13 +273,14 @@ CREATE TABLE "institution" (
 
 -- CreateTable
 CREATE TABLE "department" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "description" TEXT,
     "isSecretariat" BOOLEAN NOT NULL DEFAULT false,
     "institutionId" UUID NOT NULL,
-    "parentDepartmentId" INTEGER,
+    "parentDepartmentId" UUID,
     "headId" UUID,
+    "addressId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "createdBy" TEXT,
@@ -294,7 +295,7 @@ CREATE TABLE "department" (
 CREATE TABLE "user_department" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "userId" UUID NOT NULL,
-    "departmentId" INTEGER NOT NULL,
+    "departmentId" UUID NOT NULL,
     "role" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdBy" TEXT,
@@ -315,7 +316,7 @@ CREATE TABLE "ticket" (
     "priorityId" INTEGER NOT NULL,
     "createdById" UUID NOT NULL,
     "assignedToId" UUID,
-    "departmentId" INTEGER NOT NULL,
+    "departmentId" UUID NOT NULL,
     "helpTopicId" INTEGER NOT NULL,
     "slaPlanId" INTEGER,
     "dueDate" TIMESTAMP(3),
@@ -363,7 +364,7 @@ CREATE TABLE "help_topic" (
     "id" SERIAL NOT NULL,
     "topic" TEXT NOT NULL,
     "description" TEXT,
-    "departmentId" INTEGER NOT NULL,
+    "departmentId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdBy" TEXT,
     "updatedBy" TEXT,
@@ -507,7 +508,6 @@ CREATE TABLE "address" (
     "complement" TEXT,
     "city" TEXT NOT NULL,
     "state" TEXT NOT NULL,
-    "country" TEXT NOT NULL,
     "postalCode" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -526,10 +526,14 @@ CREATE TABLE "contact_info" (
     "value" TEXT NOT NULL,
     "description" TEXT,
     "dayOfWeek" INTEGER,
-    "departmentId" INTEGER,
+    "departmentId" UUID NOT NULL,
     "institutionId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
+    "createdBy" TEXT,
+    "updatedBy" TEXT,
+    "tenantId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "contact_info_pkey" PRIMARY KEY ("id")
 );
@@ -625,6 +629,9 @@ ALTER TABLE "department" ADD CONSTRAINT "department_parentDepartmentId_fkey" FOR
 ALTER TABLE "department" ADD CONSTRAINT "department_headId_fkey" FOREIGN KEY ("headId") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "department" ADD CONSTRAINT "department_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "address"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "user_department" ADD CONSTRAINT "user_department_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -691,4 +698,4 @@ ALTER TABLE "ticket_user" ADD CONSTRAINT "ticket_user_ticketId_fkey" FOREIGN KEY
 ALTER TABLE "ticket_user" ADD CONSTRAINT "ticket_user_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "contact_info" ADD CONSTRAINT "contact_info_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "department"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "contact_info" ADD CONSTRAINT "contact_info_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

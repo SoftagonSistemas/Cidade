@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Department, User } from '@prisma/client'
 import BaseService from '@/services/BaseService'
+import InstitutionService from '@/services/InstitutionService'
 import { useAuthStore } from '@/stores/AuthStore'
 import { ref } from 'vue'
 
@@ -9,6 +10,9 @@ type DepartmentForm = Department & {
   contactInfos: { type: string, value: string }[] // Representação de contatos
 }
 
+const institutionService = new InstitutionService()
+const institutionId = ref('')
+
 // Dados do formulário com o tipo estendido
 const form = ref<Partial<DepartmentForm>>({
   name: '',
@@ -16,10 +20,10 @@ const form = ref<Partial<DepartmentForm>>({
   isSecretariat: false,
   parentDepartmentId: null,
   headId: null,
-  institutionId: useAuthStore().organization?.id || '',
+  institutionId: institutionId.value || '',
   addressId: null,
   tenantId: useAuthStore().user?.id || '',
-  contactInfos: [],
+  contactInfos: [{ type: 'Whatsapp', value: '' }],
 })
 
 // Contato inicial
@@ -38,7 +42,7 @@ const isSaving = ref(false)
 
 function addContact() {
   if (!form.value.contactInfos) {
-    form.value.contactInfos = [] // Garante que não será undefined
+    form.value.contactInfos = []
   }
   form.value.contactInfos.push(newContact())
 }
@@ -69,10 +73,25 @@ async function saveDepartment() {
 
   isSaving.value = true
   const departmentService = new BaseService('department')
+  const contactInfoService = new BaseService('contact_info')
+
   try {
-    await departmentService.create({
+    // Insere o departamento
+    const createdDepartment = await departmentService.create({
       ...form.value,
+      institutionId: institutionId.value,
+      contactInfos: undefined, // Remova os contatos da inserção inicial
     })
+
+    if (createdDepartment && form.value.contactInfos) {
+      // Insere os contatos relacionados
+      const contactInfos = form.value.contactInfos.map(contact => ({
+        ...contact,
+        departmentId: createdDepartment.id, // Associa ao departamento recém-criado
+      }))
+      await Promise.all(contactInfos.map(contact => contactInfoService.create(contact)))
+    }
+
     toast.success('Departamento/Secretaria criado com sucesso!')
     resetForm()
   }
@@ -111,13 +130,19 @@ async function getLocalDepartments() {
   const departmentService = new BaseService('department')
   try {
     const departmentsResponse = await departmentService.getAll()
-    parentDepartments.value = departmentsResponse
+    parentDepartments.value = departmentsResponse as Department[]
   }
   catch (error) {
     console.error('Erro ao buscar departamentos:', error)
   }
 }
-onMounted(() => {
+
+async function getInstitutionId() {
+  institutionId.value = await institutionService.getInstitutionId() as string
+  console.log('Institution ID:', institutionId.value)
+}
+onMounted(async () => {
+  getInstitutionId()
   getLocalUsers()
   getLocalDepartments()
 })
@@ -134,6 +159,32 @@ onMounted(() => {
     </v-row>
 
     <v-form>
+      <!-- Tipo e Departamento Pai -->
+      <v-row>
+        <v-col cols="12">
+          <span class="text-caption">Secretaria ou um Departamento?</span>
+          <v-switch
+            v-model="form.isSecretariat"
+            class="mb-n10 mx-auto"
+            :label="form.isSecretariat ? 'Secretaria' : 'Departamento'"
+            color="primary"
+          />
+        </v-col>
+        <v-col v-if="!form.isSecretariat" cols="12">
+          <v-select
+            v-model="form.parentDepartmentId"
+            label="Secretaria responsável"
+            :items="parentDepartments"
+            item-title="name"
+            item-value="id"
+            :return-object="false"
+            hint="Departamento de qual secretaria?"
+            outlined
+            dense
+            clearable
+          />
+        </v-col>
+      </v-row>
       <!-- Nome -->
       <v-row>
         <v-col cols="12">
@@ -159,74 +210,47 @@ onMounted(() => {
         </v-col>
       </v-row>
 
-      <!-- Tipo e Departamento Pai -->
-      <v-row>
-        <v-col cols="12">
-          <span class="text-caption">Secretaria ou um Departamento?</span>
-          <v-switch
-            v-model="form.isSecretariat"
-            class="mb-n10 mx-auto"
-            :label="form.isSecretariat ? 'Secretaria' : 'Departamento'"
-            color="primary"
-          />
-        </v-col>
-        <v-col v-if="!form.isSecretariat" cols="12">
-          <v-select
-            v-model="form.parentDepartmentId"
-
-            label="Secretaria"
-            :items="parentDepartments"
-            item-title="name"
-            item-value="id"
-            :return-object="false"
-            hint="Departamento de qual secretaria?"
-            outlined
-            dense
-            clearable
-          />
-        </v-col>
-      </v-row>
-
       <!-- Endereço -->
       <v-row>
         <v-col cols="12">
           <AddressDatabase
-            v-model:address-id="form.addressId as string"
+            v-model:address-id="form.addressId"
           />
         </v-col>
       </v-row>
 
       <!-- Contatos -->
-      <v-row>
-        <v-col cols="12">
+      <v-row class="mt-14">
+        <v-col cols="6">
           <h3>Contatos</h3>
-          <v-btn color="primary" @click="addContact">
-            Adicionar Contato
+          <span class="text-caption">
+            Adicione os contatos da {{ form.isSecretariat ? 'secretaria' : 'departamento' }}
+          </span>
+        </v-col>
+        <v-col cols="6" class="d-flex justify-end">
+          <v-btn size="small" prepend-icon="mdi-plus" color="primary" @click="addContact">
+            Contato
           </v-btn>
         </v-col>
         <v-col v-for="(contact, index) in form.contactInfos" :key="index" cols="12" class="mt-2">
           <v-row>
             <v-col cols="4">
-              <v-select
+              <v-combobox
                 v-model="contact.type"
-                :items="['phone', 'email', 'instagram']"
+                :items="['Telefone', 'E-mail', 'Instagram']"
                 label="Tipo de Contato"
-                outlined
                 dense
               />
             </v-col>
-            <v-col cols="4">
+            <v-col cols="6">
               <v-text-field
                 v-model="contact.value"
-                label="Valor"
-                outlined
+                label="Contato"
                 dense
               />
             </v-col>
-            <v-col cols="12" class="d-flex justify-end">
-              <v-btn icon color="red" @click="removeContact(index)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+            <v-col cols="2" class="d-flex justify-end">
+              <v-btn icon="mdi-minus-thick" size="x-small" color="red" @click="removeContact(index)" />
             </v-col>
           </v-row>
         </v-col>
@@ -237,7 +261,7 @@ onMounted(() => {
         <v-col cols="12">
           <v-select
             v-model="form.headId"
-            label="Chefe do Departamento"
+            :label="form.isSecretariat ? 'Secretário(a) Municipal' : 'Responsável do Departamento'"
             :items="users"
             item-title="name"
             item-value="id"

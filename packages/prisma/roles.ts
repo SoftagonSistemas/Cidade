@@ -49,6 +49,46 @@ async function setupRoles() {
     `;
     await prisma.$executeRawUnsafe(grantPermissionsQuery);
     console.log("Permissions granted to role 'owner' for eligible tables.");
+
+    // Step 4: Grant USAGE and SELECT permissions on all sequences to 'owner'
+    const grantSequencePermissionsQuery = `
+      DO $$
+      DECLARE
+          sequence_name text;
+      BEGIN
+          FOR sequence_name IN
+              SELECT c.relname AS sequence_name
+              FROM pg_class c
+              JOIN pg_namespace n ON n.oid = c.relnamespace
+              WHERE c.relkind = 'S' AND n.nspname = 'public'
+          LOOP
+              EXECUTE format('GRANT USAGE, SELECT ON SEQUENCE public.%I TO owner;', sequence_name);
+          END LOOP;
+      END
+      $$;
+    `;
+    await prisma.$executeRawUnsafe(grantSequencePermissionsQuery);
+    console.log("Granted USAGE and SELECT on sequences to role 'owner'.");
+
+    // Step 5: Explicitly REVOKE DELETE permissions from all tables
+    const revokeDeletePermissionsQuery = `
+      DO $$
+      DECLARE
+          table_name text;
+      BEGIN
+          FOR table_name IN
+              SELECT tablename
+              FROM pg_tables
+              WHERE schemaname = 'public'
+                AND tablename NOT LIKE '\\_%' ESCAPE '\\'
+          LOOP
+              EXECUTE format('REVOKE DELETE ON TABLE public.%I FROM owner;', table_name);
+          END LOOP;
+      END
+      $$;
+    `;
+    await prisma.$executeRawUnsafe(revokeDeletePermissionsQuery);
+    console.log("DELETE permissions explicitly revoked from role 'owner'.");
   } catch (error) {
     console.error('Error during role setup:', error);
   } finally {
