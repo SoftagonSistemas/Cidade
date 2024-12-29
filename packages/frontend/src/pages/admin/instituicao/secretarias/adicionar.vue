@@ -7,7 +7,7 @@ import { ref } from 'vue'
 
 // Criação de um tipo customizado para o relacionamento
 type DepartmentForm = Department & {
-  contactInfos: { type: string, value: string }[] // Representação de contatos
+  contactInfos: { type: string, value: string }[]
 }
 
 const institutionService = new InstitutionService()
@@ -139,7 +139,6 @@ async function getLocalDepartments() {
 
 async function getInstitutionId() {
   institutionId.value = await institutionService.getInstitutionId() as string
-  console.log('Institution ID:', institutionId.value)
 }
 onMounted(async () => {
   getInstitutionId()
@@ -214,7 +213,8 @@ onMounted(async () => {
       <v-row>
         <v-col cols="12">
           <AddressDatabase
-            v-model:address-id="form.addressId"
+            :id="form.addressId"
+            @update:id="form.addressId = $event"
           />
         </v-col>
       </v-row>

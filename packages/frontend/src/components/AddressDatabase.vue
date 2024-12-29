@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Address } from '@prisma/client'
 import AddressService from '@/services/AddressService'
+import { zipMask } from '@/utils/zipMask'
 
 const props = defineProps<{
   id: string | null
@@ -82,19 +83,58 @@ async function fetchPostalCodeSuggestions() {
     console.error('Erro ao buscar códigos postais:', error)
   }
 }
+
+// Rastreia o último endereço inserido
+let lastInsertedAddress: Partial<Address> | null = null
+const isInsertingAddress = ref(false)
+
 async function addAddress() {
-  // Se não houver sugestões, cria um novo endereço
+  if (isInsertingAddress.value)
+    return
+
+  const street = address.value.street ? address.value.street.trim() : ''
+  if (!street) {
+    return
+  }
+  // Verifica se o endereço está completo e válido
+  if (!address.value.postalCode) {
+    return
+  }
+  if (address.value.postalCode.length !== 9) {
+    return
+  }
+
+  const currentAddress = JSON.stringify(address.value)
+
+  // Evita inserir o mesmo endereço várias vezes
+  if (lastInsertedAddress && JSON.stringify(lastInsertedAddress) === currentAddress) {
+    console.warn('Endereço já inserido, ignorando...')
+    return
+  }
+
   if (addressSuggestions.value.length === 0) {
     try {
+      isInsertingAddress.value = true
       const addressInserted = address.value as Address
       const newAddress = await addressService.create(addressInserted) as Address
+
+      // Atualiza o último endereço inserido
+      lastInsertedAddress = { ...address.value }
+
+      // Emite o evento para atualizar o ID
       emit('update:id', newAddress.id)
     }
     catch (error) {
       console.error('Erro ao adicionar endereço:', error)
     }
+    finally {
+      isInsertingAddress.value = false
+    }
   }
 }
+
+const debouncedAddAddress = debounce(addAddress, 500)
+
 // Lida com seleção ou criação de um novo endereço
 function handleAddressSelection(selected: string | Partial<Address>) {
   if (typeof selected === 'string') {
@@ -246,6 +286,7 @@ onMounted(() => {
     <v-col cols="12">
       <v-combobox
         v-model="address.postalCode"
+        v-maskito="zipMask"
         :items="postalCodeSuggestions"
         label="CEP"
         outlined
@@ -253,7 +294,7 @@ onMounted(() => {
         hide-details
         :hide-no-data="false"
         :return-object="false"
-        @update:model-value="addAddress"
+        @update:model-value="debouncedAddAddress"
       />
     </v-col>
   </v-row>
