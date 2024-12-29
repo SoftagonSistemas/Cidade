@@ -82,7 +82,19 @@ async function fetchPostalCodeSuggestions() {
     console.error('Erro ao buscar códigos postais:', error)
   }
 }
-
+async function addAddress() {
+  // Se não houver sugestões, cria um novo endereço
+  if (addressSuggestions.value.length === 0) {
+    try {
+      const addressInserted = address.value as Address
+      const newAddress = await addressService.create(addressInserted) as Address
+      emit('update:addressId', newAddress.id)
+    }
+    catch (error) {
+      console.error('Erro ao adicionar endereço:', error)
+    }
+  }
+}
 // Lida com seleção ou criação de um novo endereço
 function handleAddressSelection(selected: string | Partial<Address>) {
   if (typeof selected === 'string') {
@@ -98,7 +110,8 @@ function handleAddressSelection(selected: string | Partial<Address>) {
   }
   else {
     // Preenche os campos, exceto número e complemento
-    emit('update:addressId', selected.id || null)
+    if (selected.id)
+      emit('update:addressId', selected.id)
     address.value = {
       street: selected.street,
       city: selected.city,
@@ -137,82 +150,81 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-container>
-    <h4>Endereço</h4>
-    <v-row>
-      <v-col cols="12">
-        <v-combobox
-          v-model="address.street"
-          :items="addressSuggestions"
-          item-title="street"
-          item-value="street"
-          label="Rua / Travessa / Avenida"
-          outlined
-          dense
-          hide-details
-          return-object
-          :hide-no-data="true"
-          @update:model-value="handleAddressSelection"
-          @update:search="debouncedFetchSuggestions"
-        />
-      </v-col>
-    </v-row>
-    <!-- Outros campos de endereço -->
-    <v-row>
-      <v-col cols="6">
-        <v-text-field
-          v-model="address.number"
-          label="Número"
-          outlined
-          dense
-          hide-details
-        />
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          v-model="address.complement"
-          label="Complemento"
-          outlined
-          dense
-          hide-details
-        />
-      </v-col>
-      <v-col cols="8">
-        <v-combobox
-          v-model="address.city"
-          :items="citySuggestions"
-          label="Cidade"
-          outlined
-          dense
-          hide-details
-          :hide-no-data="false"
-          :return-object="false"
-        />
-      </v-col>
-      <v-col cols="4">
-        <v-combobox
-          v-model="address.state"
-          :items="stateSuggestions"
-          label="Estado"
-          outlined
-          dense
-          hide-details
-          :hide-no-data="false"
-          :return-object="false"
-        />
-      </v-col>
-      <v-col cols="12">
-        <v-combobox
-          v-model="address.postalCode"
-          :items="postalCodeSuggestions"
-          label="CEP"
-          outlined
-          dense
-          hide-details
-          :hide-no-data="false"
-          :return-object="false"
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+  <h4>Endereço</h4>
+  <v-row>
+    <v-col cols="12">
+      <v-combobox
+        v-model="address.street"
+        :items="addressSuggestions"
+        item-title="street"
+        item-value="street"
+        label="Rua / Travessa / Avenida"
+        outlined
+        dense
+        hide-details
+        return-object
+        :hide-no-data="true"
+        @update:model-value="handleAddressSelection"
+        @update:search="debouncedFetchSuggestions"
+      />
+    </v-col>
+  </v-row>
+  <!-- Outros campos de endereço -->
+  <v-row>
+    <v-col cols="6">
+      <v-text-field
+        v-model="address.number"
+        label="Número"
+        outlined
+        dense
+        hide-details
+      />
+    </v-col>
+    <v-col cols="6">
+      <v-text-field
+        v-model="address.complement"
+        label="Complemento"
+        outlined
+        dense
+        hide-details
+      />
+    </v-col>
+    <v-col cols="8">
+      <v-combobox
+        v-model="address.city"
+        :items="citySuggestions"
+        label="Cidade"
+        outlined
+        dense
+        hide-details
+        :hide-no-data="false"
+        :return-object="false"
+      />
+    </v-col>
+    <v-col cols="4">
+      <v-combobox
+        v-model="address.state"
+        :items="stateSuggestions"
+        label="Estado"
+        outlined
+        dense
+        hide-details
+        :hide-no-data="false"
+        :return-object="false"
+      />
+    </v-col>
+    <v-col cols="12">
+      <v-combobox
+        v-model="address.postalCode"
+        :items="postalCodeSuggestions"
+        label="CEP"
+        outlined
+        dense
+        hide-details
+        :hide-no-data="false"
+        :return-object="false"
+        @update:model-value="addAddress"
+      />
+    </v-col>
+  </v-row>
 </template>
