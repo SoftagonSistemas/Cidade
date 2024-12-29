@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Department } from '@prisma/client'
-
+import type { Department, User } from '@prisma/client'
 import BaseService from '@/services/BaseService'
+import DepartmentService from '@/services/DepartmentService'
 
 const departments = ref<Department[]>([])
 const loading = ref(false)
@@ -9,19 +9,13 @@ const search = ref('')
 const itemsPerPage = ref(6)
 const currentPage = ref(1)
 
-const isDialogOpen = ref(false)
-
-// Callback para quando um departamento é criado
-async function handleDepartmentCreated() {
-  await fetchDepartments()
-}
-
 async function fetchDepartments() {
   loading.value = true
-  const departmentService = new BaseService('department')
+  const departmentService = new DepartmentService()
   try {
-    const allDepartments = await departmentService.getAll()
+    const allDepartments = await departmentService.getDepartmentsWithRelations()
     departments.value = allDepartments
+    console.log('Departamentos:', departments.value)
   }
   catch (error) {
     toast.error('Erro ao buscar departamentos. Verifique o servidor.')
@@ -40,23 +34,22 @@ onMounted(() => {
 <template>
   <v-container>
     <v-row>
-      <!-- Título e Botão Alinhados -->
-      <v-col cols="6">
-        <h1>Departamentos e Secretarias</h1>
+      <v-col cols="8">
+        <div class="text-h6 text-sm-h4 text-md-h5">
+          Departamentos e Secretarias
+        </div>
       </v-col>
-      <v-col cols="6" class="d-flex justify-end">
+      <v-col cols="4" class="d-flex justify-end">
         <v-btn
           color="primary"
-          variant="elevated"
           prepend-icon="mdi-plus"
           @click="$router.push('/admin/instituicao/secretarias/adicionar')"
         >
-          Novo Departamento
+          Novo
         </v-btn>
       </v-col>
     </v-row>
 
-    <!-- Data Iterator -->
     <v-row>
       <v-col cols="12">
         <v-data-iterator
@@ -66,54 +59,56 @@ onMounted(() => {
           :loading="loading"
           :search="search"
         >
-          <!-- Barra de Busca -->
           <template #header>
             <v-text-field
               v-model="search"
               label="Buscar Departamento"
               prepend-icon="mdi-magnify"
-              dense
-              outlined
+              variant="outlined"
+              density="compact"
             />
           </template>
 
-          <!-- Lista de Departamentos -->
           <template #default="{ items }">
             <v-row v-if="items.length">
               <v-col
                 v-for="department in items"
-                :key="department.id"
+                :key="department.raw.id"
                 cols="12"
                 sm="6"
                 md="4"
               >
-                <v-card>
-                  <!-- Nome do Departamento -->
-                  <v-card-title class="text-h6 text-center">
-                    {{ department.name }}
+                <v-card
+                  :elevation="department.raw.isSecretariat ? 4 : 1"
+                  :color="department.raw.isSecretariat ? 'primary' : undefined"
+                  class="cursor-pointer v-card--hover" :class="{
+                    'text-white': department.raw.isSecretariat,
+                  }"
+                  @click="$router.push(`/admin/instituicao/secretarias/ver/${department.raw.id}`)"
+                >
+                  <v-card-title class="text-center">
+                    {{ department.raw.name }}
                   </v-card-title>
 
-                  <!-- Descrição e Tipo -->
-                  <v-card-subtitle class="text-center">
-                    <p>{{ department.description || "Sem descrição" }}</p>
-                    <p><strong>Tipo:</strong> {{ department.isSecretariat ? "Secretaria" : "Departamento" }}</p>
-                  </v-card-subtitle>
-
-                  <!-- Instituição -->
                   <v-card-text>
-                    <p><strong>Instituição:</strong> {{ department.institution?.name || "Não vinculada" }}</p>
-                    <p><strong>Chefe:</strong> {{ department.head?.name || "Não definido" }}</p>
+                    <div>
+                      {{ department.raw.description || 'Sem descrição' }}
+                    </div>
+
+                    <div>
+                      <strong>Responsável:</strong> {{ department.raw.head?.name || 'Sem responsável' }}
+                    </div>
+
+                    <div v-if="department.raw.parentDepartment">
+                      <strong>Vinculado à:</strong> {{ department.raw.parentDepartment?.name || 'Nenhum' }}
+                    </div>
                   </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
 
-            <!-- Nenhum Departamento -->
             <v-row v-else>
               <v-col cols="12" class="text-center">
-                <v-icon size="48" color="grey">
-                  mdi-office-building-off
-                </v-icon>
                 <p class="text-h5">
                   Ainda não há departamentos cadastrados.
                 </p>
@@ -121,12 +116,11 @@ onMounted(() => {
             </v-row>
           </template>
 
-          <!-- Paginação -->
           <template #footer>
             <v-pagination
               v-model="currentPage"
               :length="Math.ceil(departments.length / itemsPerPage)"
-              total-visible="5"
+              :total-visible="5"
               color="primary"
             />
           </template>
@@ -135,3 +129,17 @@ onMounted(() => {
     </v-row>
   </v-container>
 </template>
+
+<style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.v-card--hover {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.v-card--hover:hover {
+  opacity: 0.9;
+}
+</style>

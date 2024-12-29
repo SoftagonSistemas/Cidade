@@ -4,6 +4,7 @@ import BaseService from '@/services/BaseService'
 import InstitutionService from '@/services/InstitutionService'
 import { useAuthStore } from '@/stores/AuthStore'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 // Criação de um tipo customizado para o relacionamento
 type DepartmentForm = Department & {
@@ -12,6 +13,7 @@ type DepartmentForm = Department & {
 
 const institutionService = new InstitutionService()
 const institutionId = ref('')
+const router = useRouter()
 
 // Dados do formulário com o tipo estendido
 const form = ref<Partial<DepartmentForm>>({
@@ -21,9 +23,17 @@ const form = ref<Partial<DepartmentForm>>({
   parentDepartmentId: null,
   headId: null,
   institutionId: institutionId.value || '',
-  addressId: null,
+  addressId: '' as string | null,
   tenantId: useAuthStore().user?.id || '',
   contactInfos: [{ type: 'Whatsapp', value: '' }],
+})
+
+definePage({
+  meta: {
+    breadcrumb: [
+      { title: 'Secretarias', to: '/admin/instituicao/secretarias/' },
+    ],
+  },
 })
 
 // Contato inicial
@@ -35,7 +45,7 @@ function newContact() {
 }
 
 // Dados auxiliares
-const parentDepartments = ref([])
+const parentDepartments = ref<Department[]>([])
 const users = ref<User[]>([])
 
 const isSaving = ref(false)
@@ -81,7 +91,7 @@ async function saveDepartment() {
       ...form.value,
       institutionId: institutionId.value,
       contactInfos: undefined, // Remova os contatos da inserção inicial
-    })
+    }) as Department
 
     if (createdDepartment && form.value.contactInfos) {
       // Insere os contatos relacionados
@@ -93,6 +103,8 @@ async function saveDepartment() {
     }
 
     toast.success('Departamento/Secretaria criado com sucesso!')
+    router.push('/admin/instituicao/secretarias')
+
     resetForm()
   }
   catch (error) {
@@ -129,7 +141,7 @@ async function getLocalUsers() {
 async function getLocalDepartments() {
   const departmentService = new BaseService('department')
   try {
-    const departmentsResponse = await departmentService.getAll()
+    const departmentsResponse = await departmentService.filter({ isSecretariat: true })
     parentDepartments.value = departmentsResponse as Department[]
   }
   catch (error) {
@@ -213,7 +225,7 @@ onMounted(async () => {
       <v-row>
         <v-col cols="12">
           <AddressDatabase
-            :id="form.addressId"
+            :id="form.addressId ?? null"
             @update:id="form.addressId = $event"
           />
         </v-col>
