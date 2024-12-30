@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DigitalCertificateService from '@/services/DigitalCertificateService'
+import fileService from '@/services/FileService'
 
 const emit = defineEmits(['certificateAdded'])
 const form = ref(null)
@@ -10,13 +10,13 @@ const newCertificate = ref({
   file: null,
 })
 
-const certificateService = new DigitalCertificateService()
+const certificateService = new fileService()
 async function addCertificate() {
   if (form.value && form.value.validate()) {
     try {
       const filePath = ref()
       if (newCertificate.value.file) {
-        filePath.value = await certificateService.upload(newCertificate.value.file)
+        filePath.value = await certificateService.uploadFile(newCertificate.value.file)
       }
       else {
         throw new Error('File is required')
