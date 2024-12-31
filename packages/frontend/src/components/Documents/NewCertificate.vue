@@ -1,32 +1,38 @@
 <script setup lang="ts">
-import fileService from '@/services/FileService'
+import type { DigitalCertificate } from '@prisma/client'
+import BaseService from '@/services/BaseService'
+import FileService from '@/services/FileService'
+import { useAuthStore } from '@/stores/AuthStore'
 
 const emit = defineEmits(['certificateAdded'])
 const form = ref(null)
 const newCertificate = ref({
-  alias: '',
-  expiration: '',
-  password: '',
+  alias: 'Hermes teste',
+  expiration: '2025-03-02',
+  password: '130382',
   file: null,
 })
 
-const certificateService = new fileService()
+const certificateService = new BaseService('digital_certificate')
+const fileService = new FileService()
 async function addCertificate() {
-  if (form.value && form.value.validate()) {
+  if (form.value) {
     try {
       const filePath = ref()
       if (newCertificate.value.file) {
-        filePath.value = await certificateService.uploadFile(newCertificate.value.file)
+        filePath.value = await fileService.uploadFile(newCertificate.value.file)
       }
       else {
+        toast.error('Certificado digital é obrigatório')
         throw new Error('File is required')
       }
 
-      const certificate = {
+      const certificate: Partial<DigitalCertificate> = {
         alias: newCertificate.value.alias,
         expiration: new Date(newCertificate.value.expiration),
         password: newCertificate.value.password,
-        file: filePath.value,
+        filePath: filePath.value?.path,
+        userId: useAuthStore().user.id,
       }
 
       await certificateService.create(certificate)
@@ -39,15 +45,6 @@ async function addCertificate() {
       console.error('Erro ao adicionar certificado:', error)
     }
   }
-}
-
-function editCertificate(index: number) {
-  const certificate = certificates.value[index]
-  newCertificate.value = { ...certificate }
-  certificates.value.splice(index, 1)
-}
-function deleteCertificate(index: number) {
-  certificates.value.splice(index, 1)
 }
 </script>
 

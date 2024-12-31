@@ -1,3 +1,5 @@
+import { useAuthStore } from '@/stores/AuthStore'
+
 export default class FileService {
   private baseURL = import.meta.env.VITE_BACK3ND_URL
 
@@ -11,12 +13,13 @@ export default class FileService {
    * @param additionalData Any additional data to include in the FormData.
    * @returns The server response for the uploaded file.
    */
-  async uploadFile(file: File, userData: Record<string, any>, additionalData: Record<string, any> = {}) {
+  async uploadFile(file: File, additionalData: Record<string, any> = {}) {
     const endpoint = `upload`
 
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('userData', JSON.stringify(userData))
+    const userData = useAuthStore().user
+    formData.append('userData', userData)
     // Add any additional data to the form
     Object.entries(additionalData).forEach(([key, value]) => {
       formData.append(key, value)
