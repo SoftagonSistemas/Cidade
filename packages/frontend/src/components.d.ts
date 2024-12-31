@@ -16,6 +16,7 @@ declare module 'vue' {
     DepartamentDialog: typeof import('./components/DepartamentDialog.vue')['default']
     DepartmentDialog: typeof import('./components/DepartmentDialog.vue')['default']
     Editor: typeof import('./components/Documents/Editor.vue')['default']
+    FileUpload: typeof import('./components/Documents/FileUpload.vue')['default']
     FullEditor: typeof import('./components/Documents/FullEditor.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Nascimento: typeof import('./components/Nascimento.vue')['default']
