@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import * as pdfjsLib from 'pdfjs-dist'
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 import { computed, defineEmits, onMounted, ref } from 'vue'
 
 const emit = defineEmits<{
   (e: 'view', name: string, url: string): void
 }>()
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker
 
 // Tipos personalizados
 interface PDF {

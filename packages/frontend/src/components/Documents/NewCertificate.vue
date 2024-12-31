@@ -4,17 +4,25 @@ import BaseService from '@/services/BaseService'
 import FileService from '@/services/FileService'
 import { useAuthStore } from '@/stores/AuthStore'
 
-const emit = defineEmits(['certificateAdded'])
+defineProps({
+  showNewCertificateModal: {
+    type: Boolean,
+    required: true,
+  },
+})
+
+const emit = defineEmits(['certificateAdded', 'update:showNewCertificateModal'])
 const form = ref(null)
 const newCertificate = ref({
-  alias: 'Hermes teste',
-  expiration: '2025-03-02',
-  password: '130382',
+  alias: '',
+  expiration: '',
+  password: '',
   file: null,
 })
 
 const certificateService = new BaseService('digital_certificate')
 const fileService = new FileService()
+
 async function addCertificate() {
   if (form.value) {
     try {
@@ -36,9 +44,8 @@ async function addCertificate() {
       }
 
       await certificateService.create(certificate)
-
       newCertificate.value = { alias: '', expiration: '', password: '', file: null }
-
+      toast.success('Certificado adicionado com sucesso')
       emit('certificateAdded')
     }
     catch (error) {
@@ -46,11 +53,15 @@ async function addCertificate() {
     }
   }
 }
+
+function closeModal() {
+  emit('update:showNewCertificateModal', false)
+}
 </script>
 
 <template>
   <v-card id="add-certificate">
-    <v-card-title />
+    <v-card-title>Adicionar Novo Certificado</v-card-title>
     <v-card-text>
       <v-form ref="form">
         <v-text-field
@@ -76,10 +87,15 @@ async function addCertificate() {
           accept=".p12,.pfx"
           required
         />
-        <v-btn @click="addCertificate">
-          Adicionar Certificado
-        </v-btn>
       </v-form>
     </v-card-text>
+    <v-card-actions>
+      <v-btn @click="addCertificate">
+        Adicionar Certificado
+      </v-btn>
+      <v-btn @click="closeModal">
+        Cancelar
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>

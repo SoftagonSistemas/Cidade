@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import type { DigitalCertificate } from '@prisma/client'
 import BaseService from '@/services/BaseService'
+import { onMounted, ref } from 'vue'
 
-const tabs = ref(0)
 const certificates = ref<DigitalCertificate[]>([])
+const showNewCertificateModal = ref(false)
 
 const certificateService = new BaseService<DigitalCertificate>('digital_certificate')
 
 async function fetchCertificates() {
   certificates.value = await certificateService.getAll() as DigitalCertificate[]
+}
+
+function onCertificateAdded() {
+  fetchCertificates() // Atualiza a lista após adicionar um certificado
+  showNewCertificateModal.value = false // Fecha o modal
 }
 
 onMounted(fetchCertificates)
@@ -19,60 +25,49 @@ onMounted(fetchCertificates)
     <v-row>
       <h1>Gerenciar Certificados Digitais</h1>
       <v-col cols="12">
-        <v-tabs v-model="tabs" center-active color="secondary">
-          <v-tab>Cadastrados</v-tab>
-          <v-tab>Novo certificado</v-tab>
-        </v-tabs>
-        <v-tabs-window v-model="tabs">
-          <v-tabs-window-item id="list-certificate" value="one">
-            <v-list lines="two">
-              <template v-if="certificates.length === 0">
-                <v-list-item>
-                  <v-list-item-title>Nenhum certificado registrado ainda.</v-list-item-title>
-                </v-list-item>
+        <v-list lines="two">
+          <template v-if="certificates.length === 0">
+            <v-list-item>
+              <v-list-item-title>Nenhum certificado registrado ainda.</v-list-item-title>
+            </v-list-item>
+          </template>
+          <template v-else>
+            <v-list-item
+              v-for="(certificate, index) in certificates"
+              :key="index"
+              :subtitle="`vencimento ${certificate.expiration}`"
+              :title="certificate.alias"
+            >
+              <template #append>
+                <v-btn
+                  color="grey-lighten-1"
+                  icon="mdi-tag-edit"
+                  variant="text"
+                  @click="(index)"
+                />
               </template>
-              <template v-else>
-                <v-list-item
-                  v-for="(certificate, index) in certificates"
-                  :key="index"
-                  :subtitle="`vencimento ${certificate.expiration}`"
-                  :title="certificate.alias"
-                >
-                  <template #append>
-                    <v-btn
-                      color="grey-lighten-1"
-                      icon="mdi-tag-edit"
-                      variant="text"
-                      @click="(index)"
-                    />
-                  </template>
-                </v-list-item>
-              </template>
-              <v-divider inset />
-            </v-list>
-          </v-tabs-window-item>
-
-          <v-tabs-window-item id="insert-certificate" value="two">
-            <NewCertificate />
-          </v-tabs-window-item>
-        </v-tabs-window>
+            </v-list-item>
+          </template>
+          <v-divider inset />
+        </v-list>
+        <v-btn
+          color="primary"
+          class="mt-4"
+          @click="showNewCertificateModal = true"
+        >
+          Novo Certificado
+        </v-btn>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="showNewCertificateModal" persistent max-width="600px">
+      <template #default>
+        <NewCertificate
+          :show-new-certificate-modal="showNewCertificateModal"
+          @certificate-added="onCertificateAdded"
+          @update:show-new-certificate-modal="showNewCertificateModal = $event"
+        />
+      </template>
+    </v-dialog>
   </v-container>
 </template>
-
-<style scoped>
-.v-container {
-  padding-top: 20px;
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-@media (max-width: 600px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-}
-</style>
