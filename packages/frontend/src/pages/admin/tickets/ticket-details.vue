@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
+import ForwardSecretary from './ForwardSecretary.vue'
 
 const dialog = ref(false)
 const activeTab = ref('call')
@@ -54,8 +55,10 @@ const responseOptions = ['Custom', 'Acknowledgment', 'Follow-Up']
 const recipientsOptions = ['francisco jonny silva', 'Contributors']
 const callStatusOptions = ['Open (current)', 'Resolved', 'Pending', 'Closed']
 const replyToOptions = ['All ticket recipients', 'Ticket owner', 'Do not send Response email']
+const forwardDialog = ref(false)
+const statusChangeDialog = ref('')
 function transferToSecretary() {
-  // console.log('Transfer popup here.')
+  forwardDialog.value = true
 }
 function handleManageEmployee() {
   // console.log('Manage Employee popup here.')
@@ -75,6 +78,39 @@ function postReply() {
 }
 function cancelReply() {
   // console.log('Reply Cancelled')
+}
+
+function printTicket(printType: string) {
+  return printType
+  /* Print Ticket */
+}
+
+function changeStatus(status: string) {
+  statusChangeDialog.value = status
+  /* Change Status */
+}
+
+/* Status change  */
+const statuses = ref(['Draft', 'In Progress', 'Completed', 'Cancelled'])
+const selectedStatus = ref('Draft')
+const statusDialog = ref(false)
+const dialogStatus = ref('')
+const statusDescription = ref('')
+
+function openStatusDialog (status: string) {
+  dialogStatus.value = status
+  statusDialog.value = true
+}
+
+function closeSaveDialog() {
+  statusDialog.value = false
+  dialogStatus.value = ''
+  statusDescription.value = ''
+}
+
+function saveStatus() {
+  selectedStatus.value = dialogStatus.value
+  closeDialog()
 }
 </script>
 
@@ -122,7 +158,7 @@ function cancelReply() {
           <v-list-item link prepend-icon="mdi-check-circle">
             <v-list-item-title>Solved</v-list-item-title>
           </v-list-item>
-          <v-list-item link prepend-icon="mdi-close-circle">
+          <v-list-item link prepend-icon="mdi-close-circle" @click="openStatusDialog('Close')">
             <v-list-item-title>Closed</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -141,13 +177,13 @@ function cancelReply() {
           </v-btn>
         </template>
         <v-list nav>
-          <v-list-item prepend-icon="mdi-file" @click="() => { }">
+          <v-list-item prepend-icon="mdi-file" @click="printTicket('CallSubject')">
             <v-list-item-title>Call Subject</v-list-item-title>
           </v-list-item>
-          <v-list-item prepend-icon="mdi-file" @click="() => { }">
+          <v-list-item prepend-icon="mdi-file" @click="printTicket('CallSubject')">
             <v-list-item-title>Subject + Internal Notes</v-list-item-title>
           </v-list-item>
-          <v-list-item prepend-icon="mdi-folder" @click="() => { }">
+          <v-list-item prepend-icon="mdi-folder" @click="printTicket('CallSubject')">
             <v-list-item-title>Thread + Attachments</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -174,12 +210,30 @@ function cancelReply() {
         <div class="ticket-toolbar-label">
           STATUS
         </div>
-        <v-chip size="small" color="primary" text-color="primary">
-          Draft
-          <v-icon right>
-            mdi-chevron-down
-          </v-icon>
-        </v-chip>
+        <v-menu offset-y>
+          <template #activator="{ props: menu }">
+            <v-chip size="small" color="primary" text-color="primary" v-bind="menu">
+              Draft
+              <v-icon right>
+                mdi-chevron-down
+              </v-icon>
+            </v-chip>
+          </template>
+          <v-list>
+            <v-list-item @click="changeStatus('Draft')">
+              <v-list-item-title>Draft</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="changeStatus('In Progress')">
+              <v-list-item-title>In Progress</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="changeStatus('Complete')">
+              <v-list-item-title>Complete</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="changeStatus('Cancelled')">
+              <v-list-item-title>Cancelled</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-col>
       <v-col cols="auto">
         <div class="ticket-toolbar-label">
@@ -256,6 +310,9 @@ function cancelReply() {
                   </template>
                   <span>Transfer</span>
                 </v-tooltip>
+                <VDialog v-model="forwardDialog">
+                  <ForwardSecretary :ticket="{ id: 'PMA-278974' }" @close="() => forwardDialog = false" />
+                </VDialog>
               </v-col>
             </v-row>
 
@@ -280,10 +337,8 @@ function cancelReply() {
       <v-col cols="12" md="5">
         <v-card class="mb-4" variant="tonal" rounded="large" color="grey">
           <v-list nav>
-            <v-list-item
-              color="primary" rounded="lg" title="Francisco Jonny Silva (154)"
-              subtitle="jonny.silva@araripina.pe.gov.br" @click="userPopup"
-            >
+            <v-list-item color="primary" rounded="lg" title="Francisco Jonny Silva (154)"
+                         subtitle="jonny.silva@araripina.pe.gov.br" @click="userPopup">
               <template #prepend>
                 <v-avatar color="grey-lighten-1">
                   <v-icon color="white">
@@ -341,10 +396,8 @@ function cancelReply() {
           <v-tab-item value="call">
             <v-container>
               <v-timeline density="compact">
-                <v-timeline-item
-                  v-for="(item, index) in timelineItems" :key="index" :color="item.color" small
-                  :dot-color="item.color"
-                >
+                <v-timeline-item v-for="(item, index) in timelineItems" :key="index" :color="item.color" small
+                                 :dot-color="item.color">
                   <v-card v-if="item.type === 'card'" variant="tonal" :color="item.color ?? 'light'" density="compact">
                     <v-card-text>
                       <p>
@@ -357,10 +410,8 @@ function cancelReply() {
                       </p>
                     </v-card-text>
                   </v-card>
-                  <v-alert
-                    v-if="item.type === 'alert'" variant="tonal" :color="item.color ?? 'light'" density="compact"
-                    icon="mdi-alert"
-                  >
+                  <v-alert v-if="item.type === 'alert'" variant="tonal" :color="item.color ?? 'light'" density="compact"
+                           icon="mdi-alert">
                     <p class="text-black">
                       <small>{{ item.message }}</small>
                     </p>
@@ -384,29 +435,23 @@ function cancelReply() {
           </v-tab>
         </v-tabs>
 
-        <v-tabs-items v-model="activeReplyTab">
-          <v-tab-item value="reply">
+        <v-tabs-window v-model="activeReplyTab">
+          <v-tabs-window-item value="reply">
             <v-form ref="replyFormData" class="pa-4">
               <v-row dense>
                 <v-col cols="12">
-                  <v-select
-                    v-model="replyFormData.of" label="Of"
-                    :items="['Secretariat of Administration and Planning']" chips outlined
-                  />
+                  <v-select v-model="replyFormData.of" label="Of"
+                            :items="['Secretariat of Administration and Planning']" chips outlined />
                 </v-col>
 
                 <v-col cols="12">
-                  <v-select
-                    v-model="replyFormData.recipients" label="Recipients" :items="recipientsOptions" multiple
-                    eager chips outlined
-                  />
+                  <v-select v-model="replyFormData.recipients" label="Recipients" :items="recipientsOptions" multiple
+                            eager chips outlined />
                 </v-col>
 
                 <v-col cols="12">
-                  <v-select
-                    v-model="replyFormData.replyTo" label="Recipients" :items="replyToOptions" eager chips
-                    outlined
-                  />
+                  <v-select v-model="replyFormData.replyTo" label="Recipients" :items="replyToOptions" eager chips
+                            outlined />
                 </v-col>
 
                 <v-col cols="12">
@@ -414,28 +459,22 @@ function cancelReply() {
 
                   <!-- TODO: need to add some WYSIWYG Editor for Content -->
 
-                  <v-textarea
-                    v-if="replyFormData.responseType === 'Custom'" v-model="replyFormData.responseContent"
-                    label="Response Content" outlined
-                  />
+                  <v-textarea v-if="replyFormData.responseType === 'Custom'" v-model="replyFormData.responseContent"
+                              label="Response Content" outlined />
                 </v-col>
 
                 <v-col cols="12">
                   <v-radio-group v-model="replyFormData.signature" inline label="Signature" row outlined>
                     <v-radio label="None" value="none" />
                     <v-radio label="My Subscription" value="mySubscription" />
-                    <v-radio
-                      label="Department Signature (Administration and Planning Secretariat)"
-                      value="departmentSignature"
-                    />
+                    <v-radio label="Department Signature (Administration and Planning Secretariat)"
+                             value="departmentSignature" />
                   </v-radio-group>
                 </v-col>
 
                 <v-col cols="12">
-                  <v-select
-                    v-model="replyFormData.callStatus" label="Call Status" :items="callStatusOptions"
-                    outlined
-                  />
+                  <v-select v-model="replyFormData.callStatus" label="Call Status" :items="callStatusOptions"
+                            outlined />
                 </v-col>
 
                 <v-col cols="12" class="d-flex justify-end">
@@ -448,17 +487,37 @@ function cancelReply() {
                 </v-col>
               </v-row>
             </v-form>
-          </v-tab-item>
+          </v-tabs-window-item>
 
-          <v-tab-item value="internalNote">
-            <v-container>
-              <p>Content for Publish Internal Note tab goes here...</p>
-            </v-container>
-          </v-tab-item>
-        </v-tabs-items>
+          <v-tabs-window-item value="internalNote">
+            <InternalNotes />
+          </v-tabs-window-item>
+        </v-tabs-window>
       </v-col>
     </v-row>
   </v-container>
+
+  <v-dialog v-model="statusDialog" max-width="500px">
+    <v-card>
+      <v-card-title>
+        <span>Change Status</span>
+      </v-card-title>
+      <v-card-text>
+        <v-form>
+          <!-- Status Dropdown -->
+          <v-select v-model="dialogStatus" :items="['Complete', 'Close', 'Active', 'Pending']" label="New Status" outlined required></v-select>
+
+          <!-- Description -->
+          <v-textarea v-model="statusDescription" label="Description" rows="4" outlined required></v-textarea>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="text" color="error" @click="closeDialog">Cancel</v-btn>
+        <v-btn color="primary" @click="saveStatus">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

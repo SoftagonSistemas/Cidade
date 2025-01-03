@@ -11,6 +11,7 @@ declare module 'vue' {
     AvatarMenu: typeof import('./components/User/AvatarMenu.vue')['default']
     FullEditor: typeof import('./components/Documents/FullEditor.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    InternalNotes: typeof import('./components/Tickets/InternalNotes.vue')['default']
     NotificationMenu: typeof import('./components/User/NotificationMenu.vue')['default']
     PDFList: typeof import('./components/Documents/PDFList.vue')['default']
     PDFUpload: typeof import('./components/Documents/PDFUpload.vue')['default']

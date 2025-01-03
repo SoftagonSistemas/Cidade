@@ -40,6 +40,8 @@ declare module 'vue-router/auto-routes' {
     '/admin/relatorios/RelatoriosGerenciais': RouteRecordInfo<'/admin/relatorios/RelatoriosGerenciais', '/admin/relatorios/RelatoriosGerenciais', Record<never, never>, Record<never, never>>,
     '/admin/tickets/': RouteRecordInfo<'/admin/tickets/', '/admin/tickets', Record<never, never>, Record<never, never>>,
     '/admin/tickets/create-ticket': RouteRecordInfo<'/admin/tickets/create-ticket', '/admin/tickets/create-ticket', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/ForwardSecretary': RouteRecordInfo<'/admin/tickets/ForwardSecretary', '/admin/tickets/ForwardSecretary', Record<never, never>, Record<never, never>>,
+    '/admin/tickets/simple-search': RouteRecordInfo<'/admin/tickets/simple-search', '/admin/tickets/simple-search', Record<never, never>, Record<never, never>>,
     '/admin/tickets/sla-config': RouteRecordInfo<'/admin/tickets/sla-config', '/admin/tickets/sla-config', Record<never, never>, Record<never, never>>,
     '/admin/tickets/sla-config-add': RouteRecordInfo<'/admin/tickets/sla-config-add', '/admin/tickets/sla-config-add', Record<never, never>, Record<never, never>>,
     '/admin/tickets/sla-config-update': RouteRecordInfo<'/admin/tickets/sla-config-update', '/admin/tickets/sla-config-update', Record<never, never>, Record<never, never>>,
