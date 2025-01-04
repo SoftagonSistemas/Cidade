@@ -1,0 +1,218 @@
+<script setup lang="ts">
+import type { DigitalCertificate } from '@prisma/client'
+import BaseService from '@/services/BaseService'
+
+interface Props {
+  show: boolean
+  documentPath: string
+  documentName: string
+}
+
+defineProps<Props>()
+const emit = defineEmits(['update:show', 'signed'])
+
+const certificates = ref<DigitalCertificate[]>([])
+const selectedCertificate = ref<string>('')
+const password = ref('')
+const loading = ref(false)
+const step = ref(1)
+const showPassword = ref(false)
+const certificateService = new BaseService<DigitalCertificate>('digital_certificate')
+
+async function loadCertificates() {
+  try {
+    certificates.value = await certificateService.getAll()
+  }
+  catch {
+    toast.error('Erro ao carregar certificados')
+  }
+}
+
+async function signDocument() {
+  loading.value = true
+  try {
+    // Implementar lógica de assinatura aqui
+    await new Promise(resolve => setTimeout(resolve, 1500)) // Simulação
+    step.value = 2
+    toast.success('Documento assinado com sucesso!')
+  }
+  catch {
+    toast.error('Erro ao assinar documento')
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+function downloadSignedDocument() {
+  // Implementar download
+  emit('signed')
+  emit('update:show', false)
+}
+
+function shareDocument() {
+  // Implementar compartilhamento
+}
+
+function closeDialog() {
+  emit('update:show', false)
+  setTimeout(() => {
+    step.value = 1
+    selectedCertificate.value = ''
+    password.value = ''
+  }, 300)
+}
+
+onMounted(loadCertificates)
+</script>
+
+<template>
+  <v-dialog
+    :model-value="show"
+    persistent
+    width="100%"
+    :scrim="true"
+    class="sign-dialog"
+    @update:model-value="$emit('update:show', $event)"
+  >
+    <v-card class="sign-card mx-auto" max-width="500">
+      <v-toolbar
+        :color="step === 1 ? 'primary' : 'success'"
+        class="px-4"
+        height="64"
+      >
+        <v-toolbar-title class="text-white text-truncate d-flex align-center">
+          <span class="hidden-sm-and-down">{{ step === 1 ? 'Assinar Documento' : 'Documento Assinado' }}</span>
+          <span class="hidden-md-and-up">{{ step === 1 ? 'Assinar Documento' : 'Assinado' }}</span>
+        </v-toolbar-title>
+        <v-spacer />
+        <v-btn
+          icon="mdi-close"
+          variant="text"
+          color="white"
+          @click="closeDialog"
+        />
+      </v-toolbar>
+
+      <v-window v-model="step">
+        <v-window-item :value="1">
+          <v-card-text class="pt-6">
+            <v-sheet class="mb-6 pa-4 rounded-lg bg-grey-lighten-4">
+              <div class="d-flex align-center">
+                <v-icon
+                  icon="mdi-file-document-outline"
+                  size="32"
+                  color="primary"
+                  class="mr-3"
+                />
+                <div>
+                  <div class="text-h6">
+                    {{ documentName }}
+                  </div>
+                  <div class="text-caption text-grey-darken-1">
+                    {{ documentPath }}
+                  </div>
+                </div>
+              </div>
+            </v-sheet>
+
+            <v-select
+              v-model="selectedCertificate"
+              :items="certificates"
+              item-title="alias"
+              item-value="id"
+              label="Selecione o Certificado Digital"
+              variant="outlined"
+              class="mb-4"
+              :rules="[v => !!v || 'Selecione um certificado']"
+            />
+
+            <v-text-field
+              v-model="password"
+              label="Senha do Certificado"
+              variant="outlined"
+              :type="showPassword ? 'text' : 'password'"
+              :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              :rules="[v => !!v || 'Digite a senha']"
+              @click:append-inner="showPassword = !showPassword"
+              @keyup.enter="signDocument"
+            />
+          </v-card-text>
+
+          <v-card-actions class="pa-4">
+            <v-spacer />
+            <v-btn
+              color="primary"
+              :loading="loading"
+              :disabled="!selectedCertificate || !password"
+              @click="signDocument"
+            >
+              Assinar Documento
+              <v-icon end icon="mdi-file-sign" class="ml-2" />
+            </v-btn>
+          </v-card-actions>
+        </v-window-item>
+
+        <v-window-item :value="2">
+          <v-card-text class="pt-6 text-center">
+            <v-icon
+              icon="mdi-check-circle"
+              color="success"
+              size="64"
+              class="mb-4"
+            />
+            <h2 class="text-h5 mb-4">
+              Assinatura concluída!
+            </h2>
+            <p class="text-body-1 mb-6">
+              O documento foi assinado com sucesso. Você pode baixá-lo ou compartilhá-lo agora.
+            </p>
+
+            <v-row justify="center" class="mt-4">
+              <v-col cols="auto">
+                <v-btn
+                  color="primary"
+                  prepend-icon="mdi-download"
+                  @click="downloadSignedDocument"
+                >
+                  Download
+                </v-btn>
+              </v-col>
+              <v-col cols="auto">
+                <v-btn
+                  color="secondary"
+                  prepend-icon="mdi-share-variant"
+                  @click="shareDocument"
+                >
+                  Compartilhar
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-window-item>
+      </v-window>
+    </v-card>
+  </v-dialog>
+</template>
+
+<style scoped>
+.sign-card {
+  border-radius: 16px;
+  overflow: hidden;
+  width: 95%;
+  margin-top: 10vh;
+}
+
+.sign-dialog :deep(.v-overlay__content) {
+  align-items: flex-start;
+  width: 100%;
+}
+
+:deep(.v-text-field .v-field__outline__start) {
+  border-radius: 8px 0 0 8px;
+}
+
+:deep(.v-text-field .v-field__outline__end) {
+  border-radius: 0 8px 8px 0;
+}
+</style>

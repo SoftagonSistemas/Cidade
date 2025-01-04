@@ -2,9 +2,9 @@
 import type { Document } from '@prisma/client'
 import FileUpload from '@/components/Documents/FileUpload.vue'
 import PDFViewer from '@/components/Documents/PDFViewer.vue'
+import SignDocument from '@/components/Documents/SignDocument.vue'
 import BaseService from '@/services/BaseService'
 import FileService from '@/services/FileService'
-import { onMounted, ref, watch } from 'vue'
 
 const documents = ref<Document[]>([])
 const loading = ref(false)
@@ -15,6 +15,8 @@ const documentService = new BaseService('document')
 const dialog = ref(false)
 const itemsPerPage = ref(6)
 const currentPage = ref(1)
+const showSignDialog = ref(false)
+const selectedDocument = ref<{ path: string, name: string } | null>(null)
 
 async function fetchDocuments() {
   loading.value = true
@@ -109,6 +111,11 @@ watch(dialog, (newValue) => {
     fetchDocuments()
   }
 })
+
+function signDocument(path: string, name: string) {
+  selectedDocument.value = { path, name }
+  showSignDialog.value = true
+}
 
 onMounted(fetchDocuments)
 </script>
@@ -235,6 +242,17 @@ onMounted(fetchDocuments)
                         />
                       </template>
                     </v-tooltip>
+                    <v-tooltip text="Assinar">
+                      <template #activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          icon="mdi-file-sign"
+                          variant="text"
+                          size="small"
+                          @click="signDocument(doc.raw.filePath, doc.raw.title)"
+                        />
+                      </template>
+                    </v-tooltip>
 
                     <v-spacer />
 
@@ -256,7 +274,6 @@ onMounted(fetchDocuments)
             </v-row>
 
             <v-row v-else justify="center" style="min-height: 300px">
-              teste
               <v-col cols="12" class="text-center">
                 <v-icon size="64" color="grey-lighten-1" icon="mdi-file-document-outline" class="mb-4" />
                 <h3 class="text-h6 text-grey-darken-1 mb-2">
@@ -311,6 +328,14 @@ onMounted(fetchDocuments)
     </v-row>
 
     <PDFViewer ref="pdfViewerRef" />
+
+    <SignDocument
+      v-if="selectedDocument"
+      v-model:show="showSignDialog"
+      :document-path="selectedDocument.path"
+      :document-name="selectedDocument.name"
+      @signed="fetchDocuments"
+    />
   </v-container>
 </template>
 
