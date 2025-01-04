@@ -21,6 +21,8 @@ const documentData = reactive<{ title: string, keywords: string[] }>({
   keywords: [],
 })
 
+const documentId = ref<string | null>(null)
+
 const dragActive = ref(false)
 const uploadProgress = ref(0)
 
@@ -45,7 +47,7 @@ function onDrop(e: DragEvent) {
   }
 }
 
-const fileInput = ref<HTMLElement | null>(null)
+const fileInput = ref<any>(null)
 
 function openFileSelector() {
   fileInput.value?.$el.querySelector('input').click()
@@ -74,7 +76,7 @@ async function uploadFile(): Promise<void> {
     }
 
     // Upload do arquivo físico com progresso
-    const response = await service.uploadFile(
+    const response: any = await service.uploadFile(
       file.value,
       userData,
       (progress) => {
@@ -93,8 +95,9 @@ async function uploadFile(): Promise<void> {
       tenantId: authStore.organization.id,
     }
 
-    const document = await documentService.create(documentPayload)
-    console.log('DOcumento criado:', document)
+    const document: Partial<Document> = await documentService.create(documentPayload) as Document
+
+    documentId.value = document.id || null
     // Atualizar estado local
     uploadResponse.path = response.path
     uploadResponse.versionId = response.versionId
@@ -124,6 +127,7 @@ async function updateDocumentTitle(): Promise<void> {
     const data = await documentService.update(uploadResponse.versionId, {
       title: documentData.title,
     })
+    console.warn('Título atualizado:', data)
   }
   catch (err) {
     console.error('Erro ao atualizar título:', err)
@@ -136,19 +140,17 @@ async function updateDocumentTitle(): Promise<void> {
 /** Remoção de arquivo */
 async function removeFile(): Promise<void> {
   const path = uploadResponse.path || model.value
-  if (!path)
+  if (!path || typeof path !== 'string')
     return
 
   try {
     isLoading.value = false
 
-    // Remover arquivo físico
-    const versionId = await service.getFileVersion(path)
-    await service.deleteFile(versionId, path)
+    await service.deleteFile(path)
 
     // Fazer soft delete do documento no banco
-    if (versionId) {
-      await documentService.softDelete(versionId)
+    if (documentId.value) {
+      await documentService.softDelete(documentId.value)
     }
 
     // Limpar estado local
@@ -158,6 +160,7 @@ async function removeFile(): Promise<void> {
     file.value = null
     documentData.title = ''
     documentData.keywords = []
+    toast.info('Documento removido com sucesso')
   }
   catch (err) {
     console.error('Erro ao remover arquivo:', err)

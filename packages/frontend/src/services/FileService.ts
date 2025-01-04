@@ -65,8 +65,15 @@ export default class FileService {
     })
   }
 
-  async viewFile(versionId: string, path: string): Promise<Response> {
-    const endpoint = `view?versionId=${encodeURIComponent(versionId)}&path=${encodeURIComponent(path)}`
+  async viewFile(path: string, versionId?: string): Promise<Response> {
+    let version = versionId
+    if (!versionId) {
+      version = await this.getFileVersion(path)
+    }
+    if (!version)
+      throw new Error('Version ID is required')
+
+    const endpoint = `view?versionId=${encodeURIComponent(version)}&path=${encodeURIComponent(path)}`
 
     const options: RequestInit = {
       method: 'GET',
