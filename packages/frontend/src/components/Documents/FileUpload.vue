@@ -3,11 +3,10 @@ import type { Document } from '@prisma/client'
 import BaseService from '@/services/BaseService'
 import FileService from '@/services/FileService'
 import { useAuthStore } from '@/stores/AuthStore'
-import { reactive, ref, watch } from 'vue'
 
-/** Responsável por comunicação com o componente pai */
-const emit = defineEmits(['update:modelValue'])
-const model = defineModel() // presumivelmente vindo de Vue Macros
+const emit = defineEmits(['update:modelValue']) // Remova 'uploadComplete'
+const model = defineModel()
+const dialog = defineModel('dialog')
 
 /** Estados e reatividade */
 const file = ref<File | null>(null)
@@ -319,6 +318,18 @@ function formatFileSize(bytes: number): string {
         </div>
       </v-card-text>
     </v-card>
+    <v-card-actions class="d-flex justify-end">
+      <v-btn
+        v-if="uploadResponse.path"
+        color="primary"
+        variant="tonal"
+        class="mt-auto ml-auto"
+        prepend-icon="mdi-close"
+        @click="dialog = false"
+      >
+        Concluir
+      </v-btn>
+    </v-card-actions>
   </v-container>
 </template>
 

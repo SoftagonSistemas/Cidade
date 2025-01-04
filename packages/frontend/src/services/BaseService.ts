@@ -34,6 +34,7 @@ export default class BaseService<T> {
     const { data, error } = await this.client
       .from(this.table)
       .select('*')
+      .is('deletedAt', null)
       .eq('id', id)
       .single()
 
@@ -47,7 +48,10 @@ export default class BaseService<T> {
     ascending = true,
     limit?: number,
   ) {
-    let query = this.client.from(this.table).select('*')
+    let query = this.client
+      .from(this.table)
+      .select('*')
+      .is('deletedAt', null)
 
     if (orderBy) {
       query = query.order(orderBy as string, { ascending })

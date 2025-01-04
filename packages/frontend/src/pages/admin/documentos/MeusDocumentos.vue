@@ -4,7 +4,7 @@ import FileUpload from '@/components/Documents/FileUpload.vue'
 import PDFViewer from '@/components/Documents/PDFViewer.vue'
 import BaseService from '@/services/BaseService'
 import FileService from '@/services/FileService'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const documents = ref<Document[]>([])
 const loading = ref(false)
@@ -92,9 +92,23 @@ function getFileIcon(mimeType: string) {
 }
 
 async function closeDialog() {
-  dialog.value = false
-  await fetchDocuments()
+  try {
+    await fetchDocuments() // Primeiro atualiza os documentos
+    dialog.value = false // Depois fecha o diálogo
+    toast.success('Documento adicionado com sucesso')
+  }
+  catch (error) {
+    console.error('Erro ao atualizar lista de documentos:', error)
+    dialog.value = false
+  }
 }
+
+// Adicione um watcher para a propriedade dialog
+watch(dialog, (newValue) => {
+  if (!newValue) {
+    fetchDocuments()
+  }
+})
 
 onMounted(fetchDocuments)
 </script>
@@ -133,7 +147,10 @@ onMounted(fetchDocuments)
         </v-toolbar>
 
         <v-card-text class="pa-4 pa-sm-6">
-          <FileUpload @upload-complete="closeDialog" />
+          <FileUpload
+            v-model:dialog="dialog"
+            @upload-complete="fetchDocuments"
+          />
         </v-card-text>
       </v-card>
     </v-dialog>
