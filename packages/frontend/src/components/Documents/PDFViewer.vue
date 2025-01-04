@@ -117,8 +117,7 @@ async function loadPDF(path: string) {
   pageCache.clear() // Limpa o cache ao carregar novo PDF
 
   try {
-    const versionId = await fileService.getFileVersion(path)
-    const response = await fileService.viewFile(versionId, path)
+    const response = await fileService.viewFile(path)
     const pdfBlob = await response.blob()
 
     // Carrega o PDF com configurações otimizadas e standardFontDataUrl

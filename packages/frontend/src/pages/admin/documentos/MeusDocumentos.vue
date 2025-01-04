@@ -35,8 +35,32 @@ function openPDFViewer(name: string, url: string) {
   pdfViewerRef.value?.openPDFViewer(name, url)
 }
 
-function downloadDocument(path: string) {
-  fileService.viewFile(path)
+async function downloadDocument(path: string) {
+  const toastId = toast.loading('Iniciando download...')
+  try {
+    const response = await fileService.viewFile(path)
+    const blob = await response.blob()
+    const url = window.URL.createObjectURL(blob)
+    const fileName = path.split('/').pop() || 'documento'
+
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', fileName)
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+
+    // Atualiza o toast para sucesso e remove após 3 segundos
+    toast.remove(toastId)
+    toast.success('Download concluído!')
+  }
+  catch (error) {
+    console.error('Erro ao baixar documento:', error)
+    toast.remove(toastId)
+    toast.error('Erro ao baixar documento')
+  }
 }
 
 async function deleteDocument(path: string, documentId: string) {
