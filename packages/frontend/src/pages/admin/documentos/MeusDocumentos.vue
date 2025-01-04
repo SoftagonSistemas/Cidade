@@ -67,9 +67,9 @@ function getFileIcon(mimeType: string) {
   return mimeType === 'application/pdf' ? 'mdi-file-pdf-box' : 'mdi-file-document-outline'
 }
 
-function closeDialog() {
-  fetchDocuments()
+async function closeDialog() {
   dialog.value = false
+  await fetchDocuments()
 }
 
 onMounted(fetchDocuments)
@@ -109,7 +109,7 @@ onMounted(fetchDocuments)
         </v-toolbar>
 
         <v-card-text class="pa-4 pa-sm-6">
-          <FileUpload @upload-complete="() => { fetchDocuments(); closeDialog(); }" />
+          <FileUpload @upload-complete="closeDialog" />
         </v-card-text>
       </v-card>
     </v-dialog>
