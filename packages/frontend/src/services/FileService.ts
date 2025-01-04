@@ -11,33 +11,58 @@ export default class FileService {
    * Uploads a file to the server.
    * @param file The file to be uploaded.
    * @param additionalData Any additional data to include in the FormData.
+   * @param onProgress Callback function to monitor upload progress.
    * @returns The server response for the uploaded file.
    */
-  async uploadFile(file: File, additionalData: Record<string, any> = {}) {
+  async uploadFile(
+    file: File,
+    additionalData: Record<string, any> = {},
+    onProgress?: (progress: number) => void,
+  ) {
     const endpoint = `upload`
 
     const formData = new FormData()
     formData.append('file', file)
     const userData = useAuthStore().user
     formData.append('userData', userData)
-    // Add any additional data to the form
+
     Object.entries(additionalData).forEach(([key, value]) => {
       formData.append(key, value)
     })
 
-    const options: RequestInit = {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',
-    }
+    const xhr = new XMLHttpRequest()
 
-    const response = await fetch(`${this.baseURL}/${endpoint}`, options)
+    return new Promise((resolve, reject) => {
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable && onProgress) {
+          const progress = (event.loaded / event.total) * 100
+          onProgress(progress)
+        }
+      }
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText)
+            resolve(response)
+          }
+          catch {
+            reject(new Error('Failed to parse response'))
+          }
+        }
+        else {
+          reject(new Error(`HTTP error! status: ${xhr.status}`))
+        }
+      }
 
-    return response.json()
+      xhr.onerror = () => {
+        reject(new Error('Upload failed'))
+      }
+
+      xhr.open('POST', `${this.baseURL}/${endpoint}`, true)
+      xhr.withCredentials = true
+      xhr.send(formData)
+    })
   }
 
   async viewFile(versionId: string, path: string): Promise<Response> {
@@ -110,11 +135,13 @@ export default class FileService {
    * @param path The path of the file to be deleted.
    * @returns The server response for the deleted file.
    */
-  async deleteFile(versionId: string, path: string): Promise<void> {
+  async deleteFile(path: string, versionId?: string): Promise<void> {
     let version = versionId
     if (!versionId) {
       version = await this.getFileVersion(path)
     }
+    if (!version)
+      throw new Error('Version ID is required')
 
     const endpoint = `delete?versionId=${encodeURIComponent(version)}&path=${encodeURIComponent(path)}`
 

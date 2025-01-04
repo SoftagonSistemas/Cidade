@@ -22,6 +22,7 @@ const documentData = reactive<{ title: string, keywords: string[] }>({
 })
 
 const dragActive = ref(false)
+const uploadProgress = ref(0)
 
 function onDragEnter(e: DragEvent) {
   e.preventDefault()
@@ -62,6 +63,7 @@ async function uploadFile(): Promise<void> {
 
   try {
     isLoading.value = true
+    uploadProgress.value = 0
 
     const userData = {
       userId: authStore.user.id,
@@ -71,8 +73,14 @@ async function uploadFile(): Promise<void> {
       orgName: authStore.organization.name,
     }
 
-    // Upload do arquivo físico
-    const response = await service.uploadFile(file.value, userData)
+    // Upload do arquivo físico com progresso
+    const response = await service.uploadFile(
+      file.value,
+      userData,
+      (progress) => {
+        uploadProgress.value = Math.round(progress)
+      },
+    )
 
     // Criar registro do documento no banco
     const documentPayload = {
@@ -98,6 +106,10 @@ async function uploadFile(): Promise<void> {
   }
   finally {
     isLoading.value = false
+    // Não zerar o progresso imediatamente para mostrar 100% brevemente
+    setTimeout(() => {
+      uploadProgress.value = 0
+    }, 500)
   }
 }
 
@@ -154,11 +166,43 @@ async function removeFile(): Promise<void> {
     isLoading.value = false
   }
 }
+
+function formatFileSize(bytes: number): string {
+  if (bytes === 0)
+    return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`
+}
 </script>
 
 <template>
   <v-container class="pa-2 pa-sm-4">
-    <v-progress-linear v-if="isLoading" indeterminate color="primary" class="mb-4" rounded />
+    <template v-if="isLoading">
+      <div class="file-info mb-2">
+        <div class="text-subtitle-1 font-weight-medium text-primary">
+          {{ file?.name }}
+        </div>
+        <div class="text-body-2 text-medium-emphasis">
+          {{ formatFileSize(file?.size || 0) }}
+        </div>
+      </div>
+      <v-progress-linear
+        :model-value="uploadProgress"
+        color="primary"
+        height="25"
+        striped
+        class="upload-progress mb-4"
+        rounded
+      >
+        <template #default="{ value }">
+          <div class="progress-text">
+            <strong>{{ Math.ceil(value) }}%</strong>
+          </div>
+        </template>
+      </v-progress-linear>
+    </template>
 
     <v-card
       v-if="!uploadResponse.path && !isLoading"
@@ -304,5 +348,25 @@ async function removeFile(): Promise<void> {
 .v-card-title {
   font-size: 1.25rem;
   font-weight: 500;
+}
+
+.upload-progress {
+  min-width: 100px;
+}
+
+.progress-text {
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.file-info {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgba(var(--v-theme-primary), 0.05);
 }
 </style>
