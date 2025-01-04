@@ -71,9 +71,23 @@ async function uploadFile(): Promise<void> {
       orgName: authStore.organization.name,
     }
 
+    // Upload do arquivo físico
     const response = await service.uploadFile(file.value, userData)
 
-    // Preencher informações iniciais com a resposta
+    // Criar registro do documento no banco
+    const documentPayload = {
+      title: file.value.name,
+      filePath: response.path,
+      versionId: response.versionId,
+      mimeType: file.value.type,
+      keywords: [],
+      ownerId: authStore.user.id,
+      tenantId: authStore.organization.id,
+    }
+
+    const document = await documentService.create(documentPayload)
+    console.log('DOcumento criado:', document)
+    // Atualizar estado local
     uploadResponse.path = response.path
     uploadResponse.versionId = response.versionId
     documentData.title = file.value.name
@@ -95,7 +109,7 @@ async function updateDocumentTitle(): Promise<void> {
   try {
     isLoading.value = true
 
-    await documentService.update(uploadResponse.versionId, {
+    const data = await documentService.update(uploadResponse.versionId, {
       title: documentData.title,
     })
   }
@@ -114,11 +128,18 @@ async function removeFile(): Promise<void> {
     return
 
   try {
-    isLoading.value = true
+    isLoading.value = false
 
+    // Remover arquivo físico
     const versionId = await service.getFileVersion(path)
     await service.deleteFile(versionId, path)
 
+    // Fazer soft delete do documento no banco
+    if (versionId) {
+      await documentService.softDelete(versionId)
+    }
+
+    // Limpar estado local
     emit('update:modelValue', null)
     uploadResponse.path = null
     uploadResponse.versionId = null
