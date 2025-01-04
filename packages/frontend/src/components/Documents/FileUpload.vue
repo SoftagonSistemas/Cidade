@@ -21,6 +21,35 @@ const documentData = reactive<{ title: string, keywords: string[] }>({
   keywords: [],
 })
 
+const dragActive = ref(false)
+
+function onDragEnter(e: DragEvent) {
+  e.preventDefault()
+  dragActive.value = true
+}
+
+function onDragLeave(e: DragEvent) {
+  e.preventDefault()
+  dragActive.value = false
+}
+
+function onDrop(e: DragEvent) {
+  e.preventDefault()
+  dragActive.value = false
+
+  const droppedFiles = e.dataTransfer?.files
+  if (droppedFiles?.length) {
+    file.value = droppedFiles[0]
+    uploadFile()
+  }
+}
+
+const fileInput = ref<HTMLElement | null>(null)
+
+function openFileSelector() {
+  fileInput.value?.$el.querySelector('input').click()
+}
+
 /** Store e serviços */
 const authStore = useAuthStore()
 const service = new FileService()
@@ -108,111 +137,151 @@ async function removeFile(): Promise<void> {
 
 <template>
   <v-container class="pa-2 pa-sm-4">
-    <v-progress-linear v-if="isLoading" indeterminate color="primary" class="mb-4" />
+    <v-progress-linear v-if="isLoading" indeterminate color="primary" class="mb-4" rounded />
 
-    <v-card v-if="!uploadResponse.path && !isLoading" variant="outlined" class="pa-2 pa-sm-4">
-      <v-card-title class="text-primary d-flex flex-wrap align-center gap-2">
-        <v-icon icon="mdi-cloud-upload" size="24" />
-        <span class="text-wrap">Upload de Documento</span>
-      </v-card-title>
+    <v-card
+      v-if="!uploadResponse.path && !isLoading"
+      :class="[{ 'drag-active': dragActive }]"
+      variant="outlined"
+      class="pa-4 upload-card"
+      @dragenter="onDragEnter"
+      @dragover.prevent
+      @dragleave="onDragLeave"
+      @drop="onDrop"
+      @click="openFileSelector"
+    >
+      <div class="d-flex flex-column align-center justify-center upload-area">
+        <v-icon icon="mdi-cloud-upload" size="42" color="primary" class="mb-2" />
+        <h3 class="text-h6 text-primary mb-1">
+          Arraste seu arquivo aqui
+        </h3>
+        <p class="text-body-2 text-medium-emphasis">
+          ou clique em qualquer lugar desta área
+        </p>
 
-      <v-card-text>
-        <v-row>
-          <v-col cols="12">
-            <v-file-input
-              v-model="file"
-              label="Selecione o arquivo"
-              show-size
-              accept=".doc,.docx,.pdf,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z"
-              prepend-icon="mdi-file-document-outline"
-              variant="outlined"
-              density="comfortable"
-              class="mb-2"
-              hide-details
-              @change="uploadFile"
-            />
-          </v-col>
-        </v-row>
-      </v-card-text>
+        <v-file-input
+          ref="fileInput"
+          v-model="file"
+          label="Selecione o arquivo"
+          show-size
+          accept=".doc,.docx,.pdf,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z"
+          variant="outlined"
+          density="comfortable"
+          hide-details
+          class="upload-input"
+          style="display: none"
+          @change="uploadFile"
+        >
+          <template #prepend>
+            <v-icon icon="mdi-file-document-outline" color="primary" />
+          </template>
+        </v-file-input>
+      </div>
     </v-card>
 
-    <v-card v-else-if="uploadResponse.path" variant="outlined" class="pa-2 pa-sm-4">
-      <v-card-title class="text-primary d-flex flex-wrap align-center gap-2 mb-2">
-        <v-icon icon="mdi-cloud-upload" size="24" />
-        <span class="text-wrap">Upload de Documento</span>
+    <v-card
+      v-else-if="uploadResponse.path"
+      variant="outlined"
+      class="pa-4 upload-card"
+      elevation="1"
+    >
+      <v-card-title class="text-primary d-flex align-center gap-2 mb-4">
+        <v-icon icon="mdi-file-check" color="success" size="28" />
+        <span class="ml-2">Documento Carregado</span>
       </v-card-title>
 
       <v-card-text>
-        <v-row>
-          <v-col cols="12">
-            <v-text-field
-              v-model="documentData.title"
-              label="Título"
-              hint="Você pode editar o título"
-              prepend-icon="mdi-file-edit"
-              variant="outlined"
-              density="comfortable"
-              class="mb-2"
-              @blur="updateDocumentTitle"
-            />
-          </v-col>
+        <v-text-field
+          v-model="documentData.title"
+          label="Título do documento"
+          variant="outlined"
+          density="comfortable"
+          @blur="updateDocumentTitle"
+        >
+          <template #prepend>
+            <v-icon icon="mdi-file-edit" color="primary" class="d-none d-sm-flex" />
+          </template>
+        </v-text-field>
 
-          <v-col cols="12" class="mt-n10 mx-auto">
-            <v-combobox
-              v-model="documentData.keywords"
-              multiple
-              chips
-              label="Palavras-chave"
-              hint="Adicione palavras-chave"
-              clearable
-              :delimiters="[',']"
-              prepend-icon="mdi-tag-multiple"
-              variant="outlined"
-              density="comfortable"
-            >
-              <template #chip="{ props, item }">
-                <v-chip
-                  v-bind="props"
-                  color="primary"
-                  label
-                  size="small"
-                >
-                  {{ item }}
-                </v-chip>
-              </template>
-            </v-combobox>
-          </v-col>
-        </v-row>
-
-        <v-row class="mt-2">
-          <v-col cols="12" sm="8">
-            <div class="d-flex flex-wrap align-center gap-2">
-              <v-icon icon="mdi-file-check" color="success" />
-              <span class="text-body-1 text-wrap">{{ uploadResponse.path }}</span>
-            </div>
-          </v-col>
-          <v-col cols="12" sm="4" class="d-flex justify-end mt-2 mt-sm-0">
-            <v-btn
-              color="error"
+        <v-combobox
+          v-model="documentData.keywords"
+          multiple
+          chips
+          label="Palavras-chave"
+          clearable
+          :delimiters="[',']"
+          variant="outlined"
+          density="comfortable"
+          class="mb-2"
+        >
+          <template #prepend>
+            <v-icon icon="mdi-tag-multiple" color="primary" class="d-none d-sm-flex" />
+          </template>
+          <template #chip="{ props, item }">
+            <v-chip
+              v-bind="props"
+              color="primary"
               variant="tonal"
-              prepend-icon="mdi-delete"
-              @click="removeFile"
+              label
+              size="small"
             >
-              Remover arquivo
-            </v-btn>
-          </v-col>
-        </v-row>
+              {{ item }}
+            </v-chip>
+          </template>
+        </v-combobox>
+
+        <v-divider class="mb-4" />
+
+        <div class="d-flex flex-wrap align-center justify-space-between gap-4">
+          <div class="d-flex align-center flex-grow-1">
+            <v-icon icon="mdi-file-check" color="success" class="mr-2" />
+            <span class="text-body-2 text-medium-emphasis text-truncate">
+              {{ uploadResponse.path }}
+            </span>
+          </div>
+          <v-btn
+            color="error"
+            variant="tonal"
+            prepend-icon="mdi-delete"
+            class="mt-2"
+            @click="removeFile"
+          >
+            Remover
+          </v-btn>
+        </div>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <style scoped>
-.v-card {
-  transition: all 0.3s ease;
+.upload-card {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px dashed rgba(var(--v-theme-primary), 0.4);
 }
-.v-card:hover {
+
+.upload-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.upload-area {
+  min-height: 180px;
+  padding: 1.5rem;
+}
+
+.drag-active {
+  background-color: rgba(var(--v-theme-primary), 0.05);
+  border-color: rgb(var(--v-theme-primary));
+}
+
+.upload-input {
+  max-width: 300px;
+}
+
+.v-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
 }
 </style>
