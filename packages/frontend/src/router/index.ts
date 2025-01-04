@@ -91,9 +91,13 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   const authService = new AuthService()
   await authService.getSession()
+
   if (to.path.startsWith('/admin')) {
     if (!authStore.isAuthenticated) {
       next('/auth')
+    }
+    else if (!authStore.organization) {
+      next('/auth/organization')
     }
     else {
       next()
