@@ -13,13 +13,11 @@ declare module 'vue' {
     AvatarMenu: typeof import('./components/User/AvatarMenu.vue')['default']
     BirthDate: typeof import('./components/BirthDate.vue')['default']
     Breadcrumbs: typeof import('./components/Breadcrumbs.vue')['default']
-    DepartamentDialog: typeof import('./components/DepartamentDialog.vue')['default']
-    DepartmentDialog: typeof import('./components/DepartmentDialog.vue')['default']
     Editor: typeof import('./components/Documents/Editor.vue')['default']
     FileUpload: typeof import('./components/Documents/FileUpload.vue')['default']
     FullEditor: typeof import('./components/Documents/FullEditor.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
-    Nascimento: typeof import('./components/Nascimento.vue')['default']
+    InternalNotes: typeof import('./components/Tickets/InternalNotes.vue')['default']
     NewCertificate: typeof import('./components/Documents/NewCertificate.vue')['default']
     NotificationMenu: typeof import('./components/User/NotificationMenu.vue')['default']
     PDFList: typeof import('./components/Documents/PDFList.vue')['default']
@@ -30,7 +28,6 @@ declare module 'vue' {
     SignDocument: typeof import('./components/Documents/SignDocument.vue')['default']
     SoftagonIcon: typeof import('./components/SoftagonIcon.vue')['default']
     UploadImage: typeof import('./components/UploadImage.vue')['default']
-    UserDialog: typeof import('./components/UserDialog.vue')['default']
     UserForm: typeof import('./components/UserForm.vue')['default']
   }
 }

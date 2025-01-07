@@ -15,13 +15,38 @@ export const primaryMenuItems: MenuItem[] = [
     icon: 'mdi-eye-check-outline',
     label: 'Ticket Management',
     children: [
-      { title: 'Create Request', route: '/tickets/create' },
-      { title: 'Tickets Overview', route: '/tickets/overview' },
+      { title: 'Create Request', route: '/admin/tickets/create-ticket' },
+      { title: 'Tickets Overview', route: '/admin/tickets' },
       { title: 'My Tickets', route: '/tickets/my-tickets' },
       { title: 'Assigned Tickets', route: '/tickets/assigned' },
       { title: 'Department Tickets', route: '/tickets/department' },
-      { title: 'SLA Configuration', route: '/tickets/sla-config' },
+      { title: 'SLA Configuration', route: '/admin/tickets/sla-config' },
       { title: 'Performance Reports', route: '/tickets/reports/performance' },
+    ],
+  },
+  {
+    icon: 'mdi-domain',
+    label: 'Organization Management',
+    children: [
+      { title: 'Departments and Secretariats', route: '/admin/organization/departments' },
+      { title: 'User Permissions', route: '/admin/organization/user-permissions' },
+    ],
+  },
+  {
+    icon: 'mdi-briefcase-check',
+    label: 'Tasks',
+    children: [
+      { title: 'Task List', route: '/tasks/list' },
+      { title: 'Create Task', route: '/tasks/create' },
+    ],
+  },
+  {
+    icon: 'mdi-book-open-page-variant',
+    label: 'Knowledge Base',
+    children: [
+      { title: 'FAQs', route: '/knowledge-base/faqs' },
+      { title: 'Categories', route: '/knowledge-base/categories' },
+      { title: 'Canned Responses', route: '/knowledge-base/canned-responses' },
     ],
   },
   {
