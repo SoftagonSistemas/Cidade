@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/AuthStore'
 import { watch } from 'vue'
 import { useRouter } from 'vue-router'
 

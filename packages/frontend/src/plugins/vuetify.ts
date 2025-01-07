@@ -1,11 +1,11 @@
-// Styles
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
-import '@/styles/variables.scss'
-
 // Composables
 import type { ThemeDefinition } from 'vuetify'
 import { createVuetify } from 'vuetify'
+// Styles
+import '@mdi/font/css/materialdesignicons.css'
+
+import 'vuetify/styles'
+import '@/styles/variables.scss'
 
 const softagon: ThemeDefinition = {
   dark: false, // Define como tema claro
@@ -49,7 +49,6 @@ const softagon: ThemeDefinition = {
   },
 }
 
-// Criação do Vuetify com o tema registrado
 export default createVuetify({
   theme: {
     defaultTheme: 'softagon',
@@ -57,4 +56,28 @@ export default createVuetify({
       softagon,
     },
   },
+  defaults: {
+    VAutocomplete: {
+      variant: 'underlined',
+    },
+    VCombobox: {
+      variant: 'underlined',
+    },
+    VFileInput: {
+      variant: 'underlined',
+    },
+    VInput: {
+      variant: 'underlined',
+    },
+    VTextarea: {
+      variant: 'underlined',
+    },
+    VTextField: {
+      variant: 'underlined',
+    },
+    VSelect: {
+      variant: 'underlined',
+    },
+  },
+
 })

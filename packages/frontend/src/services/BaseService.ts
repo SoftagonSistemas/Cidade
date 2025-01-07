@@ -1,96 +1,175 @@
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/AuthStore'
+import { getPostgrestURL } from '@/utils/getPostgrestURL'
+import { PostgrestClient } from '@supabase/postgrest-js'
+import { AuthService } from './AuthService'
 
-const apiUrl = import.meta.env.VITE_BACK3ND_URL
+const authStore = useAuthStore()
 
-interface RequestResult<U> { data: U[], count?: number }
-
-export default class BaseService<T = string> {
-  private readonly baseURL: string = apiUrl
-  protected readonly table: string
-
-  constructor(table: string) {
-    this.table = table
-  }
-
-  private async request<U>(url: string, options: RequestInit = {}): Promise<RequestResult<U>> {
+export default class BaseService<T> {
+  public client: PostgrestClient
+  private userId = authStore.user?.id
+  private orgId = authStore.organization?.id
+  constructor(private readonly table: string) {
     const authStore = useAuthStore()
-    const token = authStore.token
+    const token = authStore.getPostgrestToken()
+    const postgrestUrl = getPostgrestURL()
 
-    const headers = {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
+    try {
+      this.client = new PostgrestClient(postgrestUrl, {
+        headers: {
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      })
     }
-
-    const response = await fetch(`${this.baseURL}${url}`, { ...options, headers })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    catch (error: any) {
+      authStore.logout()
+      throw new Error(`Failed to initialize PostgrestClient: ${error.message}`)
     }
-
-    return response.json() as Promise<RequestResult<U>>
   }
 
   async getById(id: string): Promise<T | null> {
-    const { data } = await this.request<T>(`items/${this.table}/${id}`)
-    return data[0] ?? null
+    if (!id)
+      return null
+
+    const { data, error } = await this.client
+      .from(this.table)
+      .select('*')
+      .is('deletedAt', null)
+      .eq('id', id)
+      .single()
+
+    if (error)
+      throw new Error(error.message)
+    return data
   }
 
   async getAll(
     orderBy?: string,
     ascending = true,
     limit?: number,
-  ): Promise<T[]> {
-    const params = new URLSearchParams({
-      ascending: ascending.toString(),
-      ...(orderBy && { orderBy }),
-      ...(limit && { limit: limit.toString() }),
-    })
+  ) {
+    let query = this.client
+      .from(this.table)
+      .select('*')
+      .is('deletedAt', null)
 
-    const url = `items/${this.table}/?${params.toString()}`
-    const { data } = await this.request<T>(url)
-    return data
+    if (orderBy) {
+      query = query.order(orderBy as string, { ascending })
+    }
+
+    if (limit) {
+      query = query.limit(limit)
+    }
+
+    const { data, error } = await query
+
+    if (error)
+      throw new Error(error.message)
+    return data || []
   }
 
-  async create(record: Partial<T>): Promise<T> {
-    const url = `items/${this.table}`
-    const options: RequestInit = {
-      method: 'POST',
-      body: JSON.stringify(record),
+  async create(record: T): Promise<T | null> {
+    const recordWithAudit = {
+      ...record,
+      createdBy: this.userId,
+      tenantId: this.orgId,
+    } as unknown as T
+
+    const { data, error } = await this.client
+      .from(this.table)
+      .insert(recordWithAudit)
+      .select()
+      .single()
+
+    if (error) {
+      if (error.message.includes('JWT ')) {
+        new AuthService().logout()
+      }
+      throw new Error(error.message)
     }
-    const { data } = await this.request<T>(url, options)
-    return data[0]
+    return data
   }
 
   async update(id: string, updates: Partial<T>): Promise<T | null> {
-    const url = `items/${this.table}/${id}`
-    const options: RequestInit = {
-      method: 'PUT',
-      body: JSON.stringify(updates),
-    }
-    const { data } = await this.request<T>(url, options)
-    return data[0] ?? null
+    const updatesWithAudit = {
+      ...updates,
+      updatedBy: this.userId,
+      updatedAt: new Date().toISOString(),
+    } as unknown as Partial<T>
+
+    const { data, error } = await this.client
+      .from(this.table)
+      .update(updatesWithAudit)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error)
+      throw new Error(error.message)
+    return data
   }
 
   async softDelete(id: string): Promise<T | null> {
-    const url = `items/${this.table}/${id}`
-    const options: RequestInit = {
-      method: 'PATCH',
-      body: JSON.stringify({ deleted_at: new Date().toISOString() }),
-    }
-    const { data } = await this.request<T>(url, options)
-    return data[0] ?? null
+    const { data, error } = await this.client
+      .from(this.table)
+      .update({
+        deletedAt: new Date().toISOString(),
+        updatedBy: this.userId,
+      } as unknown as Partial<T>)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error)
+      throw new Error(error.message)
+    return data
   }
 
   async countEntries(): Promise<number> {
-    const { count } = await this.request<never>(`items/${this.table}`)
-    return count ?? 0
+    const { count, error } = await this.client
+      .from(this.table)
+      .select('*', { count: 'exact', head: true })
+
+    if (error)
+      throw new Error(error.message)
+    return count || 0
   }
 
-  async filter(column: keyof T, value: string): Promise<T[]> {
-    const filter = encodeURIComponent(JSON.stringify({ [column]: { _eq: value } }))
-    const url = `items/${this.table}/?filter=${filter}`
-    const { data } = await this.request<T>(url)
-    return data
+  /**
+   * Filters records in the table based on the provided filters.
+   *
+   * @param filters - An object where the keys are column names and the values are the filter criteria.
+   *                  The filter criteria can be a single value or an array of values.
+   * @returns A promise that resolves to an array of records that match the filter criteria.
+   *
+   * @example
+   * // Filter records where the 'status' column is 'active'
+   * const activeRecords = await baseService.filter({ status: 'active' });
+   *
+   * @example
+   * // Filter records where the 'status' column is 'active' or 'pending'
+   * const activeOrPendingRecords = await baseService.filter({ status: ['active', 'pending'] });
+   *
+   * @example
+   * // Filter records where the 'status' column is 'active' and 'type' column is 'admin'
+   * const activeAdminRecords = await baseService.filter({ status: 'active', type: 'admin' });
+   */
+  async filter(filters: Partial<Record<keyof T, string | string[]>>): Promise<T[]> {
+    let query = this.client.from(this.table).select('*')
+
+    for (const [column, value] of Object.entries(filters)) {
+      if (Array.isArray(value)) {
+        query = query.in(column, value)
+      }
+      else {
+        query = query.eq(column, value)
+      }
+    }
+
+    const { data, error } = await query
+
+    if (error)
+      throw new Error(error.message)
+    return data || []
   }
 }

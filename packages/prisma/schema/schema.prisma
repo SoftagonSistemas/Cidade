@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters", "fullTextIndex", "fullTextSearch", "prismaSchemaFolder"]
+  previewFeatures = ["driverAdapters", "fullTextSearchPostgres", "prismaSchemaFolder"]
 }
 
 generator zod {
@@ -13,84 +13,637 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model back3nd_user {
-  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                   String
-  email                  String                   @unique
-  password               String
-  reset_token            String?
-  created_at             DateTime                 @default(now())
-  updated_at             DateTime                 @updatedAt
-  back3nd_password_reset back3nd_password_reset[]
-  roles                  back3nd_user_role[]
+/// The `User` model represents system users with roles in the organizational structure.
+model User {
+  id                      String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email                   String                   @unique
+  name                    String
+  phoneNumber             String?
+  jobTitle                String? // E.g., "Mayor", "Vice-Mayor", "Secretary"
+  profilePhoto            String? // Path to the user's profile photo
+  role                    String                   @default("member") // Define system permissions
+  apiUserId               String                   @unique
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime?                @updatedAt
+  dateOfBirth             DateTime?                // Date of birth
+  addressId               String?                  @db.Uuid         // Foreign key to Address
+  createdBy               String?
+  updatedBy               String?
+  tenantId                String?
+  deletedAt               DateTime?
+  // Relations
+  address                 Address?                 @relation(fields: [addressId], references: [id])
+  auditLogs               AuditLog[]               @relation("AuditLog_PerformedBy")
+  digitalCertificates     DigitalCertificate[]
+  documentUsers           DocumentUser[]           @relation("DocumentUser_User")
+  documentVersionCreators DocumentVersionCreator[] @relation("DocumentVersionCreator_User")
+  notifications           Notification[]
+  sharedDocuments         SharedDocument[]         @relation("SharedDocument_User")
+  tasksAssigned           Task[]                   @relation("Task_AssignedTo")
+  taskUsers               TaskUser[]
+  ticketsAssigned         Ticket[]                 @relation("TicketsAssigned")
+  ticketsCreated          Ticket[]                 @relation("TicketsCreated")
+  ticketCollaborators     TicketCollaborator[]
+  ticketThreads           TicketThread[]
+  ticketUsers             TicketUser[]
+  userDepartments         UserDepartment[]
+  headOfDepartments       Department[]             @relation("Department_Head")
+  mayorInstitutions       Institution[]            @relation("Institution_Mayor")
+  viceMayorInstitutions   Institution[]            @relation("Institution_ViceMayor")
+  userOnDocuments         UserOnDocuments[]
+
+  @@map("user")
 }
 
-model back3nd_role {
-  id          String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String               @unique
+model Document {
+  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String
+  filePath        String
+  versionId       String?
+  mimeType        String
+  keywords        String[]
+  ocrText         String?
+  ownerId         String            @db.Uuid
+  signed          Boolean           @default(false)
+  signedAt        DateTime?
+  signature       String?
+  createdAt       DateTime          @default(now())
+  createdBy       String?
+  updatedBy       String?
+  tenantId        String?
+  deletedAt       DateTime?
+  updatedAt       DateTime?         @updatedAt
+  attachments     Attachment[]
+  documentUsers   DocumentUser[]    @relation("DocumentUser_Document")
+  versions        DocumentVersion[]
+  fileMetadata    FileMetadata?
+  sharedDocuments SharedDocument[]  @relation("SharedDocument_Document")
+  tasks           Task[]
+  userOnDocuments UserOnDocuments[]
+
+  @@map("document")
+}
+
+model UserOnDocuments {
+  userId     String   @db.Uuid
+  documentId String   @db.Uuid
+  assignedAt DateTime @default(now())
+  role       String
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  updatedBy  String?
+  tenantId   String?
+  deletedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
+  document   Document @relation(fields: [documentId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, documentId])
+  @@map("user_on_documents")
+}
+
+model DocumentUser {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @db.Uuid
+  documentId String   @db.Uuid
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  updatedBy  String?
+  tenantId   String?
+  deletedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
+  document   Document @relation("DocumentUser_Document", fields: [documentId], references: [id])
+  user       User     @relation("DocumentUser_User", fields: [userId], references: [id])
+
+  @@map("document_user")
+}
+
+model DocumentVersion {
+  id                      String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId              String                   @db.Uuid
+  versionNumber           Int
+  filePath                String
+  changesDescription      String?
+  createdById             String                   @db.Uuid
+  createdAt               DateTime                 @default(now())
+  createdBy               String?
+  updatedBy               String?
+  tenantId                String?
+  deletedAt               DateTime?
+  updatedAt               DateTime?                @updatedAt
+  document                Document                 @relation(fields: [documentId], references: [id])
+  documentVersionCreators DocumentVersionCreator[] @relation("DocumentVersionCreator_Version")
+
+  @@map("document_version")
+}
+
+model DocumentVersionCreator {
+  id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String          @db.Uuid
+  versionId String          @db.Uuid
+  createdAt DateTime        @default(now())
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  updatedAt DateTime? @updatedAt
+  user      User            @relation("DocumentVersionCreator_User", fields: [userId], references: [id])
+  version   DocumentVersion @relation("DocumentVersionCreator_Version", fields: [versionId], references: [id])
+
+  @@map("document_version_creator")
+}
+
+model SharedDocument {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId String   @db.Uuid
+  userId     String   @db.Uuid
+  sharedAt   DateTime @default(now())
+  permission String   @default("read")
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  updatedBy  String?
+  tenantId   String?
+  deletedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
+  document   Document @relation("SharedDocument_Document", fields: [documentId], references: [id], map: "SharedDocument_documentId_fkey")
+  user       User     @relation("SharedDocument_User", fields: [userId], references: [id])
+
+  @@map("shared_document")
+}
+
+/// The `Workflow` model organizes business processes for document-based tasks in BPM.
+/// Workflows represent entire processes with multiple tasks (`steps`) for document approvals,
+/// reviews, and other interactions. `status` allows monitoring of the workflow's current state.
+model Workflow {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
   description String?
-  created_at  DateTime             @default(now())
-  updated_at  DateTime             @updatedAt
-  permissions back3nd_permission[]
-  users       back3nd_user_role[]
+  type        String     @default("general")
+  status      String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?   @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  tenantId    String?
+  deletedAt   DateTime?
+  auditLogs   AuditLog[]
+  tasks       Task[]
+
+  @@map("workflow")
 }
 
-model back3nd_user_role {
-  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id    String       @db.Uuid
-  role_id    String       @db.Uuid
-  created_at DateTime     @default(now())
-  role       back3nd_role @relation(fields: [role_id], references: [id], onDelete: Cascade)
-  user       back3nd_user @relation(fields: [user_id], references: [id], onDelete: Cascade)
+/// The `Task` model defines a single step in a `Workflow`, representing an actionable item.
+/// Tasks can be associated with specific documents (e.g., approval or review) and assigned to users.
+/// `status` tracks task progress, and `dueDate` enforces deadlines, aiding in process management.
+model Task {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workflowId   String     @db.Uuid
+  assignedToId String?    @db.Uuid
+  documentId   String?    @db.Uuid
+  title        String
+  description  String?
+  status       String
+  dueDate      DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime? @updatedAt
+  createdBy    String?
+  updatedBy    String?
+  tenantId     String?
+  deletedAt    DateTime?
+  auditLogs    AuditLog[]
+  assignedTo   User?      @relation("Task_AssignedTo", fields: [assignedToId], references: [id])
+  document     Document?  @relation(fields: [documentId], references: [id])
+  workflow     Workflow   @relation(fields: [workflowId], references: [id])
+  taskUsers    TaskUser[] @relation("Task_TaskUser")
 
-  @@unique([user_id, role_id])
+  @@map("task")
 }
 
-model back3nd_permission {
-  id         String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  role_id    String         @db.Uuid
-  table_id   String         @db.Uuid
-  can_create Boolean        @default(false)
-  can_read   Boolean        @default(false)
-  can_update Boolean        @default(false)
-  can_delete Boolean        @default(false)
-  created_at DateTime       @default(now())
-  role       back3nd_role   @relation(fields: [role_id], references: [id], onDelete: Cascade)
-  table      back3nd_entity @relation(fields: [table_id], references: [id], onDelete: Cascade)
+/// The `AuditLog` model tracks actions taken on a `Task` or `Workflow`, supporting a detailed audit trail.
+/// It records each action, who performed it, and when, enabling transparency and accountability.
+model AuditLog {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  taskId        String?   @db.Uuid
+  workflowId    String?   @db.Uuid
+  action        String
+  performedById String    @db.Uuid
+  timestamp     DateTime  @default(now())
+  description   String?
+  createdBy     String?
+  updatedBy     String?
+  tenantId      String?
+  deletedAt     DateTime?
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
+  performedBy   User      @relation("AuditLog_PerformedBy", fields: [performedById], references: [id])
+  task          Task?     @relation(fields: [taskId], references: [id])
+  workflow      Workflow? @relation(fields: [workflowId], references: [id])
 
-  @@unique([role_id, table_id])
+  @@map("audit_log")
 }
 
-model back3nd_entity {
-  id                    String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                  String                  @unique
-  created_at            DateTime                @default(now())
-  updated_at            DateTime                @updatedAt
-  back3nd_entity_fields back3nd_entity_fields[]
-  back3nd_permission    back3nd_permission[]
+/// The `Notification` model centralizes alerts and updates sent to users.
+/// It tracks which notifications have been read.
+model Notification {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  updatedAt DateTime? @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("notification")
 }
 
-model back3nd_entity_fields {
-  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  columnName     String
-  columnType     String
-  size           Int?
-  placeholder    String?
-  defaultValue   String?
-  isUnique       Boolean
-  entity_id      String         @db.Uuid
-  created_at     DateTime       @default(now())
-  back3nd_entity back3nd_entity @relation(fields: [entity_id], references: [id])
+/// The `Attachment` model stores additional files linked to a document.
+/// Attachments provide supplemental information for a document or task.
+model Attachment {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId String   @db.Uuid
+  filePath   String
+  fileName   String
+  mimeType   String
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  updatedBy  String?
+  tenantId   String?
+  deletedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
+  document   Document @relation(fields: [documentId], references: [id])
 
-  @@unique([entity_id, columnName])
-  @@index([entity_id])
+  @@map("attachment")
 }
 
-model back3nd_password_reset {
-  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id    String       @db.Uuid
-  token      String
-  created_at DateTime     @default(now())
-  expires_at DateTime
-  user       back3nd_user @relation(fields: [user_id], references: [id], onDelete: Cascade)
+/// The `DigitalCertificate` model holds certificates for digital signing, crucial for document authentication.
+model DigitalCertificate {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @db.Uuid
+  alias      String
+  filePath   String
+  password   String
+  createdAt  DateTime @default(now())
+  expiration DateTime
+  createdBy  String?
+  updatedBy  String?
+  tenantId   String?
+  deletedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("digital_certificate")
+}
+
+/// The `FileMetadata` model stores additional information for document files.
+model FileMetadata {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId String   @unique @db.Uuid
+  fileSize   Int
+  mimeType   String
+  checksum   String
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  updatedBy  String?
+  tenantId   String?
+  deletedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
+  document   Document @relation(fields: [documentId], references: [id])
+
+  @@map("file_metadata")
+}
+
+/// The `Institution` model represents a municipality or organizational entity.
+model Institution {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  addressId   String?      @unique @db.Uuid // ID do endereço relacionado
+  phone       String?
+  whatsapp    String?
+  email       String?
+  cnpj        String?
+  flag        String? // Path to the flag image
+  emblem      String? // Path to the emblem image
+  mayorId     String?      @db.Uuid // ID of the Mayor (User)
+  viceMayorId String?      @db.Uuid // ID of the Vice-Mayor (User)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  tenantId    String? // OrgID
+  deletedAt   DateTime?
+  // Relations
+  mayor       User?        @relation("Institution_Mayor", fields: [mayorId], references: [id]) // Relation to User as Mayor
+  viceMayor   User?        @relation("Institution_ViceMayor", fields: [viceMayorId], references: [id]) // Relation to User as Vice-Mayor
+  address     Address?     @relation(fields: [addressId], references: [id]) // Relação com Address
+  departments Department[] // List of Departments in the Institution
+
+  @@map("institution")
+}
+
+/// The `Department` model represents organizational units within an institution. 
+model Department {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  description        String?
+  isSecretariat      Boolean          @default(false) // True for secretariats
+  institutionId      String           @db.Uuid
+  parentDepartmentId String?          @db.Uuid // Corrigir o tipo de dados para UUID
+  headId             String?          @db.Uuid // The head of the department (e.g., Secretary, Director)
+  addressId          String?          @db.Uuid // ID do endereço relacionado
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime?        @updatedAt
+  createdBy          String?
+  updatedBy          String?
+  tenantId           String?
+  deletedAt          DateTime?
+  // Relações
+  institution        Institution      @relation(fields: [institutionId], references: [id])
+  parentDepartment   Department?      @relation("ParentDepartment", fields: [parentDepartmentId], references: [id])
+  childDepartments   Department[]     @relation("ParentDepartment")
+  head               User?            @relation("Department_Head", fields: [headId], references: [id])
+  address            Address?         @relation(fields: [addressId], references: [id]) // Relação com Address
+  userDepartments    UserDepartment[]
+  contactInfos       ContactInfo[]
+  tickets            Ticket[]
+  helpTopics         HelpTopic[]
+
+  @@unique([name, institutionId, isSecretariat])
+
+  @@map("department")
+}
+
+
+/// The `UserDepartment` model links users to departments with specific roles.
+model UserDepartment {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String     @db.Uuid
+  departmentId String @db.Uuid
+  role         String // E.g., "Director", "Supervisor", "Employee"
+  createdAt    DateTime   @default(now())
+  createdBy    String?
+  updatedBy    String?
+  tenantId     String?
+  deletedAt    DateTime?
+  updatedAt    DateTime?  @updatedAt
+  department   Department @relation(fields: [departmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@map("user_department")
+}
+
+model Ticket {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subject        String
+  description    String
+  statusId       String @db.Uuid
+  priorityId     String @db.Uuid
+  createdById    String               @db.Uuid
+  assignedToId   String?              @db.Uuid
+  departmentId   String @db.Uuid
+  helpTopicId    String @db.Uuid
+  slaPlanId      String? @db.Uuid
+  dueDate        DateTime?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime?             @default(now())
+  closedAt       DateTime?
+  lastResponseAt DateTime?
+  updatedBy      String?
+  tenantId       String?
+  deletedAt      DateTime?
+  assignedTo     User?                @relation("TicketsAssigned", fields: [assignedToId], references: [id])
+  createdBy      User                 @relation("TicketsCreated", fields: [createdById], references: [id])
+  department     Department           @relation(fields: [departmentId], references: [id])
+  helpTopic      HelpTopic            @relation(fields: [helpTopicId], references: [id])
+  priority       TicketPriority       @relation(fields: [priorityId], references: [id])
+  slaPlan        SLAPlan?             @relation(fields: [slaPlanId], references: [id])
+  status         TicketStatus         @relation(fields: [statusId], references: [id])
+  attachments    TicketAttachment[]
+  collaborators  TicketCollaborator[] @relation("Ticket_TicketUser")
+  customFields   TicketCustomField[]
+  threads        TicketThread?
+  ticketUsers    TicketUser[]         @relation("Ticket_TicketUser")
+
+  @@map("ticket")
+}
+
+model TicketStatus {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  updatedAt DateTime? @updatedAt
+  tickets   Ticket[]
+
+  @@map("ticket_status")
+}
+
+model TicketPriority {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  updatedAt DateTime? @updatedAt
+  tickets   Ticket[]
+
+  @@map("ticket_priority")
+}
+
+model HelpTopic {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  topic        String
+  description  String?
+  departmentId String @db.Uuid
+  createdAt    DateTime   @default(now())
+  createdBy    String?
+  updatedBy    String?
+  tenantId     String?
+  deletedAt    DateTime?
+  updatedAt    DateTime?  @updatedAt
+  department   Department @relation(fields: [departmentId], references: [id])
+  tickets      Ticket[]
+
+  @@map("help_topic")
+}
+
+model SLAPlan {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  gracePeriod Int
+  createdAt   DateTime @default(now())
+  createdBy   String?
+  updatedBy   String?
+  tenantId    String?
+  deletedAt   DateTime?
+  updatedAt   DateTime? @updatedAt
+  tickets     Ticket[]
+
+  @@map("sla_plan")
+}
+
+model TicketThread {
+  id          String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId    String             @unique @db.Uuid
+  userId      String             @db.Uuid
+  message     String
+  createdAt   DateTime           @default(now())
+  createdBy   String?
+  updatedBy   String?
+  tenantId    String?
+  deletedAt   DateTime?
+  updatedAt   DateTime?          @updatedAt
+  attachments TicketAttachment[] @relation("TicketThread_TicketAttachment")
+  ticket      Ticket             @relation(fields: [ticketId], references: [id])
+  user        User               @relation(fields: [userId], references: [id])
+
+  @@map("ticket_thread")
+}
+
+model TicketAttachment {
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId       String       @db.Uuid
+  ticketThreadId String       @db.Uuid
+  filePath       String
+  fileName       String
+  mimeType       String
+  createdAt      DateTime     @default(now())
+  createdBy      String?
+  updatedBy      String?
+  tenantId       String?
+  deletedAt      DateTime?
+  updatedAt      DateTime?    @updatedAt
+  ticket         Ticket       @relation(fields: [ticketId], references: [id])
+  ticketThread   TicketThread @relation("TicketThread_TicketAttachment", fields: [ticketThreadId], references: [ticketId])
+
+  @@map("ticket_attachment")
+}
+
+model TicketCollaborator {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId String @db.Uuid
+  userId   String @db.Uuid
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  ticket   Ticket @relation("Ticket_TicketUser", fields: [ticketId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@map("ticket_collaborator")
+}
+
+model CustomField {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  fieldType String
+  createdAt DateTime            @default(now())
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  updatedAt DateTime?           @updatedAt
+  tickets   TicketCustomField[]
+
+  @@map("custom_field")
+}
+
+model TicketCustomField {
+  id       String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId String      @db.Uuid
+  fieldId  String @db.Uuid
+  value    String
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  field    CustomField @relation(fields: [fieldId], references: [id])
+  ticket   Ticket      @relation(fields: [ticketId], references: [id])
+
+  @@map("ticket_custom_field")
+}
+
+model TaskUser {
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  taskId String @db.Uuid
+  userId String @db.Uuid
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  task   Task   @relation("Task_TaskUser", fields: [taskId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("task_user")
+}
+
+model TicketUser {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId String @db.Uuid
+  userId   String @db.Uuid
+  createdBy String?
+  updatedBy String?
+  tenantId  String?
+  deletedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  ticket   Ticket @relation("Ticket_TicketUser", fields: [ticketId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@map("ticket_user")
+}
+model Address {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  street      String
+  number      String
+  complement  String?
+  city        String
+  state       String
+  postalCode  String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  tenantId    String?
+  deletedAt   DateTime?
+  // Relações
+  users       User[]       // Relacionamento com usuários
+  departments Department[] // Relacionamento com departamentos
+  institution Institution? // Relacionamento com instituição
+
+  @@map("address")
+}
+
+model ContactInfo {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type          String      // Tipo de contato (e.g., "phone", "email", "instagram", "opening_hours")
+  value         String      // Valor do contato (e.g., número de telefone, e-mail, URL de Instagram, ou horário no formato "08:00-17:00")
+  description   String?     // Descrição opcional (e.g., "Atendimento Geral", "WhatsApp Oficial")
+  dayOfWeek     Int?        // 0 (Domingo) a 6 (Sábado), para horários de funcionamento
+  departmentId  String      @db.Uuid // Relacionado a um Departamento
+  institutionId String?     @db.Uuid // Relacionado a uma Instituição
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime?    @updatedAt
+  createdBy     String?
+  updatedBy     String?
+  tenantId      String?
+  deletedAt     DateTime?
+
+  department    Department   @relation(fields: [departmentId], references: [id])
+
+  @@map("contact_info")
 }

@@ -6,16 +6,17 @@
 
 // Plugins
 import { registerPlugins } from '@/plugins'
+import { maskito } from '@maskito/vue'
+// Composables
+import { createApp } from 'vue'
 import Vue3Toastify from 'vue3-toastify'
-import 'vue3-toastify/dist/index.css'
 // Components
 import App from './App.vue'
 
-// Composables
-import { createApp } from 'vue'
+import 'vue3-toastify/dist/index.css'
 
 const app = createApp(App)
-
+app.directive('maskito', maskito)
 registerPlugins(app)
 app.use(Vue3Toastify, {
   autoClose: 3000,

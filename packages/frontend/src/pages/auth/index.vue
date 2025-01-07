@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/authStore'
+import { AuthService } from '@/services/AuthService'
 import { useRouter } from 'vue-router'
-
 // State
-const email = ref('admin@example.com')
-const password = ref('complexAdminFakePass123')
-const authStore = useAuthStore()
+const email = ref('')
+const password = ref('') // z)Ii1z=M
+const showPassword = ref(false)
 const router = useRouter()
+const authService = new AuthService()
 
 // Login Function
 async function login() {
   try {
-    const user = await authStore.login(email.value, password.value)
-    if (user && !authStore.isTokenExpired(authStore.token!)) {
+    const user = await authService.login(email.value, password.value)
+    if (user) {
       toast.success('Acesso concedido com sucesso!')
       setTimeout(() => {
-        router.push('/admin/')
+        router.push('/auth/organization')
       }, 1000)
     }
     else {
@@ -53,29 +53,21 @@ async function login() {
           <v-text-field
             v-model="email"
             label="E-mail"
-            variant="outlined"
-            dense
             hide-details
-            class="mb-n1"
           />
 
           <!-- Password -->
           <v-text-field
             v-model="password"
             label="Senha"
-            type="password"
-            variant="outlined"
-            dense
+            :type="showPassword ? 'text' : 'password'"
+            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
             hide-details
+            @click:append-inner="showPassword = !showPassword"
           />
           <v-row>
-            <!-- Remember Me -->
-            <v-col cols="6" class="d-flex align-center">
-              <v-checkbox label="Salvar" dense hide-details />
-            </v-col>
-
             <!-- Forgot Password -->
-            <v-col cols="6" class="text-right">
+            <v-col cols="6" class="text-right mt-5">
               <v-btn variant="plain" color="primary" class="pa-0">
                 Esqueceu senha
               </v-btn>

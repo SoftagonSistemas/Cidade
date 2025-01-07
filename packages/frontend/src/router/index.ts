@@ -9,8 +9,9 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import AdminLayout from '@/layouts/AdminLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import { useAuthStore } from '@/stores/authStore'
-import { createRouter, createWebHistory } from 'vue-router'
+import { AuthService } from '@/services/AuthService'
+import { useAuthStore } from '@/stores/AuthStore'
+import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 
 // Mapeamento de layouts disponíveis
@@ -43,25 +44,24 @@ function getLayoutName(path: string): string {
  */
 function injectLayout(routes: RouteRecordRaw[]) {
   return routes.map((route) => {
-    // Obter layout com base no meta.layout ou no prefixo da rota
     const layoutName = String(route.meta?.layout || getLayoutName(route.path))
     const layout = layoutMap[layoutName]
     if (!layoutMap[layoutName]) {
       console.warn(`Layout "${layoutName}" not found. Using DefaultLayout.`)
     }
 
+    const childRoute = {
+      ...route,
+      path: '', // Preserva o mesmo path
+      name: `${String(route.name) || route.path}-child`,
+      component: route.component || null,
+    }
+
     return {
       ...route,
-      component: layout, // Garante que seja um componente válido
-      children: [
-        {
-          ...route,
-          path: '',
-          name: route.name ? `${String(route.name)}-child` : undefined,
-          component: route.component || null,
-        },
-      ],
-    } as RouteRecordRaw // Garante a compatibilidade com o tipo
+      component: layout,
+      children: [childRoute],
+    } as RouteRecordRaw
   })
 }
 
@@ -89,10 +89,15 @@ router.onError((err, to) => {
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
-  await authStore.initializeAuthState()
+  const authService = new AuthService()
+  await authService.getSession()
+
   if (to.path.startsWith('/admin')) {
-    if (!authStore.isAuthenticated()) {
+    if (!authStore.isAuthenticated) {
       next('/auth')
+    }
+    else if (!authStore.organization) {
+      next('/auth/organization')
     }
     else {
       next()

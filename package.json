@@ -2,21 +2,23 @@
   "name": "cidade-transparente",
   "version": "1.0.0",
   "scripts": {
-    "frontend": "bun run --cwd packages/frontend dev"
+    "frontend": "bun run --cwd packages/frontend dev",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:seed": "bun run prisma/seed.ts"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "@antfu/eslint-config": "^3.11.2",
+    "@antfu/eslint-config": "^3.12.1",
     "@types/bun": "^1.1.14",
     "eslint": "latest",
-    "prisma": "^6.0.1",
-    "sass": "^1.82.0",
+    "prisma": "^6.1.0",
+    "sass": "^1.83.0",
     "sass-loader": "^16.0.4",
     "zod-prisma-types": "^3.2.1"
   },
   "dependencies": {
-    "@prisma/client": "^6.0.1"
+    "@prisma/client": "^6.1.0"
   }
 }

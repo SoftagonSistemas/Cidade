@@ -2,10 +2,7 @@
 <script setup lang="ts">
 import type { MenuItem } from '../composables/useAdminMenu'
 import { useAdminDrawer } from '@/composables/useAdminDrawer'
-import { useDisplay } from 'vuetify'
 import { useAdminMenu } from '../composables/useAdminMenu'
-
-const { mobile } = useDisplay()
 
 const { drawer, secondaryDrawer, toggleMenu } = useAdminDrawer()
 const { primaryMenuItems, expandedMenu, navigate, toggleExpandMenu, getMenuDescription } = useAdminMenu(secondaryDrawer)
@@ -16,7 +13,7 @@ const adminMenuItem = {
   icon: 'mdi-cog',
   label: 'Administração',
   children: [
-    { title: 'Gerenciamento de Usuários e Secretarias', route: '/admin/administracao/GerenciamentoUsuarios' },
+    { title: 'Gerenciamento de Usuários e Secretarias', route: '/admin/usuarios/' },
     { title: 'Configurações do Sistema', route: '/admin/administracao/ConfiguracoesSistema' },
   ],
 }
@@ -99,19 +96,22 @@ const adminMenuItem = {
         </div>
         <!-- Lista de itens do menu secundário -->
         <v-list dense nav>
-          <v-list-item
-            v-for="child in (expandedMenu === adminMenuItem.label ? adminMenuItem.children : primaryMenuItems.find((item: MenuItem) => item.label === expandedMenu)?.children)"
-            :key="child.title"
-            rounded="rounded"
-            variant="tonal"
-            density="compact"
-            @click="child.route && navigate(child.route)"
-          >
-            <template #prepend>
-              <v-icon icon="mdi-circle-outline" class="mr-n6" />
-            </template>
-            <v-list-item-title>{{ child.title }}</v-list-item-title>
-          </v-list-item>
+          <template v-for="(child, index) in (expandedMenu === adminMenuItem.label ? adminMenuItem.children : primaryMenuItems.find((item: MenuItem) => item.label === expandedMenu)?.children)">
+            <v-list-item
+              v-if="child.title !== 'separator'"
+              :key="child.title"
+              rounded="rounded"
+              variant="tonal"
+              density="compact"
+              @click="child.route && navigate(child.route)"
+            >
+              <template #prepend>
+                <v-icon icon="mdi-circle-outline" class="mr-n6" />
+              </template>
+              <v-list-item-title>{{ child.title }}</v-list-item-title>
+            </v-list-item>
+            <v-divider v-else :key="`divider-${index}`" class="my-2" />
+          </template>
         </v-list>
       </template>
     </v-navigation-drawer>
@@ -119,24 +119,20 @@ const adminMenuItem = {
     <NotificationMenu :model-value="notificationDrawerOpen" />
     <!-- Conteúdo Principal -->
     <v-main>
-      <v-container
-        class="d-flex justify-center align-center main-container px-0"
+      <v-sheet
+        elevation="0"
+        class="fill-height d-flex flex-column"
+        color="white"
       >
-        <v-sheet
-          elevation="0"
-          style="height: 100%; width: 100%;"
-          class="p-lg-4"
+        <Breadcrumbs />
+        <v-container
+          fluid
+          class="fill-height d-flex flex-column"
         >
           <router-view />
-        </v-sheet>
-      </v-container>
+        </v-container>
+      </v-sheet>
     </v-main>
-
-    <!-- Rodapé Opcional -->
-    <v-footer v-if="!mobile" app>
-      <v-spacer />
-      <span>Softagon Sistemas © 2025</span>
-    </v-footer>
   </v-app>
 </template>
 
@@ -173,16 +169,17 @@ const adminMenuItem = {
 }
 
 .v-app {
-  height: 100vh; /* Garante que o v-app ocupe a altura total da viewport */
-  overflow: hidden; /* Evita overflow do v-app */
+  min-height: 100vh; /* Garante que o app ocupe toda a altura da tela */
+  display: flex;
+  flex-direction: column;
 }
 
 .v-main {
-  height: calc(100vh - 64px); /* Ajusta a altura, subtraindo a altura do app-bar */
-  overflow-y: auto; /* Permite scroll interno no conteúdo principal, se necessário */
-  background-color: #f5f5f5;
+  flex-grow: 1; /* Permite que o conteúdo principal cresça para preencher o espaço */
 }
-.v-application{
-  overflow: hidden;
+
+.v-footer {
+  background-color: #f5f5f5; /* Exemplo, pode ser ajustado */
+  color: #000; /* Cor do texto */
 }
 </style>

@@ -7,16 +7,27 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Address: typeof import('./components/Address.vue')['default']
+    AddressDatabase: typeof import('./components/AddressDatabase.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AvatarMenu: typeof import('./components/User/AvatarMenu.vue')['default']
+    BirthDate: typeof import('./components/BirthDate.vue')['default']
+    Breadcrumbs: typeof import('./components/Breadcrumbs.vue')['default']
+    Editor: typeof import('./components/Documents/Editor.vue')['default']
+    FileUpload: typeof import('./components/Documents/FileUpload.vue')['default']
     FullEditor: typeof import('./components/Documents/FullEditor.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     InternalNotes: typeof import('./components/Tickets/InternalNotes.vue')['default']
+    NewCertificate: typeof import('./components/Documents/NewCertificate.vue')['default']
     NotificationMenu: typeof import('./components/User/NotificationMenu.vue')['default']
     PDFList: typeof import('./components/Documents/PDFList.vue')['default']
     PDFUpload: typeof import('./components/Documents/PDFUpload.vue')['default']
     PDFViewer: typeof import('./components/Documents/PDFViewer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SignDocument: typeof import('./components/Documents/SignDocument.vue')['default']
+    SoftagonIcon: typeof import('./components/SoftagonIcon.vue')['default']
+    UploadImage: typeof import('./components/UploadImage.vue')['default']
+    UserForm: typeof import('./components/UserForm.vue')['default']
   }
 }
