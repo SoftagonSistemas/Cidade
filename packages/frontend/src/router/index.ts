@@ -10,7 +10,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import AdminLayout from '@/layouts/AdminLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { useAuthStore } from '@/stores/authStore'
-import { createRouter, createWebHistory } from 'vue-router/auto'
+import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 
 // Mapeamento de layouts disponíveis
@@ -57,7 +57,8 @@ function injectLayout(routes: RouteRecordRaw[]) {
         {
           ...route,
           path: '',
-          component: route.component || null, // Fallback para evitar erro de undefined
+          name: route.name ? `${String(route.name)}-child` : undefined,
+          component: route.component || null,
         },
       ],
     } as RouteRecordRaw // Garante a compatibilidade com o tipo

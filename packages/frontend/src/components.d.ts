@@ -9,15 +9,14 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AvatarMenu: typeof import('./components/User/AvatarMenu.vue')['default']
-    Editor: typeof import('./components/Documents/Editor.vue')['default']
     FullEditor: typeof import('./components/Documents/FullEditor.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    InternalNotes: typeof import('./components/Tickets/InternalNotes.vue')['default']
     NotificationMenu: typeof import('./components/User/NotificationMenu.vue')['default']
     PDFList: typeof import('./components/Documents/PDFList.vue')['default']
     PDFUpload: typeof import('./components/Documents/PDFUpload.vue')['default']
     PDFViewer: typeof import('./components/Documents/PDFViewer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SoftagonIcon: typeof import('./components/SoftagonIcon.vue')['default']
   }
 }
