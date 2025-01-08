@@ -62,19 +62,7 @@ async function loadStampImage() {
 }
 
 async function signDocument() {
-  console.log('Arquivos:', {
-    pdfFile: pdfFile.value,
-    p12File: p12File.value,
-    password: password.value,
-    selectedCertificate: selectedCertificate.value,
-  })
-
   if (!pdfFile.value || !p12File.value || !password.value) {
-    console.log('Campos faltando:', {
-      pdfFile: !pdfFile.value,
-      p12File: !p12File.value,
-      password: !password.value,
-    })
     toast.error('Preencha todos os campos obrigatórios')
     return
   }
@@ -124,24 +112,19 @@ async function signDocument() {
 
 async function loadP12File() {
   if (!selectedCertificate.value) {
-    console.log('Nenhum certificado selecionado')
     return
   }
 
   const certificate = certificates.value.find(cert => cert.id === selectedCertificate.value)
   if (!certificate) {
-    console.log('Certificado não encontrado')
     return
   }
-
-  console.log('Carregando certificado:', certificate)
 
   try {
     const response = await fileService.viewFile(certificate.filePath)
     const blob = await response.blob()
     const file = new File([blob], `${certificate.alias}.p12`, { type: 'application/x-pkcs12' })
     p12File.value = file
-    console.log('Certificado p12 carregado com sucesso')
   }
   catch (error) {
     console.error('Erro ao carregar certificado:', error)

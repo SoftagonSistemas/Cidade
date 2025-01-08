@@ -22,6 +22,7 @@ declare module 'vue' {
     NotificationMenu: typeof import('./components/User/NotificationMenu.vue')['default']
     PDFList: typeof import('./components/Documents/PDFList.vue')['default']
     PDFUpload: typeof import('./components/Documents/PDFUpload.vue')['default']
+    PDFView: typeof import('./components/Documents/PDFView.vue')['default']
     PDFViewer: typeof import('./components/Documents/PDFViewer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

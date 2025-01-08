@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Document } from '@prisma/client'
 import FileUpload from '@/components/Documents/FileUpload.vue'
-import PDFViewer from '@/components/Documents/PDFViewer.vue'
+import PDFView from '@/components/Documents/PDFView.vue'
 import SignDocument from '@/components/Documents/SignDocument.vue'
 import BaseService from '@/services/BaseService'
 import FileService from '@/services/FileService'
@@ -9,7 +9,6 @@ import FileService from '@/services/FileService'
 const documents = ref<Document[]>([])
 const loading = ref(false)
 const search = ref('')
-const pdfViewerRef = ref<InstanceType<typeof PDFViewer> | null>(null)
 const fileService = new FileService()
 const documentService = new BaseService('document')
 const dialog = ref(false)
@@ -17,6 +16,8 @@ const itemsPerPage = ref(6)
 const currentPage = ref(1)
 const showSignDialog = ref(false)
 const selectedDocument = ref<{ path: string, name: string } | null>(null)
+const isPDFViewerOpen = ref(false)
+const currentPDFPath = ref('')
 
 async function fetchDocuments() {
   loading.value = true
@@ -33,8 +34,14 @@ async function fetchDocuments() {
   }
 }
 
-function openPDFViewer(name: string, url: string) {
-  pdfViewerRef.value?.openPDFViewer(name, url)
+function openPDFViewer(name: string, path: string) {
+  currentPDFPath.value = path
+  isPDFViewerOpen.value = true
+}
+
+function closePDFViewer() {
+  isPDFViewerOpen.value = false
+  currentPDFPath.value = ''
 }
 
 async function downloadDocument(path: string) {
@@ -327,7 +334,11 @@ onMounted(fetchDocuments)
       </v-col>
     </v-row>
 
-    <PDFViewer ref="pdfViewerRef" />
+    <PDFView
+      v-model:is-open="isPDFViewerOpen"
+      :pdf-path="currentPDFPath"
+      @update:is-open="closePDFViewer"
+    />
 
     <SignDocument
       v-if="selectedDocument"
