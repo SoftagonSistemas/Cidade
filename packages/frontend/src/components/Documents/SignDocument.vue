@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { DigitalCertificate } from '@prisma/client'
+import stampImageUrl from '@/assets/softagon-logo.png'
 import BaseService from '@/services/BaseService'
+import FileService from '@/services/FileService'
+import PdfService from '@/services/PdfService'
 
 interface Props {
   show: boolean
@@ -8,7 +11,7 @@ interface Props {
   documentName: string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits(['update:show', 'signed'])
 
 const certificates = ref<DigitalCertificate[]>([])
@@ -18,6 +21,12 @@ const loading = ref(false)
 const step = ref(1)
 const showPassword = ref(false)
 const certificateService = new BaseService<DigitalCertificate>('digital_certificate')
+const pdfFile = ref<File | null>(null)
+const p12File = ref<File | null>(null)
+const progress = ref(0)
+const stampFile = ref<File | null>(null)
+
+const fileService = new FileService()
 
 async function loadCertificates() {
   try {
@@ -28,21 +37,122 @@ async function loadCertificates() {
   }
 }
 
-async function signDocument() {
-  loading.value = true
+async function loadDocument() {
   try {
-    // Implementar lógica de assinatura aqui
-    await new Promise(resolve => setTimeout(resolve, 1500)) // Simulação
+    const response = await fileService.viewFile(props.documentPath)
+    const blob = await response.blob()
+    const file = new File([blob], props.documentName, { type: 'application/pdf' })
+    pdfFile.value = file
+  }
+  catch (error) {
+    console.error('Erro ao carregar documento:', error)
+    toast.error('Erro ao carregar documento')
+  }
+}
+
+async function loadStampImage() {
+  try {
+    const response = await fetch(stampImageUrl)
+    const blob = await response.blob()
+    stampFile.value = new File([blob], 'softagon-logo.png', { type: 'image/png' })
+  }
+  catch (error) {
+    console.error('Erro ao carregar stampImage:', error)
+  }
+}
+
+async function signDocument() {
+  console.log('Arquivos:', {
+    pdfFile: pdfFile.value,
+    p12File: p12File.value,
+    password: password.value,
+    selectedCertificate: selectedCertificate.value,
+  })
+
+  if (!pdfFile.value || !p12File.value || !password.value) {
+    console.log('Campos faltando:', {
+      pdfFile: !pdfFile.value,
+      p12File: !p12File.value,
+      password: !password.value,
+    })
+    toast.error('Preencha todos os campos obrigatórios')
+    return
+  }
+
+  if (!stampFile.value)
+    await loadStampImage()
+
+  loading.value = true
+  progress.value = 0
+
+  try {
+    const pdfService = new PdfService()
+
+    const response = await pdfService.signPdf(
+      pdfFile.value,
+      p12File.value,
+      password.value,
+      { stampImage: stampFile.value! }, // opções do carimbo padrão
+      {}, // opções da assinatura padrão
+      (progressValue) => {
+        progress.value = progressValue
+      },
+    )
+
+    // Criar URL do blob e fazer download
+    const blob = await response.blob()
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = props.documentName.replace('.pdf', '-assinado.pdf')
+
+    document.body.appendChild(a)
+    a.click()
+    window.URL.revokeObjectURL(url)
+    document.body.removeChild(a)
+
     step.value = 2
     toast.success('Documento assinado com sucesso!')
   }
-  catch {
-    toast.error('Erro ao assinar documento')
+  catch (error) {
+    toast.error(`Erro ao assinar documento: ${error.message}`)
   }
   finally {
     loading.value = false
   }
 }
+
+async function loadP12File() {
+  if (!selectedCertificate.value) {
+    console.log('Nenhum certificado selecionado')
+    return
+  }
+
+  const certificate = certificates.value.find(cert => cert.id === selectedCertificate.value)
+  if (!certificate) {
+    console.log('Certificado não encontrado')
+    return
+  }
+
+  console.log('Carregando certificado:', certificate)
+
+  try {
+    const response = await fileService.viewFile(certificate.filePath)
+    const blob = await response.blob()
+    const file = new File([blob], `${certificate.alias}.p12`, { type: 'application/x-pkcs12' })
+    p12File.value = file
+    console.log('Certificado p12 carregado com sucesso')
+  }
+  catch (error) {
+    console.error('Erro ao carregar certificado:', error)
+    toast.error('Erro ao carregar certificado')
+  }
+}
+
+// Adicionar watcher para selectedCertificate
+watch(selectedCertificate, async () => {
+  await loadP12File()
+})
 
 function downloadSignedDocument() {
   // Implementar download
@@ -63,7 +173,9 @@ function closeDialog() {
   }, 300)
 }
 
-onMounted(loadCertificates)
+onMounted(async () => {
+  await Promise.all([loadCertificates(), loadDocument()])
+})
 </script>
 
 <template>
@@ -118,6 +230,7 @@ onMounted(loadCertificates)
 
             <v-select
               v-model="selectedCertificate"
+              autocomplete="off"
               :items="certificates"
               item-title="alias"
               item-value="id"
@@ -145,10 +258,10 @@ onMounted(loadCertificates)
               color="primary"
               :loading="loading"
               :disabled="!selectedCertificate || !password"
+              prepend-icon="mdi-file-sign"
               @click="signDocument"
             >
               Assinar Documento
-              <v-icon end icon="mdi-file-sign" class="ml-2" />
             </v-btn>
           </v-card-actions>
         </v-window-item>
