@@ -1,9 +1,53 @@
 import { z } from 'zod';
-import type { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 /////////////////////////////////////////
 // HELPER FUNCTIONS
 /////////////////////////////////////////
+
+// JSON
+//------------------------------------------------------
+
+export type NullableJsonInput = Prisma.JsonValue | null | 'JsonNull' | 'DbNull' | Prisma.NullTypes.DbNull | Prisma.NullTypes.JsonNull;
+
+export const transformJsonNull = (v?: NullableJsonInput) => {
+  if (!v || v === 'DbNull') return Prisma.DbNull;
+  if (v === 'JsonNull') return Prisma.JsonNull;
+  return v;
+};
+
+export const JsonValueSchema: z.ZodType<Prisma.JsonValue> = z.lazy(() =>
+  z.union([
+    z.string(),
+    z.number(),
+    z.boolean(),
+    z.literal(null),
+    z.record(z.lazy(() => JsonValueSchema.optional())),
+    z.array(z.lazy(() => JsonValueSchema)),
+  ])
+);
+
+export type JsonValueType = z.infer<typeof JsonValueSchema>;
+
+export const NullableJsonValue = z
+  .union([JsonValueSchema, z.literal('DbNull'), z.literal('JsonNull')])
+  .nullable()
+  .transform((v) => transformJsonNull(v));
+
+export type NullableJsonValueType = z.infer<typeof NullableJsonValue>;
+
+export const InputJsonValueSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
+  z.union([
+    z.string(),
+    z.number(),
+    z.boolean(),
+    z.object({ toJSON: z.function(z.tuple([]), z.any()) }),
+    z.record(z.lazy(() => z.union([InputJsonValueSchema, z.literal(null)]))),
+    z.array(z.lazy(() => z.union([InputJsonValueSchema, z.literal(null)]))),
+  ])
+);
+
+export type InputJsonValueType = z.infer<typeof InputJsonValueSchema>;
 
 
 /////////////////////////////////////////
@@ -58,7 +102,7 @@ export const SLAPlanScalarFieldEnumSchema = z.enum(['id','name','gracePeriod','c
 
 export const TicketThreadScalarFieldEnumSchema = z.enum(['id','ticketId','userId','message','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
-export const TicketAttachmentScalarFieldEnumSchema = z.enum(['id','ticketId','ticketThreadId','filePath','fileName','mimeType','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
+export const TicketAttachmentScalarFieldEnumSchema = z.enum(['id','ticketId','threadId','filePath','fileName','mimeType','createdAt','createdBy','updatedBy','tenantId','deletedAt','updatedAt']);
 
 export const TicketCollaboratorScalarFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId','deletedAt','createdAt','updatedAt']);
 
@@ -74,7 +118,11 @@ export const AddressScalarFieldEnumSchema = z.enum(['id','street','number','comp
 
 export const ContactInfoScalarFieldEnumSchema = z.enum(['id','type','value','description','dayOfWeek','departmentId','institutionId','createdAt','updatedAt','createdBy','updatedBy','tenantId','deletedAt']);
 
+export const ServiceCardScalarFieldEnumSchema = z.enum(['id','status','createdBy','createdAt','updatedBy','updatedAt','deletedAt','title','departmentId','tag','document','cost','schedule','deadline','inPerson','online','serviceCategory','city','location','icon']);
+
 export const SortOrderSchema = z.enum(['asc','desc']);
+
+export const NullableJsonNullValueInputSchema = z.enum(['DbNull','JsonNull',]).transform((value) => value === 'JsonNull' ? Prisma.JsonNull : value === 'DbNull' ? Prisma.DbNull : value);
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
 
@@ -126,7 +174,7 @@ export const SLAPlanOrderByRelevanceFieldEnumSchema = z.enum(['id','name','creat
 
 export const TicketThreadOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId','message','createdBy','updatedBy','tenantId']);
 
-export const TicketAttachmentOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','ticketThreadId','filePath','fileName','mimeType','createdBy','updatedBy','tenantId']);
+export const TicketAttachmentOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','threadId','filePath','fileName','mimeType','createdBy','updatedBy','tenantId']);
 
 export const TicketCollaboratorOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId','userId','createdBy','updatedBy','tenantId']);
 
@@ -141,6 +189,10 @@ export const TicketUserOrderByRelevanceFieldEnumSchema = z.enum(['id','ticketId'
 export const AddressOrderByRelevanceFieldEnumSchema = z.enum(['id','street','number','complement','city','state','postalCode','createdBy','updatedBy','tenantId']);
 
 export const ContactInfoOrderByRelevanceFieldEnumSchema = z.enum(['id','type','value','description','departmentId','institutionId','createdBy','updatedBy','tenantId']);
+
+export const JsonNullValueFilterSchema = z.enum(['DbNull','JsonNull','AnyNull',]).transform((value) => value === 'JsonNull' ? Prisma.JsonNull : value === 'DbNull' ? Prisma.JsonNull : value === 'AnyNull' ? Prisma.AnyNull : value);
+
+export const ServiceCardOrderByRelevanceFieldEnumSchema = z.enum(['id','status','createdBy','updatedBy','title','departmentId','document','cost','schedule','deadline','serviceCategory','location','icon']);
 /////////////////////////////////////////
 // MODELS
 /////////////////////////////////////////
@@ -669,7 +721,7 @@ export type TicketThread = z.infer<typeof TicketThreadSchema>
 export const TicketAttachmentSchema = z.object({
   id: z.string(),
   ticketId: z.string(),
-  ticketThreadId: z.string(),
+  threadId: z.string(),
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
@@ -817,6 +869,35 @@ export const ContactInfoSchema = z.object({
 })
 
 export type ContactInfo = z.infer<typeof ContactInfoSchema>
+
+/////////////////////////////////////////
+// SERVICE CARD SCHEMA
+/////////////////////////////////////////
+
+export const ServiceCardSchema = z.object({
+  id: z.string(),
+  status: z.string(),
+  createdBy: z.string(),
+  createdAt: z.coerce.date(),
+  updatedBy: z.string().nullable(),
+  updatedAt: z.coerce.date().nullable(),
+  deletedAt: z.coerce.date().nullable(),
+  title: z.string(),
+  departmentId: z.string(),
+  tag: JsonValueSchema.nullable(),
+  document: z.string().nullable(),
+  cost: z.string(),
+  schedule: z.string(),
+  deadline: z.string(),
+  inPerson: z.boolean(),
+  online: z.boolean(),
+  serviceCategory: z.string(),
+  city: z.number().int(),
+  location: z.string().nullable(),
+  icon: z.string().nullable(),
+})
+
+export type ServiceCard = z.infer<typeof ServiceCardSchema>
 
 /////////////////////////////////////////
 // SELECT & INCLUDE
@@ -1420,6 +1501,7 @@ export const DepartmentIncludeSchema: z.ZodType<Prisma.DepartmentInclude> = z.ob
   contactInfos: z.union([z.boolean(),z.lazy(() => ContactInfoFindManyArgsSchema)]).optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
   helpTopics: z.union([z.boolean(),z.lazy(() => HelpTopicFindManyArgsSchema)]).optional(),
+  serviceCards: z.union([z.boolean(),z.lazy(() => ServiceCardFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => DepartmentCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -1438,6 +1520,7 @@ export const DepartmentCountOutputTypeSelectSchema: z.ZodType<Prisma.DepartmentC
   contactInfos: z.boolean().optional(),
   tickets: z.boolean().optional(),
   helpTopics: z.boolean().optional(),
+  serviceCards: z.boolean().optional(),
 }).strict();
 
 export const DepartmentSelectSchema: z.ZodType<Prisma.DepartmentSelect> = z.object({
@@ -1464,6 +1547,7 @@ export const DepartmentSelectSchema: z.ZodType<Prisma.DepartmentSelect> = z.obje
   contactInfos: z.union([z.boolean(),z.lazy(() => ContactInfoFindManyArgsSchema)]).optional(),
   tickets: z.union([z.boolean(),z.lazy(() => TicketFindManyArgsSchema)]).optional(),
   helpTopics: z.union([z.boolean(),z.lazy(() => HelpTopicFindManyArgsSchema)]).optional(),
+  serviceCards: z.union([z.boolean(),z.lazy(() => ServiceCardFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => DepartmentCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -1509,7 +1593,7 @@ export const TicketIncludeSchema: z.ZodType<Prisma.TicketInclude> = z.object({
   attachments: z.union([z.boolean(),z.lazy(() => TicketAttachmentFindManyArgsSchema)]).optional(),
   collaborators: z.union([z.boolean(),z.lazy(() => TicketCollaboratorFindManyArgsSchema)]).optional(),
   customFields: z.union([z.boolean(),z.lazy(() => TicketCustomFieldFindManyArgsSchema)]).optional(),
-  threads: z.union([z.boolean(),z.lazy(() => TicketThreadArgsSchema)]).optional(),
+  threads: z.union([z.boolean(),z.lazy(() => TicketThreadFindManyArgsSchema)]).optional(),
   ticketUsers: z.union([z.boolean(),z.lazy(() => TicketUserFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TicketCountOutputTypeArgsSchema)]).optional(),
 }).strict()
@@ -1527,6 +1611,7 @@ export const TicketCountOutputTypeSelectSchema: z.ZodType<Prisma.TicketCountOutp
   attachments: z.boolean().optional(),
   collaborators: z.boolean().optional(),
   customFields: z.boolean().optional(),
+  threads: z.boolean().optional(),
   ticketUsers: z.boolean().optional(),
 }).strict();
 
@@ -1559,7 +1644,7 @@ export const TicketSelectSchema: z.ZodType<Prisma.TicketSelect> = z.object({
   attachments: z.union([z.boolean(),z.lazy(() => TicketAttachmentFindManyArgsSchema)]).optional(),
   collaborators: z.union([z.boolean(),z.lazy(() => TicketCollaboratorFindManyArgsSchema)]).optional(),
   customFields: z.union([z.boolean(),z.lazy(() => TicketCustomFieldFindManyArgsSchema)]).optional(),
-  threads: z.union([z.boolean(),z.lazy(() => TicketThreadArgsSchema)]).optional(),
+  threads: z.union([z.boolean(),z.lazy(() => TicketThreadFindManyArgsSchema)]).optional(),
   ticketUsers: z.union([z.boolean(),z.lazy(() => TicketUserFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TicketCountOutputTypeArgsSchema)]).optional(),
 }).strict()
@@ -1709,9 +1794,9 @@ export const SLAPlanSelectSchema: z.ZodType<Prisma.SLAPlanSelect> = z.object({
 //------------------------------------------------------
 
 export const TicketThreadIncludeSchema: z.ZodType<Prisma.TicketThreadInclude> = z.object({
-  attachments: z.union([z.boolean(),z.lazy(() => TicketAttachmentFindManyArgsSchema)]).optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  attachments: z.union([z.boolean(),z.lazy(() => TicketAttachmentFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TicketThreadCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -1739,9 +1824,9 @@ export const TicketThreadSelectSchema: z.ZodType<Prisma.TicketThreadSelect> = z.
   tenantId: z.boolean().optional(),
   deletedAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
-  attachments: z.union([z.boolean(),z.lazy(() => TicketAttachmentFindManyArgsSchema)]).optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
   user: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  attachments: z.union([z.boolean(),z.lazy(() => TicketAttachmentFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TicketThreadCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -1750,7 +1835,7 @@ export const TicketThreadSelectSchema: z.ZodType<Prisma.TicketThreadSelect> = z.
 
 export const TicketAttachmentIncludeSchema: z.ZodType<Prisma.TicketAttachmentInclude> = z.object({
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
-  ticketThread: z.union([z.boolean(),z.lazy(() => TicketThreadArgsSchema)]).optional(),
+  thread: z.union([z.boolean(),z.lazy(() => TicketThreadArgsSchema)]).optional(),
 }).strict()
 
 export const TicketAttachmentArgsSchema: z.ZodType<Prisma.TicketAttachmentDefaultArgs> = z.object({
@@ -1761,7 +1846,7 @@ export const TicketAttachmentArgsSchema: z.ZodType<Prisma.TicketAttachmentDefaul
 export const TicketAttachmentSelectSchema: z.ZodType<Prisma.TicketAttachmentSelect> = z.object({
   id: z.boolean().optional(),
   ticketId: z.boolean().optional(),
-  ticketThreadId: z.boolean().optional(),
+  threadId: z.boolean().optional(),
   filePath: z.boolean().optional(),
   fileName: z.boolean().optional(),
   mimeType: z.boolean().optional(),
@@ -1772,7 +1857,7 @@ export const TicketAttachmentSelectSchema: z.ZodType<Prisma.TicketAttachmentSele
   deletedAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   ticket: z.union([z.boolean(),z.lazy(() => TicketArgsSchema)]).optional(),
-  ticketThread: z.union([z.boolean(),z.lazy(() => TicketThreadArgsSchema)]).optional(),
+  thread: z.union([z.boolean(),z.lazy(() => TicketThreadArgsSchema)]).optional(),
 }).strict()
 
 // TICKET COLLABORATOR
@@ -1989,6 +2074,42 @@ export const ContactInfoSelectSchema: z.ZodType<Prisma.ContactInfoSelect> = z.ob
   updatedBy: z.boolean().optional(),
   tenantId: z.boolean().optional(),
   deletedAt: z.boolean().optional(),
+  department: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
+}).strict()
+
+// SERVICE CARD
+//------------------------------------------------------
+
+export const ServiceCardIncludeSchema: z.ZodType<Prisma.ServiceCardInclude> = z.object({
+  department: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
+}).strict()
+
+export const ServiceCardArgsSchema: z.ZodType<Prisma.ServiceCardDefaultArgs> = z.object({
+  select: z.lazy(() => ServiceCardSelectSchema).optional(),
+  include: z.lazy(() => ServiceCardIncludeSchema).optional(),
+}).strict();
+
+export const ServiceCardSelectSchema: z.ZodType<Prisma.ServiceCardSelect> = z.object({
+  id: z.boolean().optional(),
+  status: z.boolean().optional(),
+  createdBy: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedBy: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  title: z.boolean().optional(),
+  departmentId: z.boolean().optional(),
+  tag: z.boolean().optional(),
+  document: z.boolean().optional(),
+  cost: z.boolean().optional(),
+  schedule: z.boolean().optional(),
+  deadline: z.boolean().optional(),
+  inPerson: z.boolean().optional(),
+  online: z.boolean().optional(),
+  serviceCategory: z.boolean().optional(),
+  city: z.boolean().optional(),
+  location: z.boolean().optional(),
+  icon: z.boolean().optional(),
   department: z.union([z.boolean(),z.lazy(() => DepartmentArgsSchema)]).optional(),
 }).strict()
 
@@ -3613,7 +3734,8 @@ export const DepartmentWhereInputSchema: z.ZodType<Prisma.DepartmentWhereInput> 
   userDepartments: z.lazy(() => UserDepartmentListRelationFilterSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoListRelationFilterSchema).optional(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicListRelationFilterSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicListRelationFilterSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardListRelationFilterSchema).optional()
 }).strict();
 
 export const DepartmentOrderByWithRelationInputSchema: z.ZodType<Prisma.DepartmentOrderByWithRelationInput> = z.object({
@@ -3640,6 +3762,7 @@ export const DepartmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Departme
   contactInfos: z.lazy(() => ContactInfoOrderByRelationAggregateInputSchema).optional(),
   tickets: z.lazy(() => TicketOrderByRelationAggregateInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicOrderByRelationAggregateInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => DepartmentOrderByRelevanceInputSchema).optional()
 }).strict();
 
@@ -3682,7 +3805,8 @@ export const DepartmentWhereUniqueInputSchema: z.ZodType<Prisma.DepartmentWhereU
   userDepartments: z.lazy(() => UserDepartmentListRelationFilterSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoListRelationFilterSchema).optional(),
   tickets: z.lazy(() => TicketListRelationFilterSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicListRelationFilterSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicListRelationFilterSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardListRelationFilterSchema).optional()
 }).strict());
 
 export const DepartmentOrderByWithAggregationInputSchema: z.ZodType<Prisma.DepartmentOrderByWithAggregationInput> = z.object({
@@ -3844,7 +3968,7 @@ export const TicketWhereInputSchema: z.ZodType<Prisma.TicketWhereInput> = z.obje
   attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorListRelationFilterSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldListRelationFilterSchema).optional(),
-  threads: z.union([ z.lazy(() => TicketThreadNullableScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional().nullable(),
+  threads: z.lazy(() => TicketThreadListRelationFilterSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserListRelationFilterSchema).optional()
 }).strict();
 
@@ -3877,7 +4001,7 @@ export const TicketOrderByWithRelationInputSchema: z.ZodType<Prisma.TicketOrderB
   attachments: z.lazy(() => TicketAttachmentOrderByRelationAggregateInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorOrderByRelationAggregateInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldOrderByRelationAggregateInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadOrderByWithRelationInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadOrderByRelationAggregateInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => TicketOrderByRelevanceInputSchema).optional()
 }).strict();
@@ -3917,7 +4041,7 @@ export const TicketWhereUniqueInputSchema: z.ZodType<Prisma.TicketWhereUniqueInp
   attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorListRelationFilterSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldListRelationFilterSchema).optional(),
-  threads: z.union([ z.lazy(() => TicketThreadNullableScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional().nullable(),
+  threads: z.lazy(() => TicketThreadListRelationFilterSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserListRelationFilterSchema).optional()
 }).strict());
 
@@ -4299,9 +4423,9 @@ export const TicketThreadWhereInputSchema: z.ZodType<Prisma.TicketThreadWhereInp
   tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
+  attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional()
 }).strict();
 
 export const TicketThreadOrderByWithRelationInputSchema: z.ZodType<Prisma.TicketThreadOrderByWithRelationInput> = z.object({
@@ -4315,30 +4439,21 @@ export const TicketThreadOrderByWithRelationInputSchema: z.ZodType<Prisma.Ticket
   tenantId: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
-  attachments: z.lazy(() => TicketAttachmentOrderByRelationAggregateInputSchema).optional(),
   ticket: z.lazy(() => TicketOrderByWithRelationInputSchema).optional(),
   user: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+  attachments: z.lazy(() => TicketAttachmentOrderByRelationAggregateInputSchema).optional(),
   _relevance: z.lazy(() => TicketThreadOrderByRelevanceInputSchema).optional()
 }).strict();
 
-export const TicketThreadWhereUniqueInputSchema: z.ZodType<Prisma.TicketThreadWhereUniqueInput> = z.union([
-  z.object({
-    id: z.string(),
-    ticketId: z.string()
-  }),
-  z.object({
-    id: z.string(),
-  }),
-  z.object({
-    ticketId: z.string(),
-  }),
-])
+export const TicketThreadWhereUniqueInputSchema: z.ZodType<Prisma.TicketThreadWhereUniqueInput> = z.object({
+  id: z.string()
+})
 .and(z.object({
   id: z.string().optional(),
-  ticketId: z.string().optional(),
   AND: z.union([ z.lazy(() => TicketThreadWhereInputSchema),z.lazy(() => TicketThreadWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => TicketThreadWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => TicketThreadWhereInputSchema),z.lazy(() => TicketThreadWhereInputSchema).array() ]).optional(),
+  ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   userId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   message: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
@@ -4347,9 +4462,9 @@ export const TicketThreadWhereUniqueInputSchema: z.ZodType<Prisma.TicketThreadWh
   tenantId: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
   user: z.union([ z.lazy(() => UserScalarRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
+  attachments: z.lazy(() => TicketAttachmentListRelationFilterSchema).optional()
 }).strict());
 
 export const TicketThreadOrderByWithAggregationInputSchema: z.ZodType<Prisma.TicketThreadOrderByWithAggregationInput> = z.object({
@@ -4390,7 +4505,7 @@ export const TicketAttachmentWhereInputSchema: z.ZodType<Prisma.TicketAttachment
   NOT: z.union([ z.lazy(() => TicketAttachmentWhereInputSchema),z.lazy(() => TicketAttachmentWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
-  ticketThreadId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  threadId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   filePath: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -4401,13 +4516,13 @@ export const TicketAttachmentWhereInputSchema: z.ZodType<Prisma.TicketAttachment
   deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
-  ticketThread: z.union([ z.lazy(() => TicketThreadScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
+  thread: z.union([ z.lazy(() => TicketThreadScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
 }).strict();
 
 export const TicketAttachmentOrderByWithRelationInputSchema: z.ZodType<Prisma.TicketAttachmentOrderByWithRelationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  ticketThreadId: z.lazy(() => SortOrderSchema).optional(),
+  threadId: z.lazy(() => SortOrderSchema).optional(),
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
@@ -4418,7 +4533,7 @@ export const TicketAttachmentOrderByWithRelationInputSchema: z.ZodType<Prisma.Ti
   deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   ticket: z.lazy(() => TicketOrderByWithRelationInputSchema).optional(),
-  ticketThread: z.lazy(() => TicketThreadOrderByWithRelationInputSchema).optional(),
+  thread: z.lazy(() => TicketThreadOrderByWithRelationInputSchema).optional(),
   _relevance: z.lazy(() => TicketAttachmentOrderByRelevanceInputSchema).optional()
 }).strict();
 
@@ -4431,7 +4546,7 @@ export const TicketAttachmentWhereUniqueInputSchema: z.ZodType<Prisma.TicketAtta
   OR: z.lazy(() => TicketAttachmentWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => TicketAttachmentWhereInputSchema),z.lazy(() => TicketAttachmentWhereInputSchema).array() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
-  ticketThreadId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  threadId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   filePath: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -4442,13 +4557,13 @@ export const TicketAttachmentWhereUniqueInputSchema: z.ZodType<Prisma.TicketAtta
   deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   ticket: z.union([ z.lazy(() => TicketScalarRelationFilterSchema),z.lazy(() => TicketWhereInputSchema) ]).optional(),
-  ticketThread: z.union([ z.lazy(() => TicketThreadScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
+  thread: z.union([ z.lazy(() => TicketThreadScalarRelationFilterSchema),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
 }).strict());
 
 export const TicketAttachmentOrderByWithAggregationInputSchema: z.ZodType<Prisma.TicketAttachmentOrderByWithAggregationInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  ticketThreadId: z.lazy(() => SortOrderSchema).optional(),
+  threadId: z.lazy(() => SortOrderSchema).optional(),
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
@@ -4469,7 +4584,7 @@ export const TicketAttachmentScalarWhereWithAggregatesInputSchema: z.ZodType<Pri
   NOT: z.union([ z.lazy(() => TicketAttachmentScalarWhereWithAggregatesInputSchema),z.lazy(() => TicketAttachmentScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
-  ticketThreadId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
+  threadId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
   filePath: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   fileName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
@@ -5097,6 +5212,142 @@ export const ContactInfoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.C
   updatedBy: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   tenantId: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
   deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+}).strict();
+
+export const ServiceCardWhereInputSchema: z.ZodType<Prisma.ServiceCardWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => ServiceCardWhereInputSchema),z.lazy(() => ServiceCardWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ServiceCardWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ServiceCardWhereInputSchema),z.lazy(() => ServiceCardWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  status: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedBy: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  title: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  departmentId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  tag: z.lazy(() => JsonNullableFilterSchema).optional(),
+  document: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  cost: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  schedule: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  deadline: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  inPerson: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  online: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  serviceCategory: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  city: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  location: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  icon: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
+}).strict();
+
+export const ServiceCardOrderByWithRelationInputSchema: z.ZodType<Prisma.ServiceCardOrderByWithRelationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  departmentId: z.lazy(() => SortOrderSchema).optional(),
+  tag: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  document: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  cost: z.lazy(() => SortOrderSchema).optional(),
+  schedule: z.lazy(() => SortOrderSchema).optional(),
+  deadline: z.lazy(() => SortOrderSchema).optional(),
+  inPerson: z.lazy(() => SortOrderSchema).optional(),
+  online: z.lazy(() => SortOrderSchema).optional(),
+  serviceCategory: z.lazy(() => SortOrderSchema).optional(),
+  city: z.lazy(() => SortOrderSchema).optional(),
+  location: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  icon: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  department: z.lazy(() => DepartmentOrderByWithRelationInputSchema).optional(),
+  _relevance: z.lazy(() => ServiceCardOrderByRelevanceInputSchema).optional()
+}).strict();
+
+export const ServiceCardWhereUniqueInputSchema: z.ZodType<Prisma.ServiceCardWhereUniqueInput> = z.object({
+  id: z.string()
+})
+.and(z.object({
+  id: z.string().optional(),
+  AND: z.union([ z.lazy(() => ServiceCardWhereInputSchema),z.lazy(() => ServiceCardWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ServiceCardWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ServiceCardWhereInputSchema),z.lazy(() => ServiceCardWhereInputSchema).array() ]).optional(),
+  status: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedBy: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  title: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  departmentId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  tag: z.lazy(() => JsonNullableFilterSchema).optional(),
+  document: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  cost: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  schedule: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  deadline: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  inPerson: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  online: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  serviceCategory: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  city: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
+  location: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  icon: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  department: z.union([ z.lazy(() => DepartmentScalarRelationFilterSchema),z.lazy(() => DepartmentWhereInputSchema) ]).optional(),
+}).strict());
+
+export const ServiceCardOrderByWithAggregationInputSchema: z.ZodType<Prisma.ServiceCardOrderByWithAggregationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  updatedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  departmentId: z.lazy(() => SortOrderSchema).optional(),
+  tag: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  document: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  cost: z.lazy(() => SortOrderSchema).optional(),
+  schedule: z.lazy(() => SortOrderSchema).optional(),
+  deadline: z.lazy(() => SortOrderSchema).optional(),
+  inPerson: z.lazy(() => SortOrderSchema).optional(),
+  online: z.lazy(() => SortOrderSchema).optional(),
+  serviceCategory: z.lazy(() => SortOrderSchema).optional(),
+  city: z.lazy(() => SortOrderSchema).optional(),
+  location: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  icon: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  _count: z.lazy(() => ServiceCardCountOrderByAggregateInputSchema).optional(),
+  _avg: z.lazy(() => ServiceCardAvgOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => ServiceCardMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => ServiceCardMinOrderByAggregateInputSchema).optional(),
+  _sum: z.lazy(() => ServiceCardSumOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const ServiceCardScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.ServiceCardScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => ServiceCardScalarWhereWithAggregatesInputSchema),z.lazy(() => ServiceCardScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ServiceCardScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ServiceCardScalarWhereWithAggregatesInputSchema),z.lazy(() => ServiceCardScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
+  status: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
+  createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updatedBy: z.union([ z.lazy(() => UuidNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  title: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  departmentId: z.union([ z.lazy(() => UuidWithAggregatesFilterSchema),z.string() ]).optional(),
+  tag: z.lazy(() => JsonNullableWithAggregatesFilterSchema).optional(),
+  document: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  cost: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  schedule: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  deadline: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  inPerson: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
+  online: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
+  serviceCategory: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  city: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  location: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  icon: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
 }).strict();
 
 export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object({
@@ -6815,7 +7066,8 @@ export const DepartmentCreateInputSchema: z.ZodType<Prisma.DepartmentCreateInput
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateInput> = z.object({
@@ -6837,7 +7089,8 @@ export const DepartmentUncheckedCreateInputSchema: z.ZodType<Prisma.DepartmentUn
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUpdateInputSchema: z.ZodType<Prisma.DepartmentUpdateInput> = z.object({
@@ -6859,7 +7112,8 @@ export const DepartmentUpdateInputSchema: z.ZodType<Prisma.DepartmentUpdateInput
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateInput> = z.object({
@@ -6881,7 +7135,8 @@ export const DepartmentUncheckedUpdateInputSchema: z.ZodType<Prisma.DepartmentUn
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateManyInputSchema: z.ZodType<Prisma.DepartmentCreateManyInput> = z.object({
@@ -7042,7 +7297,7 @@ export const TicketCreateInputSchema: z.ZodType<Prisma.TicketCreateInput> = z.ob
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -7068,7 +7323,7 @@ export const TicketUncheckedCreateInputSchema: z.ZodType<Prisma.TicketUncheckedC
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -7094,7 +7349,7 @@ export const TicketUpdateInputSchema: z.ZodType<Prisma.TicketUpdateInput> = z.ob
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -7120,7 +7375,7 @@ export const TicketUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketUncheckedU
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -7533,9 +7788,9 @@ export const TicketThreadCreateInputSchema: z.ZodType<Prisma.TicketThreadCreateI
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketThreadInputSchema).optional(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutThreadsInputSchema),
-  user: z.lazy(() => UserCreateNestedOneWithoutTicketThreadsInputSchema)
+  user: z.lazy(() => UserCreateNestedOneWithoutTicketThreadsInputSchema),
+  attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutThreadInputSchema).optional()
 }).strict();
 
 export const TicketThreadUncheckedCreateInputSchema: z.ZodType<Prisma.TicketThreadUncheckedCreateInput> = z.object({
@@ -7549,7 +7804,7 @@ export const TicketThreadUncheckedCreateInputSchema: z.ZodType<Prisma.TicketThre
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInputSchema).optional()
+  attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutThreadInputSchema).optional()
 }).strict();
 
 export const TicketThreadUpdateInputSchema: z.ZodType<Prisma.TicketThreadUpdateInput> = z.object({
@@ -7561,9 +7816,9 @@ export const TicketThreadUpdateInputSchema: z.ZodType<Prisma.TicketThreadUpdateI
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketThreadNestedInputSchema).optional(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutThreadsNestedInputSchema).optional(),
-  user: z.lazy(() => UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema).optional()
+  user: z.lazy(() => UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema).optional(),
+  attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutThreadNestedInputSchema).optional()
 }).strict();
 
 export const TicketThreadUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateInput> = z.object({
@@ -7577,7 +7832,7 @@ export const TicketThreadUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketThre
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInputSchema).optional()
+  attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutThreadNestedInputSchema).optional()
 }).strict();
 
 export const TicketThreadCreateManyInputSchema: z.ZodType<Prisma.TicketThreadCreateManyInput> = z.object({
@@ -7629,13 +7884,13 @@ export const TicketAttachmentCreateInputSchema: z.ZodType<Prisma.TicketAttachmen
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
   ticket: z.lazy(() => TicketCreateNestedOneWithoutAttachmentsInputSchema),
-  ticketThread: z.lazy(() => TicketThreadCreateNestedOneWithoutAttachmentsInputSchema)
+  thread: z.lazy(() => TicketThreadCreateNestedOneWithoutAttachmentsInputSchema)
 }).strict();
 
 export const TicketAttachmentUncheckedCreateInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedCreateInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  ticketThreadId: z.string(),
+  threadId: z.string(),
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
@@ -7659,13 +7914,13 @@ export const TicketAttachmentUpdateInputSchema: z.ZodType<Prisma.TicketAttachmen
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional(),
-  ticketThread: z.lazy(() => TicketThreadUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
+  thread: z.lazy(() => TicketThreadUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
 }).strict();
 
 export const TicketAttachmentUncheckedUpdateInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  ticketThreadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  threadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   filePath: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -7680,7 +7935,7 @@ export const TicketAttachmentUncheckedUpdateInputSchema: z.ZodType<Prisma.Ticket
 export const TicketAttachmentCreateManyInputSchema: z.ZodType<Prisma.TicketAttachmentCreateManyInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
-  ticketThreadId: z.string(),
+  threadId: z.string(),
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
@@ -7708,7 +7963,7 @@ export const TicketAttachmentUpdateManyMutationInputSchema: z.ZodType<Prisma.Tic
 export const TicketAttachmentUncheckedUpdateManyInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  ticketThreadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  threadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   filePath: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -8376,6 +8631,166 @@ export const ContactInfoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Contact
   updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
+export const ServiceCardCreateInputSchema: z.ZodType<Prisma.ServiceCardCreateInput> = z.object({
+  id: z.string().optional(),
+  status: z.string(),
+  createdBy: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedBy: z.string().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  title: z.string(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.string().optional().nullable(),
+  cost: z.string(),
+  schedule: z.string(),
+  deadline: z.string(),
+  inPerson: z.boolean(),
+  online: z.boolean(),
+  serviceCategory: z.string(),
+  city: z.number().int(),
+  location: z.string().optional().nullable(),
+  icon: z.string().optional().nullable(),
+  department: z.lazy(() => DepartmentCreateNestedOneWithoutServiceCardsInputSchema)
+}).strict();
+
+export const ServiceCardUncheckedCreateInputSchema: z.ZodType<Prisma.ServiceCardUncheckedCreateInput> = z.object({
+  id: z.string().optional(),
+  status: z.string(),
+  createdBy: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedBy: z.string().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  title: z.string(),
+  departmentId: z.string(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.string().optional().nullable(),
+  cost: z.string(),
+  schedule: z.string(),
+  deadline: z.string(),
+  inPerson: z.boolean(),
+  online: z.boolean(),
+  serviceCategory: z.string(),
+  city: z.number().int(),
+  location: z.string().optional().nullable(),
+  icon: z.string().optional().nullable()
+}).strict();
+
+export const ServiceCardUpdateInputSchema: z.ZodType<Prisma.ServiceCardUpdateInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  cost: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  schedule: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deadline: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  inPerson: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  online: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  serviceCategory: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  city: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  location: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  icon: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  department: z.lazy(() => DepartmentUpdateOneRequiredWithoutServiceCardsNestedInputSchema).optional()
+}).strict();
+
+export const ServiceCardUncheckedUpdateInputSchema: z.ZodType<Prisma.ServiceCardUncheckedUpdateInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  departmentId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  cost: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  schedule: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deadline: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  inPerson: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  online: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  serviceCategory: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  city: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  location: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  icon: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
+export const ServiceCardCreateManyInputSchema: z.ZodType<Prisma.ServiceCardCreateManyInput> = z.object({
+  id: z.string().optional(),
+  status: z.string(),
+  createdBy: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedBy: z.string().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  title: z.string(),
+  departmentId: z.string(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.string().optional().nullable(),
+  cost: z.string(),
+  schedule: z.string(),
+  deadline: z.string(),
+  inPerson: z.boolean(),
+  online: z.boolean(),
+  serviceCategory: z.string(),
+  city: z.number().int(),
+  location: z.string().optional().nullable(),
+  icon: z.string().optional().nullable()
+}).strict();
+
+export const ServiceCardUpdateManyMutationInputSchema: z.ZodType<Prisma.ServiceCardUpdateManyMutationInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  cost: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  schedule: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deadline: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  inPerson: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  online: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  serviceCategory: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  city: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  location: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  icon: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
+export const ServiceCardUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ServiceCardUncheckedUpdateManyInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  departmentId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  cost: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  schedule: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deadline: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  inPerson: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  online: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  serviceCategory: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  city: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  location: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  icon: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
 export const UuidFilterSchema: z.ZodType<Prisma.UuidFilter> = z.object({
@@ -9654,11 +10069,21 @@ export const HelpTopicListRelationFilterSchema: z.ZodType<Prisma.HelpTopicListRe
   none: z.lazy(() => HelpTopicWhereInputSchema).optional()
 }).strict();
 
+export const ServiceCardListRelationFilterSchema: z.ZodType<Prisma.ServiceCardListRelationFilter> = z.object({
+  every: z.lazy(() => ServiceCardWhereInputSchema).optional(),
+  some: z.lazy(() => ServiceCardWhereInputSchema).optional(),
+  none: z.lazy(() => ServiceCardWhereInputSchema).optional()
+}).strict();
+
 export const ContactInfoOrderByRelationAggregateInputSchema: z.ZodType<Prisma.ContactInfoOrderByRelationAggregateInput> = z.object({
   _count: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const HelpTopicOrderByRelationAggregateInputSchema: z.ZodType<Prisma.HelpTopicOrderByRelationAggregateInput> = z.object({
+  _count: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ServiceCardOrderByRelationAggregateInputSchema: z.ZodType<Prisma.ServiceCardOrderByRelationAggregateInput> = z.object({
   _count: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -9805,11 +10230,6 @@ export const TicketCustomFieldListRelationFilterSchema: z.ZodType<Prisma.TicketC
   every: z.lazy(() => TicketCustomFieldWhereInputSchema).optional(),
   some: z.lazy(() => TicketCustomFieldWhereInputSchema).optional(),
   none: z.lazy(() => TicketCustomFieldWhereInputSchema).optional()
-}).strict();
-
-export const TicketThreadNullableScalarRelationFilterSchema: z.ZodType<Prisma.TicketThreadNullableScalarRelationFilter> = z.object({
-  is: z.lazy(() => TicketThreadWhereInputSchema).optional().nullable(),
-  isNot: z.lazy(() => TicketThreadWhereInputSchema).optional().nullable()
 }).strict();
 
 export const TicketAttachmentOrderByRelationAggregateInputSchema: z.ZodType<Prisma.TicketAttachmentOrderByRelationAggregateInput> = z.object({
@@ -10126,7 +10546,7 @@ export const TicketAttachmentOrderByRelevanceInputSchema: z.ZodType<Prisma.Ticke
 export const TicketAttachmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.TicketAttachmentCountOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  ticketThreadId: z.lazy(() => SortOrderSchema).optional(),
+  threadId: z.lazy(() => SortOrderSchema).optional(),
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
@@ -10141,7 +10561,7 @@ export const TicketAttachmentCountOrderByAggregateInputSchema: z.ZodType<Prisma.
 export const TicketAttachmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.TicketAttachmentMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  ticketThreadId: z.lazy(() => SortOrderSchema).optional(),
+  threadId: z.lazy(() => SortOrderSchema).optional(),
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
@@ -10156,7 +10576,7 @@ export const TicketAttachmentMaxOrderByAggregateInputSchema: z.ZodType<Prisma.Ti
 export const TicketAttachmentMinOrderByAggregateInputSchema: z.ZodType<Prisma.TicketAttachmentMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   ticketId: z.lazy(() => SortOrderSchema).optional(),
-  ticketThreadId: z.lazy(() => SortOrderSchema).optional(),
+  threadId: z.lazy(() => SortOrderSchema).optional(),
   filePath: z.lazy(() => SortOrderSchema).optional(),
   fileName: z.lazy(() => SortOrderSchema).optional(),
   mimeType: z.lazy(() => SortOrderSchema).optional(),
@@ -10547,6 +10967,122 @@ export const IntNullableWithAggregatesFilterSchema: z.ZodType<Prisma.IntNullable
   _sum: z.lazy(() => NestedIntNullableFilterSchema).optional(),
   _min: z.lazy(() => NestedIntNullableFilterSchema).optional(),
   _max: z.lazy(() => NestedIntNullableFilterSchema).optional()
+}).strict();
+
+export const JsonNullableFilterSchema: z.ZodType<Prisma.JsonNullableFilter> = z.object({
+  equals: InputJsonValueSchema.optional(),
+  path: z.string().array().optional(),
+  string_contains: z.string().optional(),
+  string_starts_with: z.string().optional(),
+  string_ends_with: z.string().optional(),
+  array_starts_with: InputJsonValueSchema.optional().nullable(),
+  array_ends_with: InputJsonValueSchema.optional().nullable(),
+  array_contains: InputJsonValueSchema.optional().nullable(),
+  lt: InputJsonValueSchema.optional(),
+  lte: InputJsonValueSchema.optional(),
+  gt: InputJsonValueSchema.optional(),
+  gte: InputJsonValueSchema.optional(),
+  not: InputJsonValueSchema.optional()
+}).strict();
+
+export const ServiceCardOrderByRelevanceInputSchema: z.ZodType<Prisma.ServiceCardOrderByRelevanceInput> = z.object({
+  fields: z.union([ z.lazy(() => ServiceCardOrderByRelevanceFieldEnumSchema),z.lazy(() => ServiceCardOrderByRelevanceFieldEnumSchema).array() ]),
+  sort: z.lazy(() => SortOrderSchema),
+  search: z.string()
+}).strict();
+
+export const ServiceCardCountOrderByAggregateInputSchema: z.ZodType<Prisma.ServiceCardCountOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  departmentId: z.lazy(() => SortOrderSchema).optional(),
+  tag: z.lazy(() => SortOrderSchema).optional(),
+  document: z.lazy(() => SortOrderSchema).optional(),
+  cost: z.lazy(() => SortOrderSchema).optional(),
+  schedule: z.lazy(() => SortOrderSchema).optional(),
+  deadline: z.lazy(() => SortOrderSchema).optional(),
+  inPerson: z.lazy(() => SortOrderSchema).optional(),
+  online: z.lazy(() => SortOrderSchema).optional(),
+  serviceCategory: z.lazy(() => SortOrderSchema).optional(),
+  city: z.lazy(() => SortOrderSchema).optional(),
+  location: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ServiceCardAvgOrderByAggregateInputSchema: z.ZodType<Prisma.ServiceCardAvgOrderByAggregateInput> = z.object({
+  city: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ServiceCardMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ServiceCardMaxOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  departmentId: z.lazy(() => SortOrderSchema).optional(),
+  document: z.lazy(() => SortOrderSchema).optional(),
+  cost: z.lazy(() => SortOrderSchema).optional(),
+  schedule: z.lazy(() => SortOrderSchema).optional(),
+  deadline: z.lazy(() => SortOrderSchema).optional(),
+  inPerson: z.lazy(() => SortOrderSchema).optional(),
+  online: z.lazy(() => SortOrderSchema).optional(),
+  serviceCategory: z.lazy(() => SortOrderSchema).optional(),
+  city: z.lazy(() => SortOrderSchema).optional(),
+  location: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ServiceCardMinOrderByAggregateInputSchema: z.ZodType<Prisma.ServiceCardMinOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  createdBy: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedBy: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  departmentId: z.lazy(() => SortOrderSchema).optional(),
+  document: z.lazy(() => SortOrderSchema).optional(),
+  cost: z.lazy(() => SortOrderSchema).optional(),
+  schedule: z.lazy(() => SortOrderSchema).optional(),
+  deadline: z.lazy(() => SortOrderSchema).optional(),
+  inPerson: z.lazy(() => SortOrderSchema).optional(),
+  online: z.lazy(() => SortOrderSchema).optional(),
+  serviceCategory: z.lazy(() => SortOrderSchema).optional(),
+  city: z.lazy(() => SortOrderSchema).optional(),
+  location: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ServiceCardSumOrderByAggregateInputSchema: z.ZodType<Prisma.ServiceCardSumOrderByAggregateInput> = z.object({
+  city: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const JsonNullableWithAggregatesFilterSchema: z.ZodType<Prisma.JsonNullableWithAggregatesFilter> = z.object({
+  equals: InputJsonValueSchema.optional(),
+  path: z.string().array().optional(),
+  string_contains: z.string().optional(),
+  string_starts_with: z.string().optional(),
+  string_ends_with: z.string().optional(),
+  array_starts_with: InputJsonValueSchema.optional().nullable(),
+  array_ends_with: InputJsonValueSchema.optional().nullable(),
+  array_contains: InputJsonValueSchema.optional().nullable(),
+  lt: InputJsonValueSchema.optional(),
+  lte: InputJsonValueSchema.optional(),
+  gt: InputJsonValueSchema.optional(),
+  gte: InputJsonValueSchema.optional(),
+  not: InputJsonValueSchema.optional(),
+  _count: z.lazy(() => NestedIntNullableFilterSchema).optional(),
+  _min: z.lazy(() => NestedJsonNullableFilterSchema).optional(),
+  _max: z.lazy(() => NestedJsonNullableFilterSchema).optional()
 }).strict();
 
 export const AddressCreateNestedOneWithoutUsersInputSchema: z.ZodType<Prisma.AddressCreateNestedOneWithoutUsersInput> = z.object({
@@ -12275,6 +12811,13 @@ export const HelpTopicCreateNestedManyWithoutDepartmentInputSchema: z.ZodType<Pr
   connect: z.union([ z.lazy(() => HelpTopicWhereUniqueInputSchema),z.lazy(() => HelpTopicWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
+export const ServiceCardCreateNestedManyWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardCreateNestedManyWithoutDepartmentInput> = z.object({
+  create: z.union([ z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema).array(),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => ServiceCardCreateManyDepartmentInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
 export const DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInput> = z.object({
   create: z.union([ z.lazy(() => DepartmentCreateWithoutParentDepartmentInputSchema),z.lazy(() => DepartmentCreateWithoutParentDepartmentInputSchema).array(),z.lazy(() => DepartmentUncheckedCreateWithoutParentDepartmentInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutParentDepartmentInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => DepartmentCreateOrConnectWithoutParentDepartmentInputSchema),z.lazy(() => DepartmentCreateOrConnectWithoutParentDepartmentInputSchema).array() ]).optional(),
@@ -12308,6 +12851,13 @@ export const HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema: z.Z
   connectOrCreate: z.union([ z.lazy(() => HelpTopicCreateOrConnectWithoutDepartmentInputSchema),z.lazy(() => HelpTopicCreateOrConnectWithoutDepartmentInputSchema).array() ]).optional(),
   createMany: z.lazy(() => HelpTopicCreateManyDepartmentInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => HelpTopicWhereUniqueInputSchema),z.lazy(() => HelpTopicWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUncheckedCreateNestedManyWithoutDepartmentInput> = z.object({
+  create: z.union([ z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema).array(),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => ServiceCardCreateManyDepartmentInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
 export const InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema: z.ZodType<Prisma.InstitutionUpdateOneRequiredWithoutDepartmentsNestedInput> = z.object({
@@ -12418,6 +12968,20 @@ export const HelpTopicUpdateManyWithoutDepartmentNestedInputSchema: z.ZodType<Pr
   deleteMany: z.union([ z.lazy(() => HelpTopicScalarWhereInputSchema),z.lazy(() => HelpTopicScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
+export const ServiceCardUpdateManyWithoutDepartmentNestedInputSchema: z.ZodType<Prisma.ServiceCardUpdateManyWithoutDepartmentNestedInput> = z.object({
+  create: z.union([ z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema).array(),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => ServiceCardUpsertWithWhereUniqueWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUpsertWithWhereUniqueWithoutDepartmentInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => ServiceCardCreateManyDepartmentInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => ServiceCardUpdateWithWhereUniqueWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUpdateWithWhereUniqueWithoutDepartmentInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => ServiceCardUpdateManyWithWhereWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUpdateManyWithWhereWithoutDepartmentInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => ServiceCardScalarWhereInputSchema),z.lazy(() => ServiceCardScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
 export const DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInput> = z.object({
   create: z.union([ z.lazy(() => DepartmentCreateWithoutParentDepartmentInputSchema),z.lazy(() => DepartmentCreateWithoutParentDepartmentInputSchema).array(),z.lazy(() => DepartmentUncheckedCreateWithoutParentDepartmentInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutParentDepartmentInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => DepartmentCreateOrConnectWithoutParentDepartmentInputSchema),z.lazy(() => DepartmentCreateOrConnectWithoutParentDepartmentInputSchema).array() ]).optional(),
@@ -12486,6 +13050,20 @@ export const HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema: z.Z
   update: z.union([ z.lazy(() => HelpTopicUpdateWithWhereUniqueWithoutDepartmentInputSchema),z.lazy(() => HelpTopicUpdateWithWhereUniqueWithoutDepartmentInputSchema).array() ]).optional(),
   updateMany: z.union([ z.lazy(() => HelpTopicUpdateManyWithWhereWithoutDepartmentInputSchema),z.lazy(() => HelpTopicUpdateManyWithWhereWithoutDepartmentInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => HelpTopicScalarWhereInputSchema),z.lazy(() => HelpTopicScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema: z.ZodType<Prisma.ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInput> = z.object({
+  create: z.union([ z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema).array(),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema),z.lazy(() => ServiceCardCreateOrConnectWithoutDepartmentInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => ServiceCardUpsertWithWhereUniqueWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUpsertWithWhereUniqueWithoutDepartmentInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => ServiceCardCreateManyDepartmentInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => ServiceCardWhereUniqueInputSchema),z.lazy(() => ServiceCardWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => ServiceCardUpdateWithWhereUniqueWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUpdateWithWhereUniqueWithoutDepartmentInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => ServiceCardUpdateManyWithWhereWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUpdateManyWithWhereWithoutDepartmentInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => ServiceCardScalarWhereInputSchema),z.lazy(() => ServiceCardScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const DepartmentCreateNestedOneWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.DepartmentCreateNestedOneWithoutUserDepartmentsInput> = z.object({
@@ -12579,10 +13157,11 @@ export const TicketCustomFieldCreateNestedManyWithoutTicketInputSchema: z.ZodTyp
   connect: z.union([ z.lazy(() => TicketCustomFieldWhereUniqueInputSchema),z.lazy(() => TicketCustomFieldWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
-export const TicketThreadCreateNestedOneWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadCreateNestedOneWithoutTicketInput> = z.object({
-  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema) ]).optional(),
-  connectOrCreate: z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).optional(),
-  connect: z.lazy(() => TicketThreadWhereUniqueInputSchema).optional()
+export const TicketThreadCreateNestedManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadCreateNestedManyWithoutTicketInput> = z.object({
+  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateWithoutTicketInputSchema).array(),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketThreadCreateManyTicketInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
 export const TicketUserCreateNestedManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserCreateNestedManyWithoutTicketInput> = z.object({
@@ -12613,10 +13192,11 @@ export const TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema:
   connect: z.union([ z.lazy(() => TicketCustomFieldWhereUniqueInputSchema),z.lazy(() => TicketCustomFieldWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
-export const TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUncheckedCreateNestedOneWithoutTicketInput> = z.object({
-  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema) ]).optional(),
-  connectOrCreate: z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).optional(),
-  connect: z.lazy(() => TicketThreadWhereUniqueInputSchema).optional()
+export const TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUncheckedCreateNestedManyWithoutTicketInput> = z.object({
+  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateWithoutTicketInputSchema).array(),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketThreadCreateManyTicketInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
 export const TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserUncheckedCreateNestedManyWithoutTicketInput> = z.object({
@@ -12728,14 +13308,18 @@ export const TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema: z.ZodTyp
   deleteMany: z.union([ z.lazy(() => TicketCustomFieldScalarWhereInputSchema),z.lazy(() => TicketCustomFieldScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
-export const TicketThreadUpdateOneWithoutTicketNestedInputSchema: z.ZodType<Prisma.TicketThreadUpdateOneWithoutTicketNestedInput> = z.object({
-  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema) ]).optional(),
-  connectOrCreate: z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).optional(),
-  upsert: z.lazy(() => TicketThreadUpsertWithoutTicketInputSchema).optional(),
-  disconnect: z.union([ z.boolean(),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
-  delete: z.union([ z.boolean(),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
-  connect: z.lazy(() => TicketThreadWhereUniqueInputSchema).optional(),
-  update: z.union([ z.lazy(() => TicketThreadUpdateToOneWithWhereWithoutTicketInputSchema),z.lazy(() => TicketThreadUpdateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedUpdateWithoutTicketInputSchema) ]).optional(),
+export const TicketThreadUpdateManyWithoutTicketNestedInputSchema: z.ZodType<Prisma.TicketThreadUpdateManyWithoutTicketNestedInput> = z.object({
+  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateWithoutTicketInputSchema).array(),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => TicketThreadUpsertWithWhereUniqueWithoutTicketInputSchema),z.lazy(() => TicketThreadUpsertWithWhereUniqueWithoutTicketInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketThreadCreateManyTicketInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => TicketThreadUpdateWithWhereUniqueWithoutTicketInputSchema),z.lazy(() => TicketThreadUpdateWithWhereUniqueWithoutTicketInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => TicketThreadUpdateManyWithWhereWithoutTicketInputSchema),z.lazy(() => TicketThreadUpdateManyWithWhereWithoutTicketInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => TicketThreadScalarWhereInputSchema),z.lazy(() => TicketThreadScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const TicketUserUpdateManyWithoutTicketNestedInputSchema: z.ZodType<Prisma.TicketUserUpdateManyWithoutTicketNestedInput> = z.object({
@@ -12794,14 +13378,18 @@ export const TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema:
   deleteMany: z.union([ z.lazy(() => TicketCustomFieldScalarWhereInputSchema),z.lazy(() => TicketCustomFieldScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
-export const TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateOneWithoutTicketNestedInput> = z.object({
-  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema) ]).optional(),
-  connectOrCreate: z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).optional(),
-  upsert: z.lazy(() => TicketThreadUpsertWithoutTicketInputSchema).optional(),
-  disconnect: z.union([ z.boolean(),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
-  delete: z.union([ z.boolean(),z.lazy(() => TicketThreadWhereInputSchema) ]).optional(),
-  connect: z.lazy(() => TicketThreadWhereUniqueInputSchema).optional(),
-  update: z.union([ z.lazy(() => TicketThreadUpdateToOneWithWhereWithoutTicketInputSchema),z.lazy(() => TicketThreadUpdateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedUpdateWithoutTicketInputSchema) ]).optional(),
+export const TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateManyWithoutTicketNestedInput> = z.object({
+  create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateWithoutTicketInputSchema).array(),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema),z.lazy(() => TicketThreadCreateOrConnectWithoutTicketInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => TicketThreadUpsertWithWhereUniqueWithoutTicketInputSchema),z.lazy(() => TicketThreadUpsertWithWhereUniqueWithoutTicketInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketThreadCreateManyTicketInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => TicketThreadWhereUniqueInputSchema),z.lazy(() => TicketThreadWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => TicketThreadUpdateWithWhereUniqueWithoutTicketInputSchema),z.lazy(() => TicketThreadUpdateWithWhereUniqueWithoutTicketInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => TicketThreadUpdateManyWithWhereWithoutTicketInputSchema),z.lazy(() => TicketThreadUpdateManyWithWhereWithoutTicketInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => TicketThreadScalarWhereInputSchema),z.lazy(() => TicketThreadScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema: z.ZodType<Prisma.TicketUserUncheckedUpdateManyWithoutTicketNestedInput> = z.object({
@@ -13000,13 +13588,6 @@ export const TicketUncheckedUpdateManyWithoutSlaPlanNestedInputSchema: z.ZodType
   deleteMany: z.union([ z.lazy(() => TicketScalarWhereInputSchema),z.lazy(() => TicketScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
-export const TicketAttachmentCreateNestedManyWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateNestedManyWithoutTicketThreadInput> = z.object({
-  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => TicketAttachmentCreateManyTicketThreadInputEnvelopeSchema).optional(),
-  connect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
-}).strict();
-
 export const TicketCreateNestedOneWithoutThreadsInputSchema: z.ZodType<Prisma.TicketCreateNestedOneWithoutThreadsInput> = z.object({
   create: z.union([ z.lazy(() => TicketCreateWithoutThreadsInputSchema),z.lazy(() => TicketUncheckedCreateWithoutThreadsInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => TicketCreateOrConnectWithoutThreadsInputSchema).optional(),
@@ -13019,25 +13600,18 @@ export const UserCreateNestedOneWithoutTicketThreadsInputSchema: z.ZodType<Prism
   connect: z.lazy(() => UserWhereUniqueInputSchema).optional()
 }).strict();
 
-export const TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInput> = z.object({
-  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => TicketAttachmentCreateManyTicketThreadInputEnvelopeSchema).optional(),
+export const TicketAttachmentCreateNestedManyWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateNestedManyWithoutThreadInput> = z.object({
+  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketAttachmentCreateManyThreadInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
-export const TicketAttachmentUpdateManyWithoutTicketThreadNestedInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateManyWithoutTicketThreadNestedInput> = z.object({
-  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema).array() ]).optional(),
-  upsert: z.union([ z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutTicketThreadInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => TicketAttachmentCreateManyTicketThreadInputEnvelopeSchema).optional(),
-  set: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
-  disconnect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
-  delete: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
+export const TicketAttachmentUncheckedCreateNestedManyWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedCreateNestedManyWithoutThreadInput> = z.object({
+  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketAttachmentCreateManyThreadInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
-  update: z.union([ z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutTicketThreadInputSchema).array() ]).optional(),
-  updateMany: z.union([ z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutTicketThreadInputSchema).array() ]).optional(),
-  deleteMany: z.union([ z.lazy(() => TicketAttachmentScalarWhereInputSchema),z.lazy(() => TicketAttachmentScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const TicketUpdateOneRequiredWithoutThreadsNestedInputSchema: z.ZodType<Prisma.TicketUpdateOneRequiredWithoutThreadsNestedInput> = z.object({
@@ -13056,17 +13630,31 @@ export const UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema: z.ZodTy
   update: z.union([ z.lazy(() => UserUpdateToOneWithWhereWithoutTicketThreadsInputSchema),z.lazy(() => UserUpdateWithoutTicketThreadsInputSchema),z.lazy(() => UserUncheckedUpdateWithoutTicketThreadsInputSchema) ]).optional(),
 }).strict();
 
-export const TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInput> = z.object({
-  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema).array() ]).optional(),
-  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema).array() ]).optional(),
-  upsert: z.union([ z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutTicketThreadInputSchema).array() ]).optional(),
-  createMany: z.lazy(() => TicketAttachmentCreateManyTicketThreadInputEnvelopeSchema).optional(),
+export const TicketAttachmentUpdateManyWithoutThreadNestedInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateManyWithoutThreadNestedInput> = z.object({
+  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutThreadInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketAttachmentCreateManyThreadInputEnvelopeSchema).optional(),
   set: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
   disconnect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
   delete: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
   connect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
-  update: z.union([ z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutTicketThreadInputSchema).array() ]).optional(),
-  updateMany: z.union([ z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutTicketThreadInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutThreadInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutThreadInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => TicketAttachmentScalarWhereInputSchema),z.lazy(() => TicketAttachmentScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const TicketAttachmentUncheckedUpdateManyWithoutThreadNestedInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyWithoutThreadNestedInput> = z.object({
+  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema).array(),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema),z.lazy(() => TicketAttachmentCreateOrConnectWithoutThreadInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUpsertWithWhereUniqueWithoutThreadInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => TicketAttachmentCreateManyThreadInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => TicketAttachmentWhereUniqueInputSchema),z.lazy(() => TicketAttachmentWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUpdateWithWhereUniqueWithoutThreadInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUpdateManyWithWhereWithoutThreadInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => TicketAttachmentScalarWhereInputSchema),z.lazy(() => TicketAttachmentScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
@@ -13390,6 +13978,20 @@ export const DepartmentUpdateOneRequiredWithoutContactInfosNestedInputSchema: z.
   update: z.union([ z.lazy(() => DepartmentUpdateToOneWithWhereWithoutContactInfosInputSchema),z.lazy(() => DepartmentUpdateWithoutContactInfosInputSchema),z.lazy(() => DepartmentUncheckedUpdateWithoutContactInfosInputSchema) ]).optional(),
 }).strict();
 
+export const DepartmentCreateNestedOneWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentCreateNestedOneWithoutServiceCardsInput> = z.object({
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutServiceCardsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => DepartmentCreateOrConnectWithoutServiceCardsInputSchema).optional(),
+  connect: z.lazy(() => DepartmentWhereUniqueInputSchema).optional()
+}).strict();
+
+export const DepartmentUpdateOneRequiredWithoutServiceCardsNestedInputSchema: z.ZodType<Prisma.DepartmentUpdateOneRequiredWithoutServiceCardsNestedInput> = z.object({
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutServiceCardsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => DepartmentCreateOrConnectWithoutServiceCardsInputSchema).optional(),
+  upsert: z.lazy(() => DepartmentUpsertWithoutServiceCardsInputSchema).optional(),
+  connect: z.lazy(() => DepartmentWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => DepartmentUpdateToOneWithWhereWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUpdateWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUncheckedUpdateWithoutServiceCardsInputSchema) ]).optional(),
+}).strict();
+
 export const NestedUuidFilterSchema: z.ZodType<Prisma.NestedUuidFilter> = z.object({
   equals: z.string().optional(),
   in: z.string().array().optional(),
@@ -13647,6 +14249,22 @@ export const NestedFloatNullableFilterSchema: z.ZodType<Prisma.NestedFloatNullab
   gt: z.number().optional(),
   gte: z.number().optional(),
   not: z.union([ z.number(),z.lazy(() => NestedFloatNullableFilterSchema) ]).optional().nullable(),
+}).strict();
+
+export const NestedJsonNullableFilterSchema: z.ZodType<Prisma.NestedJsonNullableFilter> = z.object({
+  equals: InputJsonValueSchema.optional(),
+  path: z.string().array().optional(),
+  string_contains: z.string().optional(),
+  string_starts_with: z.string().optional(),
+  string_ends_with: z.string().optional(),
+  array_starts_with: InputJsonValueSchema.optional().nullable(),
+  array_ends_with: InputJsonValueSchema.optional().nullable(),
+  array_contains: InputJsonValueSchema.optional().nullable(),
+  lt: InputJsonValueSchema.optional(),
+  lte: InputJsonValueSchema.optional(),
+  gt: InputJsonValueSchema.optional(),
+  gte: InputJsonValueSchema.optional(),
+  not: InputJsonValueSchema.optional()
 }).strict();
 
 export const AddressCreateWithoutUsersInputSchema: z.ZodType<Prisma.AddressCreateWithoutUsersInput> = z.object({
@@ -14001,7 +14619,7 @@ export const TicketCreateWithoutAssignedToInputSchema: z.ZodType<Prisma.TicketCr
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -14026,7 +14644,7 @@ export const TicketUncheckedCreateWithoutAssignedToInputSchema: z.ZodType<Prisma
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -14061,7 +14679,7 @@ export const TicketCreateWithoutCreatedByInputSchema: z.ZodType<Prisma.TicketCre
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -14086,7 +14704,7 @@ export const TicketUncheckedCreateWithoutCreatedByInputSchema: z.ZodType<Prisma.
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -14141,8 +14759,8 @@ export const TicketThreadCreateWithoutUserInputSchema: z.ZodType<Prisma.TicketTh
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketThreadInputSchema).optional(),
-  ticket: z.lazy(() => TicketCreateNestedOneWithoutThreadsInputSchema)
+  ticket: z.lazy(() => TicketCreateNestedOneWithoutThreadsInputSchema),
+  attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutThreadInputSchema).optional()
 }).strict();
 
 export const TicketThreadUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.TicketThreadUncheckedCreateWithoutUserInput> = z.object({
@@ -14155,7 +14773,7 @@ export const TicketThreadUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInputSchema).optional()
+  attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutThreadInputSchema).optional()
 }).strict();
 
 export const TicketThreadCreateOrConnectWithoutUserInputSchema: z.ZodType<Prisma.TicketThreadCreateOrConnectWithoutUserInput> = z.object({
@@ -14252,7 +14870,8 @@ export const DepartmentCreateWithoutHeadInputSchema: z.ZodType<Prisma.Department
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutHeadInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutHeadInput> = z.object({
@@ -14273,7 +14892,8 @@ export const DepartmentUncheckedCreateWithoutHeadInputSchema: z.ZodType<Prisma.D
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutHeadInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutHeadInput> = z.object({
@@ -18377,7 +18997,8 @@ export const DepartmentCreateWithoutInstitutionInputSchema: z.ZodType<Prisma.Dep
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutInstitutionInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutInstitutionInput> = z.object({
@@ -18398,7 +19019,8 @@ export const DepartmentUncheckedCreateWithoutInstitutionInputSchema: z.ZodType<P
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutInstitutionInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutInstitutionInput> = z.object({
@@ -18703,7 +19325,8 @@ export const DepartmentCreateWithoutChildDepartmentsInputSchema: z.ZodType<Prism
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutChildDepartmentsInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutChildDepartmentsInput> = z.object({
@@ -18724,7 +19347,8 @@ export const DepartmentUncheckedCreateWithoutChildDepartmentsInputSchema: z.ZodT
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutChildDepartmentsInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutChildDepartmentsInput> = z.object({
@@ -18750,7 +19374,8 @@ export const DepartmentCreateWithoutParentDepartmentInputSchema: z.ZodType<Prism
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutParentDepartmentInput> = z.object({
@@ -18771,7 +19396,8 @@ export const DepartmentUncheckedCreateWithoutParentDepartmentInputSchema: z.ZodT
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutParentDepartmentInput> = z.object({
@@ -18997,7 +19623,7 @@ export const TicketCreateWithoutDepartmentInputSchema: z.ZodType<Prisma.TicketCr
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -19022,7 +19648,7 @@ export const TicketUncheckedCreateWithoutDepartmentInputSchema: z.ZodType<Prisma
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -19069,6 +19695,60 @@ export const HelpTopicCreateOrConnectWithoutDepartmentInputSchema: z.ZodType<Pri
 
 export const HelpTopicCreateManyDepartmentInputEnvelopeSchema: z.ZodType<Prisma.HelpTopicCreateManyDepartmentInputEnvelope> = z.object({
   data: z.union([ z.lazy(() => HelpTopicCreateManyDepartmentInputSchema),z.lazy(() => HelpTopicCreateManyDepartmentInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
+}).strict();
+
+export const ServiceCardCreateWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardCreateWithoutDepartmentInput> = z.object({
+  id: z.string().optional(),
+  status: z.string(),
+  createdBy: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedBy: z.string().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  title: z.string(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.string().optional().nullable(),
+  cost: z.string(),
+  schedule: z.string(),
+  deadline: z.string(),
+  inPerson: z.boolean(),
+  online: z.boolean(),
+  serviceCategory: z.string(),
+  city: z.number().int(),
+  location: z.string().optional().nullable(),
+  icon: z.string().optional().nullable()
+}).strict();
+
+export const ServiceCardUncheckedCreateWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUncheckedCreateWithoutDepartmentInput> = z.object({
+  id: z.string().optional(),
+  status: z.string(),
+  createdBy: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedBy: z.string().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  title: z.string(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.string().optional().nullable(),
+  cost: z.string(),
+  schedule: z.string(),
+  deadline: z.string(),
+  inPerson: z.boolean(),
+  online: z.boolean(),
+  serviceCategory: z.string(),
+  city: z.number().int(),
+  location: z.string().optional().nullable(),
+  icon: z.string().optional().nullable()
+}).strict();
+
+export const ServiceCardCreateOrConnectWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardCreateOrConnectWithoutDepartmentInput> = z.object({
+  where: z.lazy(() => ServiceCardWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema) ]),
+}).strict();
+
+export const ServiceCardCreateManyDepartmentInputEnvelopeSchema: z.ZodType<Prisma.ServiceCardCreateManyDepartmentInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => ServiceCardCreateManyDepartmentInputSchema),z.lazy(() => ServiceCardCreateManyDepartmentInputSchema).array() ]),
   skipDuplicates: z.boolean().optional()
 }).strict();
 
@@ -19152,7 +19832,8 @@ export const DepartmentUpdateWithoutChildDepartmentsInputSchema: z.ZodType<Prism
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutChildDepartmentsInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutChildDepartmentsInput> = z.object({
@@ -19173,7 +19854,8 @@ export const DepartmentUncheckedUpdateWithoutChildDepartmentsInputSchema: z.ZodT
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUpsertWithWhereUniqueWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentUpsertWithWhereUniqueWithoutParentDepartmentInput> = z.object({
@@ -19421,6 +20103,48 @@ export const HelpTopicScalarWhereInputSchema: z.ZodType<Prisma.HelpTopicScalarWh
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
+export const ServiceCardUpsertWithWhereUniqueWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUpsertWithWhereUniqueWithoutDepartmentInput> = z.object({
+  where: z.lazy(() => ServiceCardWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => ServiceCardUpdateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedUpdateWithoutDepartmentInputSchema) ]),
+  create: z.union([ z.lazy(() => ServiceCardCreateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedCreateWithoutDepartmentInputSchema) ]),
+}).strict();
+
+export const ServiceCardUpdateWithWhereUniqueWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUpdateWithWhereUniqueWithoutDepartmentInput> = z.object({
+  where: z.lazy(() => ServiceCardWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => ServiceCardUpdateWithoutDepartmentInputSchema),z.lazy(() => ServiceCardUncheckedUpdateWithoutDepartmentInputSchema) ]),
+}).strict();
+
+export const ServiceCardUpdateManyWithWhereWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUpdateManyWithWhereWithoutDepartmentInput> = z.object({
+  where: z.lazy(() => ServiceCardScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => ServiceCardUpdateManyMutationInputSchema),z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentInputSchema) ]),
+}).strict();
+
+export const ServiceCardScalarWhereInputSchema: z.ZodType<Prisma.ServiceCardScalarWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => ServiceCardScalarWhereInputSchema),z.lazy(() => ServiceCardScalarWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ServiceCardScalarWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ServiceCardScalarWhereInputSchema),z.lazy(() => ServiceCardScalarWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  status: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  createdBy: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedBy: z.union([ z.lazy(() => UuidNullableFilterSchema),z.string() ]).optional().nullable(),
+  updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  title: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  departmentId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  tag: z.lazy(() => JsonNullableFilterSchema).optional(),
+  document: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  cost: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  schedule: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  deadline: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  inPerson: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  online: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  serviceCategory: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  city: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  location: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  icon: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+}).strict();
+
 export const DepartmentCreateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.DepartmentCreateWithoutUserDepartmentsInput> = z.object({
   id: z.string().optional(),
   name: z.string(),
@@ -19439,7 +20163,8 @@ export const DepartmentCreateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma
   address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutUserDepartmentsInput> = z.object({
@@ -19460,7 +20185,8 @@ export const DepartmentUncheckedCreateWithoutUserDepartmentsInputSchema: z.ZodTy
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutUserDepartmentsInput> = z.object({
@@ -19574,7 +20300,8 @@ export const DepartmentUpdateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma
   address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutUserDepartmentsInput> = z.object({
@@ -19595,7 +20322,8 @@ export const DepartmentUncheckedUpdateWithoutUserDepartmentsInputSchema: z.ZodTy
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const UserUpsertWithoutUserDepartmentsInputSchema: z.ZodType<Prisma.UserUpsertWithoutUserDepartmentsInput> = z.object({
@@ -19853,7 +20581,8 @@ export const DepartmentCreateWithoutTicketsInputSchema: z.ZodType<Prisma.Departm
   address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutTicketsInput> = z.object({
@@ -19874,7 +20603,8 @@ export const DepartmentUncheckedCreateWithoutTicketsInputSchema: z.ZodType<Prism
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutTicketsInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutTicketsInput> = z.object({
@@ -20007,12 +20737,12 @@ export const TicketAttachmentCreateWithoutTicketInputSchema: z.ZodType<Prisma.Ti
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
-  ticketThread: z.lazy(() => TicketThreadCreateNestedOneWithoutAttachmentsInputSchema)
+  thread: z.lazy(() => TicketThreadCreateNestedOneWithoutAttachmentsInputSchema)
 }).strict();
 
 export const TicketAttachmentUncheckedCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedCreateWithoutTicketInput> = z.object({
   id: z.string().optional(),
-  ticketThreadId: z.string(),
+  threadId: z.string(),
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
@@ -20109,8 +20839,8 @@ export const TicketThreadCreateWithoutTicketInputSchema: z.ZodType<Prisma.Ticket
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketThreadInputSchema).optional(),
-  user: z.lazy(() => UserCreateNestedOneWithoutTicketThreadsInputSchema)
+  user: z.lazy(() => UserCreateNestedOneWithoutTicketThreadsInputSchema),
+  attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutThreadInputSchema).optional()
 }).strict();
 
 export const TicketThreadUncheckedCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUncheckedCreateWithoutTicketInput> = z.object({
@@ -20123,12 +20853,17 @@ export const TicketThreadUncheckedCreateWithoutTicketInputSchema: z.ZodType<Pris
   tenantId: z.string().optional().nullable(),
   deletedAt: z.coerce.date().optional().nullable(),
   updatedAt: z.coerce.date().optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketThreadInputSchema).optional()
+  attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutThreadInputSchema).optional()
 }).strict();
 
 export const TicketThreadCreateOrConnectWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadCreateOrConnectWithoutTicketInput> = z.object({
   where: z.lazy(() => TicketThreadWhereUniqueInputSchema),
   create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema) ]),
+}).strict();
+
+export const TicketThreadCreateManyTicketInputEnvelopeSchema: z.ZodType<Prisma.TicketThreadCreateManyTicketInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => TicketThreadCreateManyTicketInputSchema),z.lazy(() => TicketThreadCreateManyTicketInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
 }).strict();
 
 export const TicketUserCreateWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserCreateWithoutTicketInput> = z.object({
@@ -20358,7 +21093,8 @@ export const DepartmentUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.Departm
   address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutTicketsInput> = z.object({
@@ -20379,7 +21115,8 @@ export const DepartmentUncheckedUpdateWithoutTicketsInputSchema: z.ZodType<Prism
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const HelpTopicUpsertWithoutTicketsInputSchema: z.ZodType<Prisma.HelpTopicUpsertWithoutTicketsInput> = z.object({
@@ -20542,7 +21279,7 @@ export const TicketAttachmentScalarWhereInputSchema: z.ZodType<Prisma.TicketAtta
   NOT: z.union([ z.lazy(() => TicketAttachmentScalarWhereInputSchema),z.lazy(() => TicketAttachmentScalarWhereInputSchema).array() ]).optional(),
   id: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   ticketId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
-  ticketThreadId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
+  threadId: z.union([ z.lazy(() => UuidFilterSchema),z.string() ]).optional(),
   filePath: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   fileName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   mimeType: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
@@ -20602,41 +21339,20 @@ export const TicketCustomFieldScalarWhereInputSchema: z.ZodType<Prisma.TicketCus
   updatedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
 }).strict();
 
-export const TicketThreadUpsertWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpsertWithoutTicketInput> = z.object({
+export const TicketThreadUpsertWithWhereUniqueWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpsertWithWhereUniqueWithoutTicketInput> = z.object({
+  where: z.lazy(() => TicketThreadWhereUniqueInputSchema),
   update: z.union([ z.lazy(() => TicketThreadUpdateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedUpdateWithoutTicketInputSchema) ]),
   create: z.union([ z.lazy(() => TicketThreadCreateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedCreateWithoutTicketInputSchema) ]),
-  where: z.lazy(() => TicketThreadWhereInputSchema).optional()
 }).strict();
 
-export const TicketThreadUpdateToOneWithWhereWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpdateToOneWithWhereWithoutTicketInput> = z.object({
-  where: z.lazy(() => TicketThreadWhereInputSchema).optional(),
+export const TicketThreadUpdateWithWhereUniqueWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpdateWithWhereUniqueWithoutTicketInput> = z.object({
+  where: z.lazy(() => TicketThreadWhereUniqueInputSchema),
   data: z.union([ z.lazy(() => TicketThreadUpdateWithoutTicketInputSchema),z.lazy(() => TicketThreadUncheckedUpdateWithoutTicketInputSchema) ]),
 }).strict();
 
-export const TicketThreadUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpdateWithoutTicketInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketThreadNestedInputSchema).optional(),
-  user: z.lazy(() => UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema).optional()
-}).strict();
-
-export const TicketThreadUncheckedUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateWithoutTicketInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInputSchema).optional()
+export const TicketThreadUpdateManyWithWhereWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpdateManyWithWhereWithoutTicketInput> = z.object({
+  where: z.lazy(() => TicketThreadScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => TicketThreadUpdateManyMutationInputSchema),z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketInputSchema) ]),
 }).strict();
 
 export const TicketUserUpsertWithWhereUniqueWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserUpsertWithWhereUniqueWithoutTicketInput> = z.object({
@@ -20676,7 +21392,7 @@ export const TicketCreateWithoutStatusInputSchema: z.ZodType<Prisma.TicketCreate
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -20701,7 +21417,7 @@ export const TicketUncheckedCreateWithoutStatusInputSchema: z.ZodType<Prisma.Tic
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -20752,7 +21468,7 @@ export const TicketCreateWithoutPriorityInputSchema: z.ZodType<Prisma.TicketCrea
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -20777,7 +21493,7 @@ export const TicketUncheckedCreateWithoutPriorityInputSchema: z.ZodType<Prisma.T
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -20825,7 +21541,8 @@ export const DepartmentCreateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.Depa
   address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional()
+  tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutHelpTopicsInput> = z.object({
@@ -20846,7 +21563,8 @@ export const DepartmentUncheckedCreateWithoutHelpTopicsInputSchema: z.ZodType<Pr
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutHelpTopicsInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutHelpTopicsInput> = z.object({
@@ -20875,7 +21593,7 @@ export const TicketCreateWithoutHelpTopicInputSchema: z.ZodType<Prisma.TicketCre
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -20900,7 +21618,7 @@ export const TicketUncheckedCreateWithoutHelpTopicInputSchema: z.ZodType<Prisma.
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -20943,7 +21661,8 @@ export const DepartmentUpdateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.Depa
   address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutHelpTopicsInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutHelpTopicsInput> = z.object({
@@ -20964,7 +21683,8 @@ export const DepartmentUncheckedUpdateWithoutHelpTopicsInputSchema: z.ZodType<Pr
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const TicketUpsertWithWhereUniqueWithoutHelpTopicInputSchema: z.ZodType<Prisma.TicketUpsertWithWhereUniqueWithoutHelpTopicInput> = z.object({
@@ -21004,7 +21724,7 @@ export const TicketCreateWithoutSlaPlanInputSchema: z.ZodType<Prisma.TicketCreat
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -21029,7 +21749,7 @@ export const TicketUncheckedCreateWithoutSlaPlanInputSchema: z.ZodType<Prisma.Ti
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -21057,44 +21777,6 @@ export const TicketUpdateWithWhereUniqueWithoutSlaPlanInputSchema: z.ZodType<Pri
 export const TicketUpdateManyWithWhereWithoutSlaPlanInputSchema: z.ZodType<Prisma.TicketUpdateManyWithWhereWithoutSlaPlanInput> = z.object({
   where: z.lazy(() => TicketScalarWhereInputSchema),
   data: z.union([ z.lazy(() => TicketUpdateManyMutationInputSchema),z.lazy(() => TicketUncheckedUpdateManyWithoutSlaPlanInputSchema) ]),
-}).strict();
-
-export const TicketAttachmentCreateWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateWithoutTicketThreadInput> = z.object({
-  id: z.string().optional(),
-  filePath: z.string(),
-  fileName: z.string(),
-  mimeType: z.string(),
-  createdAt: z.coerce.date().optional(),
-  createdBy: z.string().optional().nullable(),
-  updatedBy: z.string().optional().nullable(),
-  tenantId: z.string().optional().nullable(),
-  deletedAt: z.coerce.date().optional().nullable(),
-  updatedAt: z.coerce.date().optional().nullable(),
-  ticket: z.lazy(() => TicketCreateNestedOneWithoutAttachmentsInputSchema)
-}).strict();
-
-export const TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedCreateWithoutTicketThreadInput> = z.object({
-  id: z.string().optional(),
-  ticketId: z.string(),
-  filePath: z.string(),
-  fileName: z.string(),
-  mimeType: z.string(),
-  createdAt: z.coerce.date().optional(),
-  createdBy: z.string().optional().nullable(),
-  updatedBy: z.string().optional().nullable(),
-  tenantId: z.string().optional().nullable(),
-  deletedAt: z.coerce.date().optional().nullable(),
-  updatedAt: z.coerce.date().optional().nullable()
-}).strict();
-
-export const TicketAttachmentCreateOrConnectWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateOrConnectWithoutTicketThreadInput> = z.object({
-  where: z.lazy(() => TicketAttachmentWhereUniqueInputSchema),
-  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema) ]),
-}).strict();
-
-export const TicketAttachmentCreateManyTicketThreadInputEnvelopeSchema: z.ZodType<Prisma.TicketAttachmentCreateManyTicketThreadInputEnvelope> = z.object({
-  data: z.union([ z.lazy(() => TicketAttachmentCreateManyTicketThreadInputSchema),z.lazy(() => TicketAttachmentCreateManyTicketThreadInputSchema).array() ]),
-  skipDuplicates: z.boolean().optional()
 }).strict();
 
 export const TicketCreateWithoutThreadsInputSchema: z.ZodType<Prisma.TicketCreateWithoutThreadsInput> = z.object({
@@ -21229,20 +21911,42 @@ export const UserCreateOrConnectWithoutTicketThreadsInputSchema: z.ZodType<Prism
   create: z.union([ z.lazy(() => UserCreateWithoutTicketThreadsInputSchema),z.lazy(() => UserUncheckedCreateWithoutTicketThreadsInputSchema) ]),
 }).strict();
 
-export const TicketAttachmentUpsertWithWhereUniqueWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpsertWithWhereUniqueWithoutTicketThreadInput> = z.object({
-  where: z.lazy(() => TicketAttachmentWhereUniqueInputSchema),
-  update: z.union([ z.lazy(() => TicketAttachmentUpdateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedUpdateWithoutTicketThreadInputSchema) ]),
-  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutTicketThreadInputSchema) ]),
+export const TicketAttachmentCreateWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateWithoutThreadInput> = z.object({
+  id: z.string().optional(),
+  filePath: z.string(),
+  fileName: z.string(),
+  mimeType: z.string(),
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  ticket: z.lazy(() => TicketCreateNestedOneWithoutAttachmentsInputSchema)
 }).strict();
 
-export const TicketAttachmentUpdateWithWhereUniqueWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateWithWhereUniqueWithoutTicketThreadInput> = z.object({
-  where: z.lazy(() => TicketAttachmentWhereUniqueInputSchema),
-  data: z.union([ z.lazy(() => TicketAttachmentUpdateWithoutTicketThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedUpdateWithoutTicketThreadInputSchema) ]),
+export const TicketAttachmentUncheckedCreateWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedCreateWithoutThreadInput> = z.object({
+  id: z.string().optional(),
+  ticketId: z.string(),
+  filePath: z.string(),
+  fileName: z.string(),
+  mimeType: z.string(),
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
-export const TicketAttachmentUpdateManyWithWhereWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateManyWithWhereWithoutTicketThreadInput> = z.object({
-  where: z.lazy(() => TicketAttachmentScalarWhereInputSchema),
-  data: z.union([ z.lazy(() => TicketAttachmentUpdateManyMutationInputSchema),z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketThreadInputSchema) ]),
+export const TicketAttachmentCreateOrConnectWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateOrConnectWithoutThreadInput> = z.object({
+  where: z.lazy(() => TicketAttachmentWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema) ]),
+}).strict();
+
+export const TicketAttachmentCreateManyThreadInputEnvelopeSchema: z.ZodType<Prisma.TicketAttachmentCreateManyThreadInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => TicketAttachmentCreateManyThreadInputSchema),z.lazy(() => TicketAttachmentCreateManyThreadInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
 }).strict();
 
 export const TicketUpsertWithoutThreadsInputSchema: z.ZodType<Prisma.TicketUpsertWithoutThreadsInput> = z.object({
@@ -21389,6 +22093,22 @@ export const UserUncheckedUpdateWithoutTicketThreadsInputSchema: z.ZodType<Prism
   userOnDocuments: z.lazy(() => UserOnDocumentsUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
 
+export const TicketAttachmentUpsertWithWhereUniqueWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpsertWithWhereUniqueWithoutThreadInput> = z.object({
+  where: z.lazy(() => TicketAttachmentWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => TicketAttachmentUpdateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedUpdateWithoutThreadInputSchema) ]),
+  create: z.union([ z.lazy(() => TicketAttachmentCreateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedCreateWithoutThreadInputSchema) ]),
+}).strict();
+
+export const TicketAttachmentUpdateWithWhereUniqueWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateWithWhereUniqueWithoutThreadInput> = z.object({
+  where: z.lazy(() => TicketAttachmentWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => TicketAttachmentUpdateWithoutThreadInputSchema),z.lazy(() => TicketAttachmentUncheckedUpdateWithoutThreadInputSchema) ]),
+}).strict();
+
+export const TicketAttachmentUpdateManyWithWhereWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateManyWithWhereWithoutThreadInput> = z.object({
+  where: z.lazy(() => TicketAttachmentScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => TicketAttachmentUpdateManyMutationInputSchema),z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutThreadInputSchema) ]),
+}).strict();
+
 export const TicketCreateWithoutAttachmentsInputSchema: z.ZodType<Prisma.TicketCreateWithoutAttachmentsInput> = z.object({
   id: z.string().optional(),
   subject: z.string(),
@@ -21410,7 +22130,7 @@ export const TicketCreateWithoutAttachmentsInputSchema: z.ZodType<Prisma.TicketC
   status: z.lazy(() => TicketStatusCreateNestedOneWithoutTicketsInputSchema),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -21435,7 +22155,7 @@ export const TicketUncheckedCreateWithoutAttachmentsInputSchema: z.ZodType<Prism
   deletedAt: z.coerce.date().optional().nullable(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -21507,7 +22227,7 @@ export const TicketUpdateWithoutAttachmentsInputSchema: z.ZodType<Prisma.TicketU
   status: z.lazy(() => TicketStatusUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -21532,7 +22252,7 @@ export const TicketUncheckedUpdateWithoutAttachmentsInputSchema: z.ZodType<Prism
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -21594,7 +22314,7 @@ export const TicketCreateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.Ticke
   status: z.lazy(() => TicketStatusCreateNestedOneWithoutTicketsInputSchema),
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -21619,7 +22339,7 @@ export const TicketUncheckedCreateWithoutCollaboratorsInputSchema: z.ZodType<Pri
   deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -21737,7 +22457,7 @@ export const TicketUpdateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.Ticke
   status: z.lazy(() => TicketStatusUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -21762,7 +22482,7 @@ export const TicketUncheckedUpdateWithoutCollaboratorsInputSchema: z.ZodType<Pri
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -21949,7 +22669,7 @@ export const TicketCreateWithoutCustomFieldsInputSchema: z.ZodType<Prisma.Ticket
   status: z.lazy(() => TicketStatusCreateNestedOneWithoutTicketsInputSchema),
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -21974,7 +22694,7 @@ export const TicketUncheckedCreateWithoutCustomFieldsInputSchema: z.ZodType<Pris
   deletedAt: z.coerce.date().optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
@@ -22050,7 +22770,7 @@ export const TicketUpdateWithoutCustomFieldsInputSchema: z.ZodType<Prisma.Ticket
   status: z.lazy(() => TicketStatusUpdateOneRequiredWithoutTicketsNestedInputSchema).optional(),
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -22075,7 +22795,7 @@ export const TicketUncheckedUpdateWithoutCustomFieldsInputSchema: z.ZodType<Pris
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -22349,7 +23069,7 @@ export const TicketCreateWithoutTicketUsersInputSchema: z.ZodType<Prisma.TicketC
   attachments: z.lazy(() => TicketAttachmentCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadCreateNestedOneWithoutTicketInputSchema).optional()
+  threads: z.lazy(() => TicketThreadCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
 export const TicketUncheckedCreateWithoutTicketUsersInputSchema: z.ZodType<Prisma.TicketUncheckedCreateWithoutTicketUsersInput> = z.object({
@@ -22374,7 +23094,7 @@ export const TicketUncheckedCreateWithoutTicketUsersInputSchema: z.ZodType<Prism
   attachments: z.lazy(() => TicketAttachmentUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedCreateNestedManyWithoutTicketInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedCreateNestedOneWithoutTicketInputSchema).optional()
+  threads: z.lazy(() => TicketThreadUncheckedCreateNestedManyWithoutTicketInputSchema).optional()
 }).strict();
 
 export const TicketCreateOrConnectWithoutTicketUsersInputSchema: z.ZodType<Prisma.TicketCreateOrConnectWithoutTicketUsersInput> = z.object({
@@ -22492,7 +23212,7 @@ export const TicketUpdateWithoutTicketUsersInputSchema: z.ZodType<Prisma.TicketU
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional()
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
 export const TicketUncheckedUpdateWithoutTicketUsersInputSchema: z.ZodType<Prisma.TicketUncheckedUpdateWithoutTicketUsersInput> = z.object({
@@ -22517,7 +23237,7 @@ export const TicketUncheckedUpdateWithoutTicketUsersInputSchema: z.ZodType<Prism
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional()
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
 export const UserUpsertWithoutTicketUsersInputSchema: z.ZodType<Prisma.UserUpsertWithoutTicketUsersInput> = z.object({
@@ -22703,7 +23423,8 @@ export const DepartmentCreateWithoutAddressInputSchema: z.ZodType<Prisma.Departm
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutAddressInput> = z.object({
@@ -22724,7 +23445,8 @@ export const DepartmentUncheckedCreateWithoutAddressInputSchema: z.ZodType<Prism
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutAddressInput> = z.object({
@@ -22905,7 +23627,8 @@ export const DepartmentCreateWithoutContactInfosInputSchema: z.ZodType<Prisma.De
   address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedCreateWithoutContactInfosInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutContactInfosInput> = z.object({
@@ -22926,7 +23649,8 @@ export const DepartmentUncheckedCreateWithoutContactInfosInputSchema: z.ZodType<
   childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
 }).strict();
 
 export const DepartmentCreateOrConnectWithoutContactInfosInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutContactInfosInput> = z.object({
@@ -22963,7 +23687,8 @@ export const DepartmentUpdateWithoutContactInfosInputSchema: z.ZodType<Prisma.De
   address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutContactInfosInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutContactInfosInput> = z.object({
@@ -22983,6 +23708,111 @@ export const DepartmentUncheckedUpdateWithoutContactInfosInputSchema: z.ZodType<
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+}).strict();
+
+export const DepartmentCreateWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentCreateWithoutServiceCardsInput> = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  description: z.string().optional().nullable(),
+  isSecretariat: z.boolean().optional(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  institution: z.lazy(() => InstitutionCreateNestedOneWithoutDepartmentsInputSchema),
+  parentDepartment: z.lazy(() => DepartmentCreateNestedOneWithoutChildDepartmentsInputSchema).optional(),
+  childDepartments: z.lazy(() => DepartmentCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
+  head: z.lazy(() => UserCreateNestedOneWithoutHeadOfDepartmentsInputSchema).optional(),
+  address: z.lazy(() => AddressCreateNestedOneWithoutDepartmentsInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  tickets: z.lazy(() => TicketCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicCreateNestedManyWithoutDepartmentInputSchema).optional()
+}).strict();
+
+export const DepartmentUncheckedCreateWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentUncheckedCreateWithoutServiceCardsInput> = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  description: z.string().optional().nullable(),
+  isSecretariat: z.boolean().optional(),
+  institutionId: z.string(),
+  parentDepartmentId: z.string().optional().nullable(),
+  headId: z.string().optional().nullable(),
+  addressId: z.string().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  childDepartments: z.lazy(() => DepartmentUncheckedCreateNestedManyWithoutParentDepartmentInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  tickets: z.lazy(() => TicketUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicUncheckedCreateNestedManyWithoutDepartmentInputSchema).optional()
+}).strict();
+
+export const DepartmentCreateOrConnectWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentCreateOrConnectWithoutServiceCardsInput> = z.object({
+  where: z.lazy(() => DepartmentWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutServiceCardsInputSchema) ]),
+}).strict();
+
+export const DepartmentUpsertWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentUpsertWithoutServiceCardsInput> = z.object({
+  update: z.union([ z.lazy(() => DepartmentUpdateWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUncheckedUpdateWithoutServiceCardsInputSchema) ]),
+  create: z.union([ z.lazy(() => DepartmentCreateWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUncheckedCreateWithoutServiceCardsInputSchema) ]),
+  where: z.lazy(() => DepartmentWhereInputSchema).optional()
+}).strict();
+
+export const DepartmentUpdateToOneWithWhereWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentUpdateToOneWithWhereWithoutServiceCardsInput> = z.object({
+  where: z.lazy(() => DepartmentWhereInputSchema).optional(),
+  data: z.union([ z.lazy(() => DepartmentUpdateWithoutServiceCardsInputSchema),z.lazy(() => DepartmentUncheckedUpdateWithoutServiceCardsInputSchema) ]),
+}).strict();
+
+export const DepartmentUpdateWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentUpdateWithoutServiceCardsInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  institution: z.lazy(() => InstitutionUpdateOneRequiredWithoutDepartmentsNestedInputSchema).optional(),
+  parentDepartment: z.lazy(() => DepartmentUpdateOneWithoutChildDepartmentsNestedInputSchema).optional(),
+  childDepartments: z.lazy(() => DepartmentUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
+  head: z.lazy(() => UserUpdateOneWithoutHeadOfDepartmentsNestedInputSchema).optional(),
+  address: z.lazy(() => AddressUpdateOneWithoutDepartmentsNestedInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+}).strict();
+
+export const DepartmentUncheckedUpdateWithoutServiceCardsInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutServiceCardsInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  description: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isSecretariat: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  institutionId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  parentDepartmentId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  headId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  addressId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  childDepartments: z.lazy(() => DepartmentUncheckedUpdateManyWithoutParentDepartmentNestedInputSchema).optional(),
+  userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
@@ -23576,7 +24406,7 @@ export const TicketUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma.TicketUp
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -23601,7 +24431,7 @@ export const TicketUncheckedUpdateWithoutAssignedToInputSchema: z.ZodType<Prisma
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -23646,7 +24476,7 @@ export const TicketUpdateWithoutCreatedByInputSchema: z.ZodType<Prisma.TicketUpd
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -23671,7 +24501,7 @@ export const TicketUncheckedUpdateWithoutCreatedByInputSchema: z.ZodType<Prisma.
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -23737,8 +24567,8 @@ export const TicketThreadUpdateWithoutUserInputSchema: z.ZodType<Prisma.TicketTh
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketThreadNestedInputSchema).optional(),
-  ticket: z.lazy(() => TicketUpdateOneRequiredWithoutThreadsNestedInputSchema).optional()
+  ticket: z.lazy(() => TicketUpdateOneRequiredWithoutThreadsNestedInputSchema).optional(),
+  attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutThreadNestedInputSchema).optional()
 }).strict();
 
 export const TicketThreadUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateWithoutUserInput> = z.object({
@@ -23751,7 +24581,7 @@ export const TicketThreadUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketThreadNestedInputSchema).optional()
+  attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutThreadNestedInputSchema).optional()
 }).strict();
 
 export const TicketThreadUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateManyWithoutUserInput> = z.object({
@@ -23853,7 +24683,8 @@ export const DepartmentUpdateWithoutHeadInputSchema: z.ZodType<Prisma.Department
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutHeadInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutHeadInput> = z.object({
@@ -23874,7 +24705,8 @@ export const DepartmentUncheckedUpdateWithoutHeadInputSchema: z.ZodType<Prisma.D
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateManyWithoutHeadInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyWithoutHeadInput> = z.object({
@@ -24679,7 +25511,8 @@ export const DepartmentUpdateWithoutInstitutionInputSchema: z.ZodType<Prisma.Dep
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutInstitutionInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutInstitutionInput> = z.object({
@@ -24700,7 +25533,8 @@ export const DepartmentUncheckedUpdateWithoutInstitutionInputSchema: z.ZodType<P
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateManyWithoutInstitutionInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyWithoutInstitutionInput> = z.object({
@@ -24794,6 +25628,28 @@ export const HelpTopicCreateManyDepartmentInputSchema: z.ZodType<Prisma.HelpTopi
   updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
+export const ServiceCardCreateManyDepartmentInputSchema: z.ZodType<Prisma.ServiceCardCreateManyDepartmentInput> = z.object({
+  id: z.string().optional(),
+  status: z.string(),
+  createdBy: z.string(),
+  createdAt: z.coerce.date().optional(),
+  updatedBy: z.string().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  title: z.string(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.string().optional().nullable(),
+  cost: z.string(),
+  schedule: z.string(),
+  deadline: z.string(),
+  inPerson: z.boolean(),
+  online: z.boolean(),
+  serviceCategory: z.string(),
+  city: z.number().int(),
+  location: z.string().optional().nullable(),
+  icon: z.string().optional().nullable()
+}).strict();
+
 export const DepartmentUpdateWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentUpdateWithoutParentDepartmentInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -24812,7 +25668,8 @@ export const DepartmentUpdateWithoutParentDepartmentInputSchema: z.ZodType<Prism
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutParentDepartmentInput> = z.object({
@@ -24833,7 +25690,8 @@ export const DepartmentUncheckedUpdateWithoutParentDepartmentInputSchema: z.ZodT
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateManyWithoutParentDepartmentInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyWithoutParentDepartmentInput> = z.object({
@@ -24954,7 +25812,7 @@ export const TicketUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma.TicketUp
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -24979,7 +25837,7 @@ export const TicketUncheckedUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25041,9 +25899,75 @@ export const HelpTopicUncheckedUpdateManyWithoutDepartmentInputSchema: z.ZodType
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
+export const ServiceCardUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUpdateWithoutDepartmentInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  cost: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  schedule: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deadline: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  inPerson: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  online: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  serviceCategory: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  city: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  location: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  icon: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
+export const ServiceCardUncheckedUpdateWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUncheckedUpdateWithoutDepartmentInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  cost: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  schedule: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deadline: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  inPerson: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  online: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  serviceCategory: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  city: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  location: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  icon: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
+export const ServiceCardUncheckedUpdateManyWithoutDepartmentInputSchema: z.ZodType<Prisma.ServiceCardUncheckedUpdateManyWithoutDepartmentInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  status: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  tag: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  document: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  cost: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  schedule: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deadline: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  inPerson: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  online: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  serviceCategory: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  city: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  location: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  icon: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
 export const TicketAttachmentCreateManyTicketInputSchema: z.ZodType<Prisma.TicketAttachmentCreateManyTicketInput> = z.object({
   id: z.string().optional(),
-  ticketThreadId: z.string(),
+  threadId: z.string(),
   filePath: z.string(),
   fileName: z.string(),
   mimeType: z.string(),
@@ -25078,6 +26002,18 @@ export const TicketCustomFieldCreateManyTicketInputSchema: z.ZodType<Prisma.Tick
   updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
+export const TicketThreadCreateManyTicketInputSchema: z.ZodType<Prisma.TicketThreadCreateManyTicketInput> = z.object({
+  id: z.string().optional(),
+  userId: z.string(),
+  message: z.string(),
+  createdAt: z.coerce.date().optional(),
+  createdBy: z.string().optional().nullable(),
+  updatedBy: z.string().optional().nullable(),
+  tenantId: z.string().optional().nullable(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  updatedAt: z.coerce.date().optional().nullable()
+}).strict();
+
 export const TicketUserCreateManyTicketInputSchema: z.ZodType<Prisma.TicketUserCreateManyTicketInput> = z.object({
   id: z.string().optional(),
   userId: z.string(),
@@ -25100,12 +26036,12 @@ export const TicketAttachmentUpdateWithoutTicketInputSchema: z.ZodType<Prisma.Ti
   tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-  ticketThread: z.lazy(() => TicketThreadUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
+  thread: z.lazy(() => TicketThreadUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
 }).strict();
 
 export const TicketAttachmentUncheckedUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  ticketThreadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  threadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   filePath: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -25119,7 +26055,7 @@ export const TicketAttachmentUncheckedUpdateWithoutTicketInputSchema: z.ZodType<
 
 export const TicketAttachmentUncheckedUpdateManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  ticketThreadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  threadId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   filePath: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   mimeType: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -25200,6 +26136,44 @@ export const TicketCustomFieldUncheckedUpdateManyWithoutTicketInputSchema: z.Zod
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
+export const TicketThreadUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUpdateWithoutTicketInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  user: z.lazy(() => UserUpdateOneRequiredWithoutTicketThreadsNestedInputSchema).optional(),
+  attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutThreadNestedInputSchema).optional()
+}).strict();
+
+export const TicketThreadUncheckedUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateWithoutTicketInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutThreadNestedInputSchema).optional()
+}).strict();
+
+export const TicketThreadUncheckedUpdateManyWithoutTicketInputSchema: z.ZodType<Prisma.TicketThreadUncheckedUpdateManyWithoutTicketInput> = z.object({
+  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  userId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  message: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  tenantId: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+}).strict();
+
 export const TicketUserUpdateWithoutTicketInputSchema: z.ZodType<Prisma.TicketUserUpdateWithoutTicketInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -25274,7 +26248,7 @@ export const TicketUpdateWithoutStatusInputSchema: z.ZodType<Prisma.TicketUpdate
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25299,7 +26273,7 @@ export const TicketUncheckedUpdateWithoutStatusInputSchema: z.ZodType<Prisma.Tic
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25364,7 +26338,7 @@ export const TicketUpdateWithoutPriorityInputSchema: z.ZodType<Prisma.TicketUpda
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25389,7 +26363,7 @@ export const TicketUncheckedUpdateWithoutPriorityInputSchema: z.ZodType<Prisma.T
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25454,7 +26428,7 @@ export const TicketUpdateWithoutHelpTopicInputSchema: z.ZodType<Prisma.TicketUpd
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25479,7 +26453,7 @@ export const TicketUncheckedUpdateWithoutHelpTopicInputSchema: z.ZodType<Prisma.
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25544,7 +26518,7 @@ export const TicketUpdateWithoutSlaPlanInputSchema: z.ZodType<Prisma.TicketUpdat
   attachments: z.lazy(() => TicketAttachmentUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25569,7 +26543,7 @@ export const TicketUncheckedUpdateWithoutSlaPlanInputSchema: z.ZodType<Prisma.Ti
   attachments: z.lazy(() => TicketAttachmentUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   collaborators: z.lazy(() => TicketCollaboratorUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   customFields: z.lazy(() => TicketCustomFieldUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
-  threads: z.lazy(() => TicketThreadUncheckedUpdateOneWithoutTicketNestedInputSchema).optional(),
+  threads: z.lazy(() => TicketThreadUncheckedUpdateManyWithoutTicketNestedInputSchema).optional(),
   ticketUsers: z.lazy(() => TicketUserUncheckedUpdateManyWithoutTicketNestedInputSchema).optional()
 }).strict();
 
@@ -25593,7 +26567,7 @@ export const TicketUncheckedUpdateManyWithoutSlaPlanInputSchema: z.ZodType<Prism
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
-export const TicketAttachmentCreateManyTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateManyTicketThreadInput> = z.object({
+export const TicketAttachmentCreateManyThreadInputSchema: z.ZodType<Prisma.TicketAttachmentCreateManyThreadInput> = z.object({
   id: z.string().optional(),
   ticketId: z.string(),
   filePath: z.string(),
@@ -25607,7 +26581,7 @@ export const TicketAttachmentCreateManyTicketThreadInputSchema: z.ZodType<Prisma
   updatedAt: z.coerce.date().optional().nullable()
 }).strict();
 
-export const TicketAttachmentUpdateWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateWithoutTicketThreadInput> = z.object({
+export const TicketAttachmentUpdateWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUpdateWithoutThreadInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   filePath: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   fileName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -25621,7 +26595,7 @@ export const TicketAttachmentUpdateWithoutTicketThreadInputSchema: z.ZodType<Pri
   ticket: z.lazy(() => TicketUpdateOneRequiredWithoutAttachmentsNestedInputSchema).optional()
 }).strict();
 
-export const TicketAttachmentUncheckedUpdateWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateWithoutTicketThreadInput> = z.object({
+export const TicketAttachmentUncheckedUpdateWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateWithoutThreadInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   filePath: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -25635,7 +26609,7 @@ export const TicketAttachmentUncheckedUpdateWithoutTicketThreadInputSchema: z.Zo
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
 }).strict();
 
-export const TicketAttachmentUncheckedUpdateManyWithoutTicketThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyWithoutTicketThreadInput> = z.object({
+export const TicketAttachmentUncheckedUpdateManyWithoutThreadInputSchema: z.ZodType<Prisma.TicketAttachmentUncheckedUpdateManyWithoutThreadInput> = z.object({
   id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   ticketId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   filePath: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -25839,7 +26813,8 @@ export const DepartmentUpdateWithoutAddressInputSchema: z.ZodType<Prisma.Departm
   userDepartments: z.lazy(() => UserDepartmentUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateWithoutAddressInput> = z.object({
@@ -25860,7 +26835,8 @@ export const DepartmentUncheckedUpdateWithoutAddressInputSchema: z.ZodType<Prism
   userDepartments: z.lazy(() => UserDepartmentUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   contactInfos: z.lazy(() => ContactInfoUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
   tickets: z.lazy(() => TicketUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
-  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
+  helpTopics: z.lazy(() => HelpTopicUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional(),
+  serviceCards: z.lazy(() => ServiceCardUncheckedUpdateManyWithoutDepartmentNestedInputSchema).optional()
 }).strict();
 
 export const DepartmentUncheckedUpdateManyWithoutAddressInputSchema: z.ZodType<Prisma.DepartmentUncheckedUpdateManyWithoutAddressInput> = z.object({
@@ -27805,6 +28781,68 @@ export const ContactInfoFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ContactInf
   where: ContactInfoWhereUniqueInputSchema,
 }).strict() ;
 
+export const ServiceCardFindFirstArgsSchema: z.ZodType<Prisma.ServiceCardFindFirstArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  where: ServiceCardWhereInputSchema.optional(),
+  orderBy: z.union([ ServiceCardOrderByWithRelationInputSchema.array(),ServiceCardOrderByWithRelationInputSchema ]).optional(),
+  cursor: ServiceCardWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ServiceCardScalarFieldEnumSchema,ServiceCardScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ServiceCardFindFirstOrThrowArgsSchema: z.ZodType<Prisma.ServiceCardFindFirstOrThrowArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  where: ServiceCardWhereInputSchema.optional(),
+  orderBy: z.union([ ServiceCardOrderByWithRelationInputSchema.array(),ServiceCardOrderByWithRelationInputSchema ]).optional(),
+  cursor: ServiceCardWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ServiceCardScalarFieldEnumSchema,ServiceCardScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ServiceCardFindManyArgsSchema: z.ZodType<Prisma.ServiceCardFindManyArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  where: ServiceCardWhereInputSchema.optional(),
+  orderBy: z.union([ ServiceCardOrderByWithRelationInputSchema.array(),ServiceCardOrderByWithRelationInputSchema ]).optional(),
+  cursor: ServiceCardWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ServiceCardScalarFieldEnumSchema,ServiceCardScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ServiceCardAggregateArgsSchema: z.ZodType<Prisma.ServiceCardAggregateArgs> = z.object({
+  where: ServiceCardWhereInputSchema.optional(),
+  orderBy: z.union([ ServiceCardOrderByWithRelationInputSchema.array(),ServiceCardOrderByWithRelationInputSchema ]).optional(),
+  cursor: ServiceCardWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const ServiceCardGroupByArgsSchema: z.ZodType<Prisma.ServiceCardGroupByArgs> = z.object({
+  where: ServiceCardWhereInputSchema.optional(),
+  orderBy: z.union([ ServiceCardOrderByWithAggregationInputSchema.array(),ServiceCardOrderByWithAggregationInputSchema ]).optional(),
+  by: ServiceCardScalarFieldEnumSchema.array(),
+  having: ServiceCardScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const ServiceCardFindUniqueArgsSchema: z.ZodType<Prisma.ServiceCardFindUniqueArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  where: ServiceCardWhereUniqueInputSchema,
+}).strict() ;
+
+export const ServiceCardFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ServiceCardFindUniqueOrThrowArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  where: ServiceCardWhereUniqueInputSchema,
+}).strict() ;
+
 export const UserCreateArgsSchema: z.ZodType<Prisma.UserCreateArgs> = z.object({
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
@@ -27843,6 +28881,11 @@ export const UserUpdateArgsSchema: z.ZodType<Prisma.UserUpdateArgs> = z.object({
 }).strict() ;
 
 export const UserUpdateManyArgsSchema: z.ZodType<Prisma.UserUpdateManyArgs> = z.object({
+  data: z.union([ UserUpdateManyMutationInputSchema,UserUncheckedUpdateManyInputSchema ]),
+  where: UserWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyUserCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyUserCreateManyAndReturnArgs> = z.object({
   data: z.union([ UserUpdateManyMutationInputSchema,UserUncheckedUpdateManyInputSchema ]),
   where: UserWhereInputSchema.optional(),
 }).strict() ;
@@ -27893,6 +28936,11 @@ export const DocumentUpdateManyArgsSchema: z.ZodType<Prisma.DocumentUpdateManyAr
   where: DocumentWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyDocumentCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyDocumentCreateManyAndReturnArgs> = z.object({
+  data: z.union([ DocumentUpdateManyMutationInputSchema,DocumentUncheckedUpdateManyInputSchema ]),
+  where: DocumentWhereInputSchema.optional(),
+}).strict() ;
+
 export const DocumentDeleteManyArgsSchema: z.ZodType<Prisma.DocumentDeleteManyArgs> = z.object({
   where: DocumentWhereInputSchema.optional(),
 }).strict() ;
@@ -27935,6 +28983,11 @@ export const UserOnDocumentsUpdateArgsSchema: z.ZodType<Prisma.UserOnDocumentsUp
 }).strict() ;
 
 export const UserOnDocumentsUpdateManyArgsSchema: z.ZodType<Prisma.UserOnDocumentsUpdateManyArgs> = z.object({
+  data: z.union([ UserOnDocumentsUpdateManyMutationInputSchema,UserOnDocumentsUncheckedUpdateManyInputSchema ]),
+  where: UserOnDocumentsWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyUserOnDocumentsCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyUserOnDocumentsCreateManyAndReturnArgs> = z.object({
   data: z.union([ UserOnDocumentsUpdateManyMutationInputSchema,UserOnDocumentsUncheckedUpdateManyInputSchema ]),
   where: UserOnDocumentsWhereInputSchema.optional(),
 }).strict() ;
@@ -27985,6 +29038,11 @@ export const DocumentUserUpdateManyArgsSchema: z.ZodType<Prisma.DocumentUserUpda
   where: DocumentUserWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyDocumentUserCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyDocumentUserCreateManyAndReturnArgs> = z.object({
+  data: z.union([ DocumentUserUpdateManyMutationInputSchema,DocumentUserUncheckedUpdateManyInputSchema ]),
+  where: DocumentUserWhereInputSchema.optional(),
+}).strict() ;
+
 export const DocumentUserDeleteManyArgsSchema: z.ZodType<Prisma.DocumentUserDeleteManyArgs> = z.object({
   where: DocumentUserWhereInputSchema.optional(),
 }).strict() ;
@@ -28027,6 +29085,11 @@ export const DocumentVersionUpdateArgsSchema: z.ZodType<Prisma.DocumentVersionUp
 }).strict() ;
 
 export const DocumentVersionUpdateManyArgsSchema: z.ZodType<Prisma.DocumentVersionUpdateManyArgs> = z.object({
+  data: z.union([ DocumentVersionUpdateManyMutationInputSchema,DocumentVersionUncheckedUpdateManyInputSchema ]),
+  where: DocumentVersionWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyDocumentVersionCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyDocumentVersionCreateManyAndReturnArgs> = z.object({
   data: z.union([ DocumentVersionUpdateManyMutationInputSchema,DocumentVersionUncheckedUpdateManyInputSchema ]),
   where: DocumentVersionWhereInputSchema.optional(),
 }).strict() ;
@@ -28077,6 +29140,11 @@ export const DocumentVersionCreatorUpdateManyArgsSchema: z.ZodType<Prisma.Docume
   where: DocumentVersionCreatorWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyDocumentVersionCreatorCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyDocumentVersionCreatorCreateManyAndReturnArgs> = z.object({
+  data: z.union([ DocumentVersionCreatorUpdateManyMutationInputSchema,DocumentVersionCreatorUncheckedUpdateManyInputSchema ]),
+  where: DocumentVersionCreatorWhereInputSchema.optional(),
+}).strict() ;
+
 export const DocumentVersionCreatorDeleteManyArgsSchema: z.ZodType<Prisma.DocumentVersionCreatorDeleteManyArgs> = z.object({
   where: DocumentVersionCreatorWhereInputSchema.optional(),
 }).strict() ;
@@ -28119,6 +29187,11 @@ export const SharedDocumentUpdateArgsSchema: z.ZodType<Prisma.SharedDocumentUpda
 }).strict() ;
 
 export const SharedDocumentUpdateManyArgsSchema: z.ZodType<Prisma.SharedDocumentUpdateManyArgs> = z.object({
+  data: z.union([ SharedDocumentUpdateManyMutationInputSchema,SharedDocumentUncheckedUpdateManyInputSchema ]),
+  where: SharedDocumentWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManySharedDocumentCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManySharedDocumentCreateManyAndReturnArgs> = z.object({
   data: z.union([ SharedDocumentUpdateManyMutationInputSchema,SharedDocumentUncheckedUpdateManyInputSchema ]),
   where: SharedDocumentWhereInputSchema.optional(),
 }).strict() ;
@@ -28169,6 +29242,11 @@ export const WorkflowUpdateManyArgsSchema: z.ZodType<Prisma.WorkflowUpdateManyAr
   where: WorkflowWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyWorkflowCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyWorkflowCreateManyAndReturnArgs> = z.object({
+  data: z.union([ WorkflowUpdateManyMutationInputSchema,WorkflowUncheckedUpdateManyInputSchema ]),
+  where: WorkflowWhereInputSchema.optional(),
+}).strict() ;
+
 export const WorkflowDeleteManyArgsSchema: z.ZodType<Prisma.WorkflowDeleteManyArgs> = z.object({
   where: WorkflowWhereInputSchema.optional(),
 }).strict() ;
@@ -28211,6 +29289,11 @@ export const TaskUpdateArgsSchema: z.ZodType<Prisma.TaskUpdateArgs> = z.object({
 }).strict() ;
 
 export const TaskUpdateManyArgsSchema: z.ZodType<Prisma.TaskUpdateManyArgs> = z.object({
+  data: z.union([ TaskUpdateManyMutationInputSchema,TaskUncheckedUpdateManyInputSchema ]),
+  where: TaskWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyTaskCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTaskCreateManyAndReturnArgs> = z.object({
   data: z.union([ TaskUpdateManyMutationInputSchema,TaskUncheckedUpdateManyInputSchema ]),
   where: TaskWhereInputSchema.optional(),
 }).strict() ;
@@ -28261,6 +29344,11 @@ export const AuditLogUpdateManyArgsSchema: z.ZodType<Prisma.AuditLogUpdateManyAr
   where: AuditLogWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyAuditLogCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyAuditLogCreateManyAndReturnArgs> = z.object({
+  data: z.union([ AuditLogUpdateManyMutationInputSchema,AuditLogUncheckedUpdateManyInputSchema ]),
+  where: AuditLogWhereInputSchema.optional(),
+}).strict() ;
+
 export const AuditLogDeleteManyArgsSchema: z.ZodType<Prisma.AuditLogDeleteManyArgs> = z.object({
   where: AuditLogWhereInputSchema.optional(),
 }).strict() ;
@@ -28303,6 +29391,11 @@ export const NotificationUpdateArgsSchema: z.ZodType<Prisma.NotificationUpdateAr
 }).strict() ;
 
 export const NotificationUpdateManyArgsSchema: z.ZodType<Prisma.NotificationUpdateManyArgs> = z.object({
+  data: z.union([ NotificationUpdateManyMutationInputSchema,NotificationUncheckedUpdateManyInputSchema ]),
+  where: NotificationWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyNotificationCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyNotificationCreateManyAndReturnArgs> = z.object({
   data: z.union([ NotificationUpdateManyMutationInputSchema,NotificationUncheckedUpdateManyInputSchema ]),
   where: NotificationWhereInputSchema.optional(),
 }).strict() ;
@@ -28353,6 +29446,11 @@ export const AttachmentUpdateManyArgsSchema: z.ZodType<Prisma.AttachmentUpdateMa
   where: AttachmentWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyAttachmentCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyAttachmentCreateManyAndReturnArgs> = z.object({
+  data: z.union([ AttachmentUpdateManyMutationInputSchema,AttachmentUncheckedUpdateManyInputSchema ]),
+  where: AttachmentWhereInputSchema.optional(),
+}).strict() ;
+
 export const AttachmentDeleteManyArgsSchema: z.ZodType<Prisma.AttachmentDeleteManyArgs> = z.object({
   where: AttachmentWhereInputSchema.optional(),
 }).strict() ;
@@ -28395,6 +29493,11 @@ export const DigitalCertificateUpdateArgsSchema: z.ZodType<Prisma.DigitalCertifi
 }).strict() ;
 
 export const DigitalCertificateUpdateManyArgsSchema: z.ZodType<Prisma.DigitalCertificateUpdateManyArgs> = z.object({
+  data: z.union([ DigitalCertificateUpdateManyMutationInputSchema,DigitalCertificateUncheckedUpdateManyInputSchema ]),
+  where: DigitalCertificateWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyDigitalCertificateCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyDigitalCertificateCreateManyAndReturnArgs> = z.object({
   data: z.union([ DigitalCertificateUpdateManyMutationInputSchema,DigitalCertificateUncheckedUpdateManyInputSchema ]),
   where: DigitalCertificateWhereInputSchema.optional(),
 }).strict() ;
@@ -28445,6 +29548,11 @@ export const FileMetadataUpdateManyArgsSchema: z.ZodType<Prisma.FileMetadataUpda
   where: FileMetadataWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyFileMetadataCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyFileMetadataCreateManyAndReturnArgs> = z.object({
+  data: z.union([ FileMetadataUpdateManyMutationInputSchema,FileMetadataUncheckedUpdateManyInputSchema ]),
+  where: FileMetadataWhereInputSchema.optional(),
+}).strict() ;
+
 export const FileMetadataDeleteManyArgsSchema: z.ZodType<Prisma.FileMetadataDeleteManyArgs> = z.object({
   where: FileMetadataWhereInputSchema.optional(),
 }).strict() ;
@@ -28487,6 +29595,11 @@ export const InstitutionUpdateArgsSchema: z.ZodType<Prisma.InstitutionUpdateArgs
 }).strict() ;
 
 export const InstitutionUpdateManyArgsSchema: z.ZodType<Prisma.InstitutionUpdateManyArgs> = z.object({
+  data: z.union([ InstitutionUpdateManyMutationInputSchema,InstitutionUncheckedUpdateManyInputSchema ]),
+  where: InstitutionWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyInstitutionCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyInstitutionCreateManyAndReturnArgs> = z.object({
   data: z.union([ InstitutionUpdateManyMutationInputSchema,InstitutionUncheckedUpdateManyInputSchema ]),
   where: InstitutionWhereInputSchema.optional(),
 }).strict() ;
@@ -28537,6 +29650,11 @@ export const DepartmentUpdateManyArgsSchema: z.ZodType<Prisma.DepartmentUpdateMa
   where: DepartmentWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyDepartmentCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyDepartmentCreateManyAndReturnArgs> = z.object({
+  data: z.union([ DepartmentUpdateManyMutationInputSchema,DepartmentUncheckedUpdateManyInputSchema ]),
+  where: DepartmentWhereInputSchema.optional(),
+}).strict() ;
+
 export const DepartmentDeleteManyArgsSchema: z.ZodType<Prisma.DepartmentDeleteManyArgs> = z.object({
   where: DepartmentWhereInputSchema.optional(),
 }).strict() ;
@@ -28579,6 +29697,11 @@ export const UserDepartmentUpdateArgsSchema: z.ZodType<Prisma.UserDepartmentUpda
 }).strict() ;
 
 export const UserDepartmentUpdateManyArgsSchema: z.ZodType<Prisma.UserDepartmentUpdateManyArgs> = z.object({
+  data: z.union([ UserDepartmentUpdateManyMutationInputSchema,UserDepartmentUncheckedUpdateManyInputSchema ]),
+  where: UserDepartmentWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyUserDepartmentCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyUserDepartmentCreateManyAndReturnArgs> = z.object({
   data: z.union([ UserDepartmentUpdateManyMutationInputSchema,UserDepartmentUncheckedUpdateManyInputSchema ]),
   where: UserDepartmentWhereInputSchema.optional(),
 }).strict() ;
@@ -28629,6 +29752,11 @@ export const TicketUpdateManyArgsSchema: z.ZodType<Prisma.TicketUpdateManyArgs> 
   where: TicketWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyTicketCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketCreateManyAndReturnArgs> = z.object({
+  data: z.union([ TicketUpdateManyMutationInputSchema,TicketUncheckedUpdateManyInputSchema ]),
+  where: TicketWhereInputSchema.optional(),
+}).strict() ;
+
 export const TicketDeleteManyArgsSchema: z.ZodType<Prisma.TicketDeleteManyArgs> = z.object({
   where: TicketWhereInputSchema.optional(),
 }).strict() ;
@@ -28671,6 +29799,11 @@ export const TicketStatusUpdateArgsSchema: z.ZodType<Prisma.TicketStatusUpdateAr
 }).strict() ;
 
 export const TicketStatusUpdateManyArgsSchema: z.ZodType<Prisma.TicketStatusUpdateManyArgs> = z.object({
+  data: z.union([ TicketStatusUpdateManyMutationInputSchema,TicketStatusUncheckedUpdateManyInputSchema ]),
+  where: TicketStatusWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyTicketStatusCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketStatusCreateManyAndReturnArgs> = z.object({
   data: z.union([ TicketStatusUpdateManyMutationInputSchema,TicketStatusUncheckedUpdateManyInputSchema ]),
   where: TicketStatusWhereInputSchema.optional(),
 }).strict() ;
@@ -28721,6 +29854,11 @@ export const TicketPriorityUpdateManyArgsSchema: z.ZodType<Prisma.TicketPriority
   where: TicketPriorityWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyTicketPriorityCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketPriorityCreateManyAndReturnArgs> = z.object({
+  data: z.union([ TicketPriorityUpdateManyMutationInputSchema,TicketPriorityUncheckedUpdateManyInputSchema ]),
+  where: TicketPriorityWhereInputSchema.optional(),
+}).strict() ;
+
 export const TicketPriorityDeleteManyArgsSchema: z.ZodType<Prisma.TicketPriorityDeleteManyArgs> = z.object({
   where: TicketPriorityWhereInputSchema.optional(),
 }).strict() ;
@@ -28763,6 +29901,11 @@ export const HelpTopicUpdateArgsSchema: z.ZodType<Prisma.HelpTopicUpdateArgs> = 
 }).strict() ;
 
 export const HelpTopicUpdateManyArgsSchema: z.ZodType<Prisma.HelpTopicUpdateManyArgs> = z.object({
+  data: z.union([ HelpTopicUpdateManyMutationInputSchema,HelpTopicUncheckedUpdateManyInputSchema ]),
+  where: HelpTopicWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyHelpTopicCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyHelpTopicCreateManyAndReturnArgs> = z.object({
   data: z.union([ HelpTopicUpdateManyMutationInputSchema,HelpTopicUncheckedUpdateManyInputSchema ]),
   where: HelpTopicWhereInputSchema.optional(),
 }).strict() ;
@@ -28813,6 +29956,11 @@ export const SLAPlanUpdateManyArgsSchema: z.ZodType<Prisma.SLAPlanUpdateManyArgs
   where: SLAPlanWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManySLAPlanCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManySLAPlanCreateManyAndReturnArgs> = z.object({
+  data: z.union([ SLAPlanUpdateManyMutationInputSchema,SLAPlanUncheckedUpdateManyInputSchema ]),
+  where: SLAPlanWhereInputSchema.optional(),
+}).strict() ;
+
 export const SLAPlanDeleteManyArgsSchema: z.ZodType<Prisma.SLAPlanDeleteManyArgs> = z.object({
   where: SLAPlanWhereInputSchema.optional(),
 }).strict() ;
@@ -28855,6 +30003,11 @@ export const TicketThreadUpdateArgsSchema: z.ZodType<Prisma.TicketThreadUpdateAr
 }).strict() ;
 
 export const TicketThreadUpdateManyArgsSchema: z.ZodType<Prisma.TicketThreadUpdateManyArgs> = z.object({
+  data: z.union([ TicketThreadUpdateManyMutationInputSchema,TicketThreadUncheckedUpdateManyInputSchema ]),
+  where: TicketThreadWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyTicketThreadCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketThreadCreateManyAndReturnArgs> = z.object({
   data: z.union([ TicketThreadUpdateManyMutationInputSchema,TicketThreadUncheckedUpdateManyInputSchema ]),
   where: TicketThreadWhereInputSchema.optional(),
 }).strict() ;
@@ -28905,6 +30058,11 @@ export const TicketAttachmentUpdateManyArgsSchema: z.ZodType<Prisma.TicketAttach
   where: TicketAttachmentWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyTicketAttachmentCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketAttachmentCreateManyAndReturnArgs> = z.object({
+  data: z.union([ TicketAttachmentUpdateManyMutationInputSchema,TicketAttachmentUncheckedUpdateManyInputSchema ]),
+  where: TicketAttachmentWhereInputSchema.optional(),
+}).strict() ;
+
 export const TicketAttachmentDeleteManyArgsSchema: z.ZodType<Prisma.TicketAttachmentDeleteManyArgs> = z.object({
   where: TicketAttachmentWhereInputSchema.optional(),
 }).strict() ;
@@ -28947,6 +30105,11 @@ export const TicketCollaboratorUpdateArgsSchema: z.ZodType<Prisma.TicketCollabor
 }).strict() ;
 
 export const TicketCollaboratorUpdateManyArgsSchema: z.ZodType<Prisma.TicketCollaboratorUpdateManyArgs> = z.object({
+  data: z.union([ TicketCollaboratorUpdateManyMutationInputSchema,TicketCollaboratorUncheckedUpdateManyInputSchema ]),
+  where: TicketCollaboratorWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyTicketCollaboratorCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketCollaboratorCreateManyAndReturnArgs> = z.object({
   data: z.union([ TicketCollaboratorUpdateManyMutationInputSchema,TicketCollaboratorUncheckedUpdateManyInputSchema ]),
   where: TicketCollaboratorWhereInputSchema.optional(),
 }).strict() ;
@@ -28997,6 +30160,11 @@ export const CustomFieldUpdateManyArgsSchema: z.ZodType<Prisma.CustomFieldUpdate
   where: CustomFieldWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyCustomFieldCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyCustomFieldCreateManyAndReturnArgs> = z.object({
+  data: z.union([ CustomFieldUpdateManyMutationInputSchema,CustomFieldUncheckedUpdateManyInputSchema ]),
+  where: CustomFieldWhereInputSchema.optional(),
+}).strict() ;
+
 export const CustomFieldDeleteManyArgsSchema: z.ZodType<Prisma.CustomFieldDeleteManyArgs> = z.object({
   where: CustomFieldWhereInputSchema.optional(),
 }).strict() ;
@@ -29039,6 +30207,11 @@ export const TicketCustomFieldUpdateArgsSchema: z.ZodType<Prisma.TicketCustomFie
 }).strict() ;
 
 export const TicketCustomFieldUpdateManyArgsSchema: z.ZodType<Prisma.TicketCustomFieldUpdateManyArgs> = z.object({
+  data: z.union([ TicketCustomFieldUpdateManyMutationInputSchema,TicketCustomFieldUncheckedUpdateManyInputSchema ]),
+  where: TicketCustomFieldWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyTicketCustomFieldCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketCustomFieldCreateManyAndReturnArgs> = z.object({
   data: z.union([ TicketCustomFieldUpdateManyMutationInputSchema,TicketCustomFieldUncheckedUpdateManyInputSchema ]),
   where: TicketCustomFieldWhereInputSchema.optional(),
 }).strict() ;
@@ -29089,6 +30262,11 @@ export const TaskUserUpdateManyArgsSchema: z.ZodType<Prisma.TaskUserUpdateManyAr
   where: TaskUserWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyTaskUserCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTaskUserCreateManyAndReturnArgs> = z.object({
+  data: z.union([ TaskUserUpdateManyMutationInputSchema,TaskUserUncheckedUpdateManyInputSchema ]),
+  where: TaskUserWhereInputSchema.optional(),
+}).strict() ;
+
 export const TaskUserDeleteManyArgsSchema: z.ZodType<Prisma.TaskUserDeleteManyArgs> = z.object({
   where: TaskUserWhereInputSchema.optional(),
 }).strict() ;
@@ -29131,6 +30309,11 @@ export const TicketUserUpdateArgsSchema: z.ZodType<Prisma.TicketUserUpdateArgs> 
 }).strict() ;
 
 export const TicketUserUpdateManyArgsSchema: z.ZodType<Prisma.TicketUserUpdateManyArgs> = z.object({
+  data: z.union([ TicketUserUpdateManyMutationInputSchema,TicketUserUncheckedUpdateManyInputSchema ]),
+  where: TicketUserWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyTicketUserCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyTicketUserCreateManyAndReturnArgs> = z.object({
   data: z.union([ TicketUserUpdateManyMutationInputSchema,TicketUserUncheckedUpdateManyInputSchema ]),
   where: TicketUserWhereInputSchema.optional(),
 }).strict() ;
@@ -29181,6 +30364,11 @@ export const AddressUpdateManyArgsSchema: z.ZodType<Prisma.AddressUpdateManyArgs
   where: AddressWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyAddressCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyAddressCreateManyAndReturnArgs> = z.object({
+  data: z.union([ AddressUpdateManyMutationInputSchema,AddressUncheckedUpdateManyInputSchema ]),
+  where: AddressWhereInputSchema.optional(),
+}).strict() ;
+
 export const AddressDeleteManyArgsSchema: z.ZodType<Prisma.AddressDeleteManyArgs> = z.object({
   where: AddressWhereInputSchema.optional(),
 }).strict() ;
@@ -29227,6 +30415,62 @@ export const ContactInfoUpdateManyArgsSchema: z.ZodType<Prisma.ContactInfoUpdate
   where: ContactInfoWhereInputSchema.optional(),
 }).strict() ;
 
+export const updateManyContactInfoCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyContactInfoCreateManyAndReturnArgs> = z.object({
+  data: z.union([ ContactInfoUpdateManyMutationInputSchema,ContactInfoUncheckedUpdateManyInputSchema ]),
+  where: ContactInfoWhereInputSchema.optional(),
+}).strict() ;
+
 export const ContactInfoDeleteManyArgsSchema: z.ZodType<Prisma.ContactInfoDeleteManyArgs> = z.object({
   where: ContactInfoWhereInputSchema.optional(),
+}).strict() ;
+
+export const ServiceCardCreateArgsSchema: z.ZodType<Prisma.ServiceCardCreateArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  data: z.union([ ServiceCardCreateInputSchema,ServiceCardUncheckedCreateInputSchema ]),
+}).strict() ;
+
+export const ServiceCardUpsertArgsSchema: z.ZodType<Prisma.ServiceCardUpsertArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  where: ServiceCardWhereUniqueInputSchema,
+  create: z.union([ ServiceCardCreateInputSchema,ServiceCardUncheckedCreateInputSchema ]),
+  update: z.union([ ServiceCardUpdateInputSchema,ServiceCardUncheckedUpdateInputSchema ]),
+}).strict() ;
+
+export const ServiceCardCreateManyArgsSchema: z.ZodType<Prisma.ServiceCardCreateManyArgs> = z.object({
+  data: z.union([ ServiceCardCreateManyInputSchema,ServiceCardCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const ServiceCardCreateManyAndReturnArgsSchema: z.ZodType<Prisma.ServiceCardCreateManyAndReturnArgs> = z.object({
+  data: z.union([ ServiceCardCreateManyInputSchema,ServiceCardCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const ServiceCardDeleteArgsSchema: z.ZodType<Prisma.ServiceCardDeleteArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  where: ServiceCardWhereUniqueInputSchema,
+}).strict() ;
+
+export const ServiceCardUpdateArgsSchema: z.ZodType<Prisma.ServiceCardUpdateArgs> = z.object({
+  select: ServiceCardSelectSchema.optional(),
+  include: ServiceCardIncludeSchema.optional(),
+  data: z.union([ ServiceCardUpdateInputSchema,ServiceCardUncheckedUpdateInputSchema ]),
+  where: ServiceCardWhereUniqueInputSchema,
+}).strict() ;
+
+export const ServiceCardUpdateManyArgsSchema: z.ZodType<Prisma.ServiceCardUpdateManyArgs> = z.object({
+  data: z.union([ ServiceCardUpdateManyMutationInputSchema,ServiceCardUncheckedUpdateManyInputSchema ]),
+  where: ServiceCardWhereInputSchema.optional(),
+}).strict() ;
+
+export const updateManyServiceCardCreateManyAndReturnArgsSchema: z.ZodType<Prisma.updateManyServiceCardCreateManyAndReturnArgs> = z.object({
+  data: z.union([ ServiceCardUpdateManyMutationInputSchema,ServiceCardUncheckedUpdateManyInputSchema ]),
+  where: ServiceCardWhereInputSchema.optional(),
+}).strict() ;
+
+export const ServiceCardDeleteManyArgsSchema: z.ZodType<Prisma.ServiceCardDeleteManyArgs> = z.object({
+  where: ServiceCardWhereInputSchema.optional(),
 }).strict() ;

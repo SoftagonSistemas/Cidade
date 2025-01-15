@@ -9,6 +9,7 @@ export const primaryMenuItems: MenuItem[] = [
       { title: 'Institução', route: '/admin/instituicao/' },
       { title: 'Secretarias', route: '/admin/instituicao/secretarias' },
       { title: 'Organograma', route: '/admin/instituicao/organograma' },
+      { title: 'Carta de Serviços', route: '/admin/instituicao/servicos' },
     ],
   },
   {

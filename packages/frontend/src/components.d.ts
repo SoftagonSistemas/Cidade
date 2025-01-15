@@ -15,6 +15,7 @@ declare module 'vue' {
     Breadcrumbs: typeof import('./components/Breadcrumbs.vue')['default']
     Editor: typeof import('./components/Documents/Editor.vue')['default']
     FileUpload: typeof import('./components/Documents/FileUpload.vue')['default']
+    ForwardSecretary: typeof import('./components/Tickets/ForwardSecretary.vue')['default']
     FullEditor: typeof import('./components/Documents/FullEditor.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     InternalNotes: typeof import('./components/Tickets/InternalNotes.vue')['default']

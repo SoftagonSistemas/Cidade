@@ -370,6 +370,7 @@ model Department {
   contactInfos       ContactInfo[]
   tickets            Ticket[]
   helpTopics         HelpTopic[]
+  serviceCards       ServiceCard[]
 
   @@unique([name, institutionId, isSecretariat])
 
@@ -424,7 +425,7 @@ model Ticket {
   attachments    TicketAttachment[]
   collaborators  TicketCollaborator[] @relation("Ticket_TicketUser")
   customFields   TicketCustomField[]
-  threads        TicketThread?
+  threads        TicketThread[] // Alterado de TicketThread? para TicketThread[]
   ticketUsers    TicketUser[]         @relation("Ticket_TicketUser")
 
   @@map("ticket")
@@ -492,7 +493,7 @@ model SLAPlan {
 
 model TicketThread {
   id          String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ticketId    String             @unique @db.Uuid
+  ticketId    String             @db.Uuid
   userId      String             @db.Uuid
   message     String
   createdAt   DateTime           @default(now())
@@ -501,28 +502,28 @@ model TicketThread {
   tenantId    String?
   deletedAt   DateTime?
   updatedAt   DateTime?          @updatedAt
-  attachments TicketAttachment[] @relation("TicketThread_TicketAttachment")
   ticket      Ticket             @relation(fields: [ticketId], references: [id])
   user        User               @relation(fields: [userId], references: [id])
+  attachments TicketAttachment[] // Relação direta com attachments
 
   @@map("ticket_thread")
 }
 
 model TicketAttachment {
-  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ticketId       String       @db.Uuid
-  ticketThreadId String       @db.Uuid
-  filePath       String
-  fileName       String
-  mimeType       String
-  createdAt      DateTime     @default(now())
-  createdBy      String?
-  updatedBy      String?
-  tenantId       String?
-  deletedAt      DateTime?
-  updatedAt      DateTime?    @updatedAt
-  ticket         Ticket       @relation(fields: [ticketId], references: [id])
-  ticketThread   TicketThread @relation("TicketThread_TicketAttachment", fields: [ticketThreadId], references: [ticketId])
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId   String       @db.Uuid
+  threadId   String       @db.Uuid
+  filePath   String
+  fileName   String
+  mimeType   String
+  createdAt  DateTime     @default(now())
+  createdBy  String?
+  updatedBy  String?
+  tenantId   String?
+  deletedAt  DateTime?
+  updatedAt  DateTime?    @updatedAt
+  ticket     Ticket       @relation(fields: [ticketId], references: [id])
+  thread     TicketThread @relation(fields: [threadId], references: [id])
 
   @@map("ticket_attachment")
 }
@@ -646,4 +647,31 @@ model ContactInfo {
   department    Department   @relation(fields: [departmentId], references: [id])
 
   @@map("contact_info")
+}
+
+model ServiceCard {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  status           String
+  createdBy        String    @db.Uuid
+  createdAt        DateTime  @default(now()) @db.Timestamptz
+  updatedBy        String?   @db.Uuid
+  updatedAt        DateTime? @db.Timestamptz
+  deletedAt        DateTime?
+  title            String
+  departmentId     String    @db.Uuid
+  tag              Json?
+  document         String?
+  cost             String
+  schedule         String
+  deadline         String
+  inPerson         Boolean
+  online           Boolean
+  serviceCategory  String
+  city             Int
+  location         String?
+  icon             String?
+
+  department       Department @relation(fields: [departmentId], references: [id])
+
+  @@map("service_card") // Map the table name for clarity
 }
